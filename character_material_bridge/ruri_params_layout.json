@@ -1,0 +1,11477 @@
+{
+ "_meta": {
+  "source": "RuriRipperImporter/Game/EndField/shader/ruri_endfield.py MANIFESTS",
+  "kernel": "rvg1",
+  "stamp": "bf72c0c79d76341f",
+  "blend": "ruri_character_uber_endfield.blend",
+  "mat_table_w": 1024,
+  "mat_table_h": 51,
+  "default_part": "Standard",
+  "extracted": "2026-09-08",
+  "usage": "按参数名索引（param_index），勿硬编码 texel；上游 codegen stamp 变更须重提取",
+  "entry_format": "[name, type(F/V4/V3), texel, comp, rgb_default, alpha_default]",
+  "interface": {
+   "source": "manifests_raw.json 栈0（character, kernel rvg1）.interface（RuriRipperImporter 权威面板分组）",
+   "extracted": "2026-09-09",
+   "groups": 34,
+   "covered_params": "517/570",
+   "note": "组名=权威中文分组；行 label 中英混排按源提取、不翻译；无界面分组的引擎内部参数（_ST/__size_*/门控）group 为空串"
+  }
+ },
+ "parts": {
+  "Standard": {
+   "params": [
+    {
+     "name": "_UseBumpMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BumpScale",
+     "type": "F",
+     "texel": 0,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseRMOSMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use RMOS Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseColor",
+     "type": "V4",
+     "texel": 1,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "底色 RGB / Alpha",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SurfaceType",
+     "type": "F",
+     "texel": 0,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Surface Type",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RoughnessIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Roughness Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MetallicIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Metallic Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecularIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BackFaceNormalFlip",
+     "type": "F",
+     "texel": 2,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Back Face Normal Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams12",
+     "type": "V4",
+     "texel": 3,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP12 (.x=灯光手动控制 .y=主光色覆写量 .z=shadowGate .w=exposureBlend)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnvironmentGlobalParams0",
+     "type": "V4",
+     "texel": 4,
+     "comp": 0,
+     "rgb": [
+      1.6699999570846558,
+      1.5,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "EnvGlobalParams0",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ExposureWithMiscParams",
+     "type": "V4",
+     "texel": 5,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Exposure (y = post exposure)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseMetallicGlossMap",
+     "type": "F",
+     "texel": 6,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Use MetallicGlossMap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Smoothness",
+     "type": "F",
+     "texel": 6,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Metallic",
+     "type": "F",
+     "texel": 6,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Specular",
+     "type": "F",
+     "texel": 6,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular (Default 0.5)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams11",
+     "type": "V4",
+     "texel": 7,
+     "comp": 0,
+     "rgb": [
+      -0.43299999833106995,
+      0.5,
+      0.75
+     ],
+     "a": -0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP11 (方向覆写 xyz + .w=明暗交界线偏移)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams1",
+     "type": "V4",
+     "texel": 8,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP1 (.x=brightMix .y=shadowStr .z=忽略主光阴影 .w=方向覆写量)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriOutlineShellGate",
+     "type": "F",
+     "texel": 9,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintEnable",
+     "type": "F",
+     "texel": 9,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Outline Tint Enable",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintColor",
+     "type": "V4",
+     "texel": 10,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Outline Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_OutlineColorBrightness",
+     "type": "F",
+     "texel": 9,
+     "comp": 2,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineColorSaturation",
+     "type": "F",
+     "texel": 9,
+     "comp": 3,
+     "rgb": [
+      1.5,
+      1.5,
+      1.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseShadowLutTex",
+     "type": "F",
+     "texel": 11,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Use Shadow Color LUT Tex",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorBrightness",
+     "type": "F",
+     "texel": 11,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorSaturation",
+     "type": "F",
+     "texel": 11,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoat",
+     "type": "F",
+     "texel": 11,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "清漆",
+     "label": "ClearCoat Effect",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoatNormalMode",
+     "type": "F",
+     "texel": 12,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "清漆",
+     "label": "ClearCoat Normal",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoatSmoothness",
+     "type": "F",
+     "texel": 12,
+     "comp": 1,
+     "rgb": [
+      0.949999988079071,
+      0.949999988079071,
+      0.949999988079071
+     ],
+     "a": 0,
+     "group": "清漆",
+     "label": "ClearCoat Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoatMetallic",
+     "type": "F",
+     "texel": 12,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "清漆",
+     "label": "ClearCoat Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoatColor",
+     "type": "V4",
+     "texel": 13,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "清漆",
+     "label": "ClearCoat Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SilkStockings",
+     "type": "F",
+     "texel": 12,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "Silk Stockings",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RuriCharacterEnvironmentEffect",
+     "type": "V4",
+     "texel": 14,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "环境效果量 (.x=雨 .y=水位量 .z=浸润 .w=雪)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriCharacterEnvironmentWater",
+     "type": "V4",
+     "texel": 15,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "环境效果水面 (.x=世界高度)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams10",
+     "type": "V4",
+     "texel": 16,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP10 (height darken control)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_SilkStockingsSpecularInt",
+     "type": "F",
+     "texel": 17,
+     "comp": 0,
+     "rgb": [
+      5,
+      5,
+      5
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高光强度Remap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsSpecularMinAtMinWetness",
+     "type": "F",
+     "texel": 17,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高光干燥态最小值",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsAdvance",
+     "type": "F",
+     "texel": 17,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高级模式(使用贴图)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsColor",
+     "type": "V4",
+     "texel": 18,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "丝袜",
+     "label": "丝袜边缘颜色",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SilkStockingsAnisoDirection",
+     "type": "F",
+     "texel": 17,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜锐利度G",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsDryColor",
+     "type": "V4",
+     "texel": 19,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "丝袜",
+     "label": "丝袜常态偏色",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SilkStockingsWetColor",
+     "type": "V4",
+     "texel": 20,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "丝袜",
+     "label": "丝袜湿润偏色",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SilkStockingsMinAffect",
+     "type": "F",
+     "texel": 21,
+     "comp": 0,
+     "rgb": [
+      0.05000000074505806,
+      0.05000000074505806,
+      0.05000000074505806
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜最浅覆盖",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsMaxAffect",
+     "type": "F",
+     "texel": 21,
+     "comp": 1,
+     "rgb": [
+      0.8999999761581421,
+      0.8999999761581421,
+      0.8999999761581421
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜最深覆盖",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseEmission",
+     "type": "F",
+     "texel": 21,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Emission",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseParallax",
+     "type": "F",
+     "texel": 21,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "视差",
+     "label": "Use Parallax",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ParallaxTex_ST",
+     "type": "V4",
+     "texel": 22,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ParallaxMarchNum",
+     "type": "F",
+     "texel": 23,
+     "comp": 0,
+     "rgb": [
+      3,
+      3,
+      3
+     ],
+     "a": 0,
+     "group": "视差",
+     "label": "Parallax March Num",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ParallaxScale",
+     "type": "F",
+     "texel": 23,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "视差",
+     "label": "Parallax Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams2",
+     "type": "V4",
+     "texel": 24,
+     "comp": 0,
+     "rgb": [
+      0.7830188274383545,
+      0.8293082118034363,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP2 (阴影色倾向 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams5",
+     "type": "V4",
+     "texel": 25,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP5 (主光自定义颜色 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseDiffRampMap",
+     "type": "F",
+     "texel": 23,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Diffuse Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DirectionalShadowParams",
+     "type": "V4",
+     "texel": 26,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams0",
+     "type": "V4",
+     "texel": 27,
+     "comp": 0,
+     "rgb": [
+      0,
+      0.8999999761581421,
+      0.800000011920929
+     ],
+     "a": 0.800000011920929,
+     "group": "引擎全局 CP",
+     "label": "CP0 (.y=主光系数 .z=环境阴影系数 .w=环境光系数)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams6",
+     "type": "V4",
+     "texel": 28,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      4.371138828673793e-08
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP6 (环境光方向 = charGlobalAmbientParam0)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams7",
+     "type": "V4",
+     "texel": 29,
+     "comp": 0,
+     "rgb": [
+      0.15000000596046448,
+      1.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP7 (环境光系数 = charGlobalAmbientParam1)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_SilkStockingsSpecularFalloff",
+     "type": "F",
+     "texel": 23,
+     "comp": 3,
+     "rgb": [
+      0.800000011920929,
+      0.800000011920929,
+      0.800000011920929
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高光透肉衰减值",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsSpecularValue",
+     "type": "F",
+     "texel": 30,
+     "comp": 0,
+     "rgb": [
+      2,
+      2,
+      2
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高光位置偏移",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseSpecRampMap",
+     "type": "F",
+     "texel": 30,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Specular Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecRampIridescentMode",
+     "type": "F",
+     "texel": 30,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "彩虹色模式(镭射塑料请勾选)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams13",
+     "type": "V4",
+     "texel": 31,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP13 (.w=GGX specular toggle)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams9",
+     "type": "V4",
+     "texel": 32,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      0
+     ],
+     "a": 0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP9 (skin spec .xy=dir .z=tint .w=width)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams8",
+     "type": "V4",
+     "texel": 33,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP8 (skin spec color rgb + .w=intensity)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EmissionColor",
+     "type": "V4",
+     "texel": 34,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Emission Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_EmissionBrightness",
+     "type": "F",
+     "texel": 30,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "自发光",
+     "label": "Emission Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ParallaxColor",
+     "type": "V4",
+     "texel": 35,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "视差",
+     "label": "Parallax Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_EnableVFXColorAdjustment",
+     "type": "F",
+     "texel": 36,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "VFX Color Adjustment",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentContrast",
+     "type": "F",
+     "texel": 36,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Contrast",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentSaturation",
+     "type": "F",
+     "texel": 36,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentRimWidth",
+     "type": "F",
+     "texel": 36,
+     "comp": 3,
+     "rgb": [
+      0.3499999940395355,
+      0.3499999940395355,
+      0.3499999940395355
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Width",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentBrightness",
+     "type": "F",
+     "texel": 37,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentColorBlend",
+     "type": "V4",
+     "texel": 38,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Color Blend",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_ColorAdjustmentRimColor",
+     "type": "V4",
+     "texel": 39,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_ColorAdjustmentRimIntensity",
+     "type": "F",
+     "texel": 37,
+     "comp": 1,
+     "rgb": [
+      4,
+      4,
+      4
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "__size_ShadowLutTex",
+     "type": "V3",
+     "texel": 40,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_DiffRampMap",
+     "type": "V3",
+     "texel": 41,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_SpecRampMap",
+     "type": "V3",
+     "texel": 42,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    }
+   ],
+   "param_index": {
+    "_UseBumpMap": {
+     "t": 0,
+     "c": 0,
+     "type": "F"
+    },
+    "_BumpScale": {
+     "t": 0,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseRMOSMap": {
+     "t": 0,
+     "c": 2,
+     "type": "F"
+    },
+    "_BaseColor": {
+     "t": 1,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SurfaceType": {
+     "t": 0,
+     "c": 3,
+     "type": "F"
+    },
+    "_RoughnessIntensity": {
+     "t": 2,
+     "c": 0,
+     "type": "F"
+    },
+    "_MetallicIntensity": {
+     "t": 2,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecularIntensity": {
+     "t": 2,
+     "c": 2,
+     "type": "F"
+    },
+    "_BackFaceNormalFlip": {
+     "t": 2,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams12": {
+     "t": 3,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnvironmentGlobalParams0": {
+     "t": 4,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ExposureWithMiscParams": {
+     "t": 5,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseMetallicGlossMap": {
+     "t": 6,
+     "c": 0,
+     "type": "F"
+    },
+    "_Smoothness": {
+     "t": 6,
+     "c": 1,
+     "type": "F"
+    },
+    "_Metallic": {
+     "t": 6,
+     "c": 2,
+     "type": "F"
+    },
+    "_Specular": {
+     "t": 6,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams11": {
+     "t": 7,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams1": {
+     "t": 8,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriOutlineShellGate": {
+     "t": 9,
+     "c": 0,
+     "type": "F"
+    },
+    "_OutlineTintEnable": {
+     "t": 9,
+     "c": 1,
+     "type": "F"
+    },
+    "_OutlineTintColor": {
+     "t": 10,
+     "c": 0,
+     "type": "V4"
+    },
+    "_OutlineColorBrightness": {
+     "t": 9,
+     "c": 2,
+     "type": "F"
+    },
+    "_OutlineColorSaturation": {
+     "t": 9,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseShadowLutTex": {
+     "t": 11,
+     "c": 0,
+     "type": "F"
+    },
+    "_ShadowColorBrightness": {
+     "t": 11,
+     "c": 1,
+     "type": "F"
+    },
+    "_ShadowColorSaturation": {
+     "t": 11,
+     "c": 2,
+     "type": "F"
+    },
+    "_ClearCoat": {
+     "t": 11,
+     "c": 3,
+     "type": "F"
+    },
+    "_ClearCoatNormalMode": {
+     "t": 12,
+     "c": 0,
+     "type": "F"
+    },
+    "_ClearCoatSmoothness": {
+     "t": 12,
+     "c": 1,
+     "type": "F"
+    },
+    "_ClearCoatMetallic": {
+     "t": 12,
+     "c": 2,
+     "type": "F"
+    },
+    "_ClearCoatColor": {
+     "t": 13,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockings": {
+     "t": 12,
+     "c": 3,
+     "type": "F"
+    },
+    "_RuriCharacterEnvironmentEffect": {
+     "t": 14,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriCharacterEnvironmentWater": {
+     "t": 15,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams10": {
+     "t": 16,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsSpecularInt": {
+     "t": 17,
+     "c": 0,
+     "type": "F"
+    },
+    "_SilkStockingsSpecularMinAtMinWetness": {
+     "t": 17,
+     "c": 1,
+     "type": "F"
+    },
+    "_SilkStockingsAdvance": {
+     "t": 17,
+     "c": 2,
+     "type": "F"
+    },
+    "_SilkStockingsColor": {
+     "t": 18,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsAnisoDirection": {
+     "t": 17,
+     "c": 3,
+     "type": "F"
+    },
+    "_SilkStockingsDryColor": {
+     "t": 19,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsWetColor": {
+     "t": 20,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsMinAffect": {
+     "t": 21,
+     "c": 0,
+     "type": "F"
+    },
+    "_SilkStockingsMaxAffect": {
+     "t": 21,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseEmission": {
+     "t": 21,
+     "c": 2,
+     "type": "F"
+    },
+    "_UseParallax": {
+     "t": 21,
+     "c": 3,
+     "type": "F"
+    },
+    "_ParallaxTex_ST": {
+     "t": 22,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ParallaxMarchNum": {
+     "t": 23,
+     "c": 0,
+     "type": "F"
+    },
+    "_ParallaxScale": {
+     "t": 23,
+     "c": 1,
+     "type": "F"
+    },
+    "_CharacterParams2": {
+     "t": 24,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams5": {
+     "t": 25,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseDiffRampMap": {
+     "t": 23,
+     "c": 2,
+     "type": "F"
+    },
+    "_DirectionalShadowParams": {
+     "t": 26,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams0": {
+     "t": 27,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams6": {
+     "t": 28,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams7": {
+     "t": 29,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsSpecularFalloff": {
+     "t": 23,
+     "c": 3,
+     "type": "F"
+    },
+    "_SilkStockingsSpecularValue": {
+     "t": 30,
+     "c": 0,
+     "type": "F"
+    },
+    "_UseSpecRampMap": {
+     "t": 30,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecRampIridescentMode": {
+     "t": 30,
+     "c": 2,
+     "type": "F"
+    },
+    "_CharacterParams13": {
+     "t": 31,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams9": {
+     "t": 32,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams8": {
+     "t": 33,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EmissionColor": {
+     "t": 34,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EmissionBrightness": {
+     "t": 30,
+     "c": 3,
+     "type": "F"
+    },
+    "_ParallaxColor": {
+     "t": 35,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnableVFXColorAdjustment": {
+     "t": 36,
+     "c": 0,
+     "type": "F"
+    },
+    "_ColorAdjustmentContrast": {
+     "t": 36,
+     "c": 1,
+     "type": "F"
+    },
+    "_ColorAdjustmentSaturation": {
+     "t": 36,
+     "c": 2,
+     "type": "F"
+    },
+    "_ColorAdjustmentRimWidth": {
+     "t": 36,
+     "c": 3,
+     "type": "F"
+    },
+    "_ColorAdjustmentBrightness": {
+     "t": 37,
+     "c": 0,
+     "type": "F"
+    },
+    "_ColorAdjustmentColorBlend": {
+     "t": 38,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ColorAdjustmentRimColor": {
+     "t": 39,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ColorAdjustmentRimIntensity": {
+     "t": 37,
+     "c": 1,
+     "type": "F"
+    },
+    "__size_ShadowLutTex": {
+     "t": 40,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_DiffRampMap": {
+     "t": 41,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_SpecRampMap": {
+     "t": 42,
+     "c": 0,
+     "type": "V3"
+    }
+   }
+  },
+  "Face": {
+   "params": [
+    {
+     "name": "_UseBumpMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BumpScale",
+     "type": "F",
+     "texel": 0,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseRMOSMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use RMOS Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseColor",
+     "type": "V4",
+     "texel": 1,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "底色 RGB / Alpha",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SurfaceType",
+     "type": "F",
+     "texel": 0,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Surface Type",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RoughnessIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Roughness Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MetallicIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Metallic Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecularIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BackFaceNormalFlip",
+     "type": "F",
+     "texel": 2,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Back Face Normal Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams12",
+     "type": "V4",
+     "texel": 3,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP12 (.x=灯光手动控制 .y=主光色覆写量 .z=shadowGate .w=exposureBlend)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnvironmentGlobalParams0",
+     "type": "V4",
+     "texel": 4,
+     "comp": 0,
+     "rgb": [
+      1.6699999570846558,
+      1.5,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "EnvGlobalParams0",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ExposureWithMiscParams",
+     "type": "V4",
+     "texel": 5,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Exposure (y = post exposure)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseMetallicGlossMap",
+     "type": "F",
+     "texel": 6,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Use MetallicGlossMap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Smoothness",
+     "type": "F",
+     "texel": 6,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Metallic",
+     "type": "F",
+     "texel": 6,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Specular",
+     "type": "F",
+     "texel": 6,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular (Default 0.5)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams11",
+     "type": "V4",
+     "texel": 7,
+     "comp": 0,
+     "rgb": [
+      -0.43299999833106995,
+      0.5,
+      0.75
+     ],
+     "a": -0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP11 (方向覆写 xyz + .w=明暗交界线偏移)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams1",
+     "type": "V4",
+     "texel": 8,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP1 (.x=brightMix .y=shadowStr .z=忽略主光阴影 .w=方向覆写量)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriOutlineShellGate",
+     "type": "F",
+     "texel": 9,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintEnable",
+     "type": "F",
+     "texel": 9,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Outline Tint Enable",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintColor",
+     "type": "V4",
+     "texel": 10,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Outline Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_OutlineColorBrightness",
+     "type": "F",
+     "texel": 9,
+     "comp": 2,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineColorSaturation",
+     "type": "F",
+     "texel": 9,
+     "comp": 3,
+     "rgb": [
+      1.5,
+      1.5,
+      1.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseEmotionMap",
+     "type": "F",
+     "texel": 11,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "脸部 SDF/表情",
+     "label": "Use Emotion Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EmotionIndex",
+     "type": "F",
+     "texel": 11,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "脸部 SDF/表情",
+     "label": "Emotion Index",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EmotionBlend",
+     "type": "F",
+     "texel": 11,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "脸部 SDF/表情",
+     "label": "Emotion Blend",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FBXRotationFix",
+     "type": "F",
+     "texel": 11,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "FBX -90 Z Rotation Fix (OTW col0/col1 swap)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseSDFLightmap",
+     "type": "F",
+     "texel": 12,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "脸部 SDF/表情",
+     "label": "Use SDF Lightmap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SkinRimOffScale",
+     "type": "F",
+     "texel": 12,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "脸部 SDF/表情",
+     "label": "Skin Rim Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FaceRimOffScale",
+     "type": "F",
+     "texel": 12,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "脸部 SDF/表情",
+     "label": "Face Rim Scale (SDF Area)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SDFRimColor",
+     "type": "V4",
+     "texel": 13,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "脸部 SDF/表情",
+     "label": "Skin Rim Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_UseShadowLutTex",
+     "type": "F",
+     "texel": 12,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Use Shadow Color LUT Tex",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorBrightness",
+     "type": "F",
+     "texel": 14,
+     "comp": 0,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorSaturation",
+     "type": "F",
+     "texel": 14,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams4",
+     "type": "V4",
+     "texel": 15,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP4 (主光自定义颜色 rgb，皮肤)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseDiffRampMap",
+     "type": "F",
+     "texel": 14,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Diffuse Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DirectionalShadowParams",
+     "type": "V4",
+     "texel": 16,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams0",
+     "type": "V4",
+     "texel": 17,
+     "comp": 0,
+     "rgb": [
+      0,
+      0.8999999761581421,
+      0.800000011920929
+     ],
+     "a": 0.800000011920929,
+     "group": "引擎全局 CP",
+     "label": "CP0 (.y=主光系数 .z=环境阴影系数 .w=环境光系数)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams3",
+     "type": "V4",
+     "texel": 18,
+     "comp": 0,
+     "rgb": [
+      1,
+      0.7811464667320251,
+      0.6849056482315063
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP3 (阴影色倾向 rgb，皮肤)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams6",
+     "type": "V4",
+     "texel": 19,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      4.371138828673793e-08
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP6 (环境光方向 = charGlobalAmbientParam0)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams7",
+     "type": "V4",
+     "texel": 20,
+     "comp": 0,
+     "rgb": [
+      0.15000000596046448,
+      1.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP7 (环境光系数 = charGlobalAmbientParam1)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_FaceHighlightMap",
+     "type": "F",
+     "texel": 14,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "脸部 SDF/表情",
+     "label": "Use Face Highlight Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_HighlightMapVector",
+     "type": "V4",
+     "texel": 21,
+     "comp": 0,
+     "rgb": [
+      0.03999999910593033,
+      -0.009999999776482582,
+      0
+     ],
+     "a": 0,
+     "group": "脸部 SDF/表情",
+     "label": "HighlightMap Vector",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams13",
+     "type": "V4",
+     "texel": 22,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP13 (.w=GGX specular toggle)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams9",
+     "type": "V4",
+     "texel": 23,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      0
+     ],
+     "a": 0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP9 (skin spec .xy=dir .z=tint .w=width)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams8",
+     "type": "V4",
+     "texel": 24,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP8 (skin spec color rgb + .w=intensity)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams15",
+     "type": "V4",
+     "texel": 25,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP15 (.z=SDF secondary threshold)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams14",
+     "type": "V4",
+     "texel": 26,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP14 (secondary spec color rgb + .w=intensity)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnableVFXColorAdjustment",
+     "type": "F",
+     "texel": 27,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "VFX Color Adjustment",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentContrast",
+     "type": "F",
+     "texel": 27,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Contrast",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentSaturation",
+     "type": "F",
+     "texel": 27,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentRimWidth",
+     "type": "F",
+     "texel": 27,
+     "comp": 3,
+     "rgb": [
+      0.3499999940395355,
+      0.3499999940395355,
+      0.3499999940395355
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Width",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentBrightness",
+     "type": "F",
+     "texel": 28,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentColorBlend",
+     "type": "V4",
+     "texel": 29,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Color Blend",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_ColorAdjustmentRimColor",
+     "type": "V4",
+     "texel": 30,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_ColorAdjustmentRimIntensity",
+     "type": "F",
+     "texel": 28,
+     "comp": 1,
+     "rgb": [
+      4,
+      4,
+      4
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "__size_ShadowLutTex",
+     "type": "V3",
+     "texel": 31,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_SDFLightmap",
+     "type": "V3",
+     "texel": 32,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_DiffRampMap",
+     "type": "V3",
+     "texel": 33,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    }
+   ],
+   "param_index": {
+    "_UseBumpMap": {
+     "t": 0,
+     "c": 0,
+     "type": "F"
+    },
+    "_BumpScale": {
+     "t": 0,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseRMOSMap": {
+     "t": 0,
+     "c": 2,
+     "type": "F"
+    },
+    "_BaseColor": {
+     "t": 1,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SurfaceType": {
+     "t": 0,
+     "c": 3,
+     "type": "F"
+    },
+    "_RoughnessIntensity": {
+     "t": 2,
+     "c": 0,
+     "type": "F"
+    },
+    "_MetallicIntensity": {
+     "t": 2,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecularIntensity": {
+     "t": 2,
+     "c": 2,
+     "type": "F"
+    },
+    "_BackFaceNormalFlip": {
+     "t": 2,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams12": {
+     "t": 3,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnvironmentGlobalParams0": {
+     "t": 4,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ExposureWithMiscParams": {
+     "t": 5,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseMetallicGlossMap": {
+     "t": 6,
+     "c": 0,
+     "type": "F"
+    },
+    "_Smoothness": {
+     "t": 6,
+     "c": 1,
+     "type": "F"
+    },
+    "_Metallic": {
+     "t": 6,
+     "c": 2,
+     "type": "F"
+    },
+    "_Specular": {
+     "t": 6,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams11": {
+     "t": 7,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams1": {
+     "t": 8,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriOutlineShellGate": {
+     "t": 9,
+     "c": 0,
+     "type": "F"
+    },
+    "_OutlineTintEnable": {
+     "t": 9,
+     "c": 1,
+     "type": "F"
+    },
+    "_OutlineTintColor": {
+     "t": 10,
+     "c": 0,
+     "type": "V4"
+    },
+    "_OutlineColorBrightness": {
+     "t": 9,
+     "c": 2,
+     "type": "F"
+    },
+    "_OutlineColorSaturation": {
+     "t": 9,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseEmotionMap": {
+     "t": 11,
+     "c": 0,
+     "type": "F"
+    },
+    "_EmotionIndex": {
+     "t": 11,
+     "c": 1,
+     "type": "F"
+    },
+    "_EmotionBlend": {
+     "t": 11,
+     "c": 2,
+     "type": "F"
+    },
+    "_FBXRotationFix": {
+     "t": 11,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseSDFLightmap": {
+     "t": 12,
+     "c": 0,
+     "type": "F"
+    },
+    "_SkinRimOffScale": {
+     "t": 12,
+     "c": 1,
+     "type": "F"
+    },
+    "_FaceRimOffScale": {
+     "t": 12,
+     "c": 2,
+     "type": "F"
+    },
+    "_SDFRimColor": {
+     "t": 13,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseShadowLutTex": {
+     "t": 12,
+     "c": 3,
+     "type": "F"
+    },
+    "_ShadowColorBrightness": {
+     "t": 14,
+     "c": 0,
+     "type": "F"
+    },
+    "_ShadowColorSaturation": {
+     "t": 14,
+     "c": 1,
+     "type": "F"
+    },
+    "_CharacterParams4": {
+     "t": 15,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseDiffRampMap": {
+     "t": 14,
+     "c": 2,
+     "type": "F"
+    },
+    "_DirectionalShadowParams": {
+     "t": 16,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams0": {
+     "t": 17,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams3": {
+     "t": 18,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams6": {
+     "t": 19,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams7": {
+     "t": 20,
+     "c": 0,
+     "type": "V4"
+    },
+    "_FaceHighlightMap": {
+     "t": 14,
+     "c": 3,
+     "type": "F"
+    },
+    "_HighlightMapVector": {
+     "t": 21,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams13": {
+     "t": 22,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams9": {
+     "t": 23,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams8": {
+     "t": 24,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams15": {
+     "t": 25,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams14": {
+     "t": 26,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnableVFXColorAdjustment": {
+     "t": 27,
+     "c": 0,
+     "type": "F"
+    },
+    "_ColorAdjustmentContrast": {
+     "t": 27,
+     "c": 1,
+     "type": "F"
+    },
+    "_ColorAdjustmentSaturation": {
+     "t": 27,
+     "c": 2,
+     "type": "F"
+    },
+    "_ColorAdjustmentRimWidth": {
+     "t": 27,
+     "c": 3,
+     "type": "F"
+    },
+    "_ColorAdjustmentBrightness": {
+     "t": 28,
+     "c": 0,
+     "type": "F"
+    },
+    "_ColorAdjustmentColorBlend": {
+     "t": 29,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ColorAdjustmentRimColor": {
+     "t": 30,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ColorAdjustmentRimIntensity": {
+     "t": 28,
+     "c": 1,
+     "type": "F"
+    },
+    "__size_ShadowLutTex": {
+     "t": 31,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_SDFLightmap": {
+     "t": 32,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_DiffRampMap": {
+     "t": 33,
+     "c": 0,
+     "type": "V3"
+    }
+   }
+  },
+  "Eyes": {
+   "params": [
+    {
+     "name": "_UseBumpMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BumpScale",
+     "type": "F",
+     "texel": 0,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseRMOSMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use RMOS Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseColor",
+     "type": "V4",
+     "texel": 1,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "底色 RGB / Alpha",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SurfaceType",
+     "type": "F",
+     "texel": 0,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Surface Type",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RoughnessIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Roughness Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MetallicIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Metallic Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecularIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BackFaceNormalFlip",
+     "type": "F",
+     "texel": 2,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Back Face Normal Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams12",
+     "type": "V4",
+     "texel": 3,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP12 (.x=灯光手动控制 .y=主光色覆写量 .z=shadowGate .w=exposureBlend)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnvironmentGlobalParams0",
+     "type": "V4",
+     "texel": 4,
+     "comp": 0,
+     "rgb": [
+      1.6699999570846558,
+      1.5,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "EnvGlobalParams0",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ExposureWithMiscParams",
+     "type": "V4",
+     "texel": 5,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Exposure (y = post exposure)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseMetallicGlossMap",
+     "type": "F",
+     "texel": 6,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Use MetallicGlossMap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Smoothness",
+     "type": "F",
+     "texel": 6,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Metallic",
+     "type": "F",
+     "texel": 6,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Specular",
+     "type": "F",
+     "texel": 6,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular (Default 0.5)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams11",
+     "type": "V4",
+     "texel": 7,
+     "comp": 0,
+     "rgb": [
+      -0.43299999833106995,
+      0.5,
+      0.75
+     ],
+     "a": -0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP11 (方向覆写 xyz + .w=明暗交界线偏移)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams1",
+     "type": "V4",
+     "texel": 8,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP1 (.x=brightMix .y=shadowStr .z=忽略主光阴影 .w=方向覆写量)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriOutlineShellGate",
+     "type": "F",
+     "texel": 9,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintEnable",
+     "type": "F",
+     "texel": 9,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Outline Tint Enable",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintColor",
+     "type": "V4",
+     "texel": 10,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Outline Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_OutlineColorBrightness",
+     "type": "F",
+     "texel": 9,
+     "comp": 2,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineColorSaturation",
+     "type": "F",
+     "texel": 9,
+     "comp": 3,
+     "rgb": [
+      1.5,
+      1.5,
+      1.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseMatcap",
+     "type": "F",
+     "texel": 11,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "眼睛 Matcap",
+     "label": "Use Matcap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ParallaxScale",
+     "type": "F",
+     "texel": 11,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "视差",
+     "label": "Parallax Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MatcapNormalScale",
+     "type": "F",
+     "texel": 11,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "眼睛 Matcap",
+     "label": "Matcap Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AvatarCustomizeEnable",
+     "type": "F",
+     "texel": 11,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "捏人染色",
+     "label": "Avatar System Input",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EyeTintColor",
+     "type": "V4",
+     "texel": 12,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "眼睛 Matcap",
+     "label": "Eye Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_CharacterParams2",
+     "type": "V4",
+     "texel": 13,
+     "comp": 0,
+     "rgb": [
+      0.7830188274383545,
+      0.8293082118034363,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP2 (阴影色倾向 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams5",
+     "type": "V4",
+     "texel": 14,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP5 (主光自定义颜色 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseShadowLutTex",
+     "type": "F",
+     "texel": 15,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Use Shadow Color LUT Tex",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorBrightness",
+     "type": "F",
+     "texel": 15,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorSaturation",
+     "type": "F",
+     "texel": 15,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FBXRotationFix",
+     "type": "F",
+     "texel": 15,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "FBX -90 Z Rotation Fix (OTW col0/col1 swap)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EyeHighLight",
+     "type": "F",
+     "texel": 16,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "眼睛 Matcap",
+     "label": "Eye High Light",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EyeHighLightColor",
+     "type": "V4",
+     "texel": 17,
+     "comp": 0,
+     "rgb": [
+      2,
+      2,
+      2
+     ],
+     "a": 1,
+     "group": "眼睛 Matcap",
+     "label": "High Light Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_EyeScatteringColor",
+     "type": "V4",
+     "texel": 18,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "眼睛 Matcap",
+     "label": "Scattering Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_UseDiffRampMap",
+     "type": "F",
+     "texel": 16,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Diffuse Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DirectionalShadowParams",
+     "type": "V4",
+     "texel": 19,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams0",
+     "type": "V4",
+     "texel": 20,
+     "comp": 0,
+     "rgb": [
+      0,
+      0.8999999761581421,
+      0.800000011920929
+     ],
+     "a": 0.800000011920929,
+     "group": "引擎全局 CP",
+     "label": "CP0 (.y=主光系数 .z=环境阴影系数 .w=环境光系数)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams6",
+     "type": "V4",
+     "texel": 21,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      4.371138828673793e-08
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP6 (环境光方向 = charGlobalAmbientParam0)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams7",
+     "type": "V4",
+     "texel": 22,
+     "comp": 0,
+     "rgb": [
+      0.15000000596046448,
+      1.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP7 (环境光系数 = charGlobalAmbientParam1)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MatcapColor",
+     "type": "V4",
+     "texel": 23,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "眼睛 Matcap",
+     "label": "Matcap Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_UseEmission",
+     "type": "F",
+     "texel": 16,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Emission",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EmissionColor",
+     "type": "V4",
+     "texel": 24,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Emission Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_EmissionBrightness",
+     "type": "F",
+     "texel": 16,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "自发光",
+     "label": "Emission Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams13",
+     "type": "V4",
+     "texel": 25,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP13 (.w=GGX specular toggle)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_ShadowLutTex",
+     "type": "V3",
+     "texel": 26,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_DiffRampMap",
+     "type": "V3",
+     "texel": 27,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    }
+   ],
+   "param_index": {
+    "_UseBumpMap": {
+     "t": 0,
+     "c": 0,
+     "type": "F"
+    },
+    "_BumpScale": {
+     "t": 0,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseRMOSMap": {
+     "t": 0,
+     "c": 2,
+     "type": "F"
+    },
+    "_BaseColor": {
+     "t": 1,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SurfaceType": {
+     "t": 0,
+     "c": 3,
+     "type": "F"
+    },
+    "_RoughnessIntensity": {
+     "t": 2,
+     "c": 0,
+     "type": "F"
+    },
+    "_MetallicIntensity": {
+     "t": 2,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecularIntensity": {
+     "t": 2,
+     "c": 2,
+     "type": "F"
+    },
+    "_BackFaceNormalFlip": {
+     "t": 2,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams12": {
+     "t": 3,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnvironmentGlobalParams0": {
+     "t": 4,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ExposureWithMiscParams": {
+     "t": 5,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseMetallicGlossMap": {
+     "t": 6,
+     "c": 0,
+     "type": "F"
+    },
+    "_Smoothness": {
+     "t": 6,
+     "c": 1,
+     "type": "F"
+    },
+    "_Metallic": {
+     "t": 6,
+     "c": 2,
+     "type": "F"
+    },
+    "_Specular": {
+     "t": 6,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams11": {
+     "t": 7,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams1": {
+     "t": 8,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriOutlineShellGate": {
+     "t": 9,
+     "c": 0,
+     "type": "F"
+    },
+    "_OutlineTintEnable": {
+     "t": 9,
+     "c": 1,
+     "type": "F"
+    },
+    "_OutlineTintColor": {
+     "t": 10,
+     "c": 0,
+     "type": "V4"
+    },
+    "_OutlineColorBrightness": {
+     "t": 9,
+     "c": 2,
+     "type": "F"
+    },
+    "_OutlineColorSaturation": {
+     "t": 9,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseMatcap": {
+     "t": 11,
+     "c": 0,
+     "type": "F"
+    },
+    "_ParallaxScale": {
+     "t": 11,
+     "c": 1,
+     "type": "F"
+    },
+    "_MatcapNormalScale": {
+     "t": 11,
+     "c": 2,
+     "type": "F"
+    },
+    "_AvatarCustomizeEnable": {
+     "t": 11,
+     "c": 3,
+     "type": "F"
+    },
+    "_EyeTintColor": {
+     "t": 12,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams2": {
+     "t": 13,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams5": {
+     "t": 14,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseShadowLutTex": {
+     "t": 15,
+     "c": 0,
+     "type": "F"
+    },
+    "_ShadowColorBrightness": {
+     "t": 15,
+     "c": 1,
+     "type": "F"
+    },
+    "_ShadowColorSaturation": {
+     "t": 15,
+     "c": 2,
+     "type": "F"
+    },
+    "_FBXRotationFix": {
+     "t": 15,
+     "c": 3,
+     "type": "F"
+    },
+    "_EyeHighLight": {
+     "t": 16,
+     "c": 0,
+     "type": "F"
+    },
+    "_EyeHighLightColor": {
+     "t": 17,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EyeScatteringColor": {
+     "t": 18,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseDiffRampMap": {
+     "t": 16,
+     "c": 1,
+     "type": "F"
+    },
+    "_DirectionalShadowParams": {
+     "t": 19,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams0": {
+     "t": 20,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams6": {
+     "t": 21,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams7": {
+     "t": 22,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MatcapColor": {
+     "t": 23,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseEmission": {
+     "t": 16,
+     "c": 2,
+     "type": "F"
+    },
+    "_EmissionColor": {
+     "t": 24,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EmissionBrightness": {
+     "t": 16,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams13": {
+     "t": 25,
+     "c": 0,
+     "type": "V4"
+    },
+    "__size_ShadowLutTex": {
+     "t": 26,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_DiffRampMap": {
+     "t": 27,
+     "c": 0,
+     "type": "V3"
+    }
+   }
+  },
+  "Hair": {
+   "params": [
+    {
+     "name": "_UseBumpMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BumpScale",
+     "type": "F",
+     "texel": 0,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseRMOSMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use RMOS Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseColor",
+     "type": "V4",
+     "texel": 1,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "底色 RGB / Alpha",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SurfaceType",
+     "type": "F",
+     "texel": 0,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Surface Type",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RoughnessIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Roughness Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MetallicIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Metallic Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecularIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BackFaceNormalFlip",
+     "type": "F",
+     "texel": 2,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Back Face Normal Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams12",
+     "type": "V4",
+     "texel": 3,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP12 (.x=灯光手动控制 .y=主光色覆写量 .z=shadowGate .w=exposureBlend)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnvironmentGlobalParams0",
+     "type": "V4",
+     "texel": 4,
+     "comp": 0,
+     "rgb": [
+      1.6699999570846558,
+      1.5,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "EnvGlobalParams0",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ExposureWithMiscParams",
+     "type": "V4",
+     "texel": 5,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Exposure (y = post exposure)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseMetallicGlossMap",
+     "type": "F",
+     "texel": 6,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Use MetallicGlossMap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Smoothness",
+     "type": "F",
+     "texel": 6,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Metallic",
+     "type": "F",
+     "texel": 6,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Specular",
+     "type": "F",
+     "texel": 6,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular (Default 0.5)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams11",
+     "type": "V4",
+     "texel": 7,
+     "comp": 0,
+     "rgb": [
+      -0.43299999833106995,
+      0.5,
+      0.75
+     ],
+     "a": -0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP11 (方向覆写 xyz + .w=明暗交界线偏移)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams1",
+     "type": "V4",
+     "texel": 8,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP1 (.x=brightMix .y=shadowStr .z=忽略主光阴影 .w=方向覆写量)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriOutlineShellGate",
+     "type": "F",
+     "texel": 9,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintEnable",
+     "type": "F",
+     "texel": 9,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Outline Tint Enable",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintColor",
+     "type": "V4",
+     "texel": 10,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Outline Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_OutlineColorBrightness",
+     "type": "F",
+     "texel": 9,
+     "comp": 2,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineColorSaturation",
+     "type": "F",
+     "texel": 9,
+     "comp": 3,
+     "rgb": [
+      1.5,
+      1.5,
+      1.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AlphaClip",
+     "type": "F",
+     "texel": 11,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "__clip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AlphaClipThreshold",
+     "type": "F",
+     "texel": 11,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "'Clip Threshold' {}",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseShadowLutTex",
+     "type": "F",
+     "texel": 11,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Use Shadow Color LUT Tex",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorBrightness",
+     "type": "F",
+     "texel": 11,
+     "comp": 3,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorSaturation",
+     "type": "F",
+     "texel": 12,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseSpecBumpMap",
+     "type": "F",
+     "texel": 12,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Split Diffuse / Specular Normal",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecBumpScale",
+     "type": "F",
+     "texel": 12,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Spec Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FBXRotationFix",
+     "type": "F",
+     "texel": 12,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "FBX -90 Z Rotation Fix (OTW col0/col1 swap)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AnisotropyDirX",
+     "type": "F",
+     "texel": 13,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Anisotropy Direction X",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AnisotropyEdgeFade",
+     "type": "F",
+     "texel": 13,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Anisotropy Edge Fade",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams5",
+     "type": "V4",
+     "texel": 14,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP5 (主光自定义颜色 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseDiffRampMap",
+     "type": "F",
+     "texel": 13,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Diffuse Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DirectionalShadowParams",
+     "type": "V4",
+     "texel": 15,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams0",
+     "type": "V4",
+     "texel": 16,
+     "comp": 0,
+     "rgb": [
+      0,
+      0.8999999761581421,
+      0.800000011920929
+     ],
+     "a": 0.800000011920929,
+     "group": "引擎全局 CP",
+     "label": "CP0 (.y=主光系数 .z=环境阴影系数 .w=环境光系数)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams2",
+     "type": "V4",
+     "texel": 17,
+     "comp": 0,
+     "rgb": [
+      0.7830188274383545,
+      0.8293082118034363,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP2 (阴影色倾向 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams6",
+     "type": "V4",
+     "texel": 18,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      4.371138828673793e-08
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP6 (环境光方向 = charGlobalAmbientParam0)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams7",
+     "type": "V4",
+     "texel": 19,
+     "comp": 0,
+     "rgb": [
+      0.15000000596046448,
+      1.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP7 (环境光系数 = charGlobalAmbientParam1)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_StrokeOn",
+     "type": "F",
+     "texel": 13,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Use Stroke Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_StrokeMap_ST",
+     "type": "V4",
+     "texel": 20,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_StrokeScale",
+     "type": "F",
+     "texel": 21,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Stroke Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AnisotropyValue",
+     "type": "F",
+     "texel": 21,
+     "comp": 1,
+     "rgb": [
+      0.3499999940395355,
+      0.3499999940395355,
+      0.3499999940395355
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Anisotropy Value",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AnisotropyValue2",
+     "type": "F",
+     "texel": 21,
+     "comp": 2,
+     "rgb": [
+      0.4000000059604645,
+      0.4000000059604645,
+      0.4000000059604645
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Anisotropy Value2",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseSpecRampMap",
+     "type": "F",
+     "texel": 21,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Specular Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AnisotropyRange2",
+     "type": "F",
+     "texel": 22,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Anisotropy Range2",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AnisotropyColor2",
+     "type": "V4",
+     "texel": 23,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "头发高光/描线",
+     "label": "Anisotropy Color2",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SpecularLine",
+     "type": "F",
+     "texel": 22,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "SpecularLine",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_LineMap_ST",
+     "type": "V4",
+     "texel": 24,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_LineValue",
+     "type": "F",
+     "texel": 22,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Line Value",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_LineAmount",
+     "type": "F",
+     "texel": 22,
+     "comp": 3,
+     "rgb": [
+      300,
+      300,
+      300
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Line Amount",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseLineMap",
+     "type": "F",
+     "texel": 25,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Use Line Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_LineIntensity",
+     "type": "F",
+     "texel": 25,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Line Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_LineRange",
+     "type": "F",
+     "texel": 25,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Line Range",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_LineSaturation",
+     "type": "F",
+     "texel": 25,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Line Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AnisotropyIntensity",
+     "type": "F",
+     "texel": 26,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "头发高光/描线",
+     "label": "Anisotropy Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams13",
+     "type": "V4",
+     "texel": 27,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP13 (.w=GGX specular toggle)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams9",
+     "type": "V4",
+     "texel": 28,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      0
+     ],
+     "a": 0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP9 (skin spec .xy=dir .z=tint .w=width)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ScreenParams",
+     "type": "V4",
+     "texel": 29,
+     "comp": 0,
+     "rgb": [
+      1920,
+      1080,
+      1.0005208
+     ],
+     "a": 1.0009259,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams8",
+     "type": "V4",
+     "texel": 30,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP8 (skin spec color rgb + .w=intensity)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnableVFXColorAdjustment",
+     "type": "F",
+     "texel": 26,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "VFX Color Adjustment",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentContrast",
+     "type": "F",
+     "texel": 26,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Contrast",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentSaturation",
+     "type": "F",
+     "texel": 26,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentRimWidth",
+     "type": "F",
+     "texel": 31,
+     "comp": 0,
+     "rgb": [
+      0.3499999940395355,
+      0.3499999940395355,
+      0.3499999940395355
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Width",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentBrightness",
+     "type": "F",
+     "texel": 31,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentColorBlend",
+     "type": "V4",
+     "texel": 32,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Color Blend",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_ColorAdjustmentRimColor",
+     "type": "V4",
+     "texel": 33,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_ColorAdjustmentRimIntensity",
+     "type": "F",
+     "texel": 31,
+     "comp": 2,
+     "rgb": [
+      4,
+      4,
+      4
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "__size_ShadowLutTex",
+     "type": "V3",
+     "texel": 34,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_DiffRampMap",
+     "type": "V3",
+     "texel": 35,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_SpecRampMap",
+     "type": "V3",
+     "texel": 36,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    }
+   ],
+   "param_index": {
+    "_UseBumpMap": {
+     "t": 0,
+     "c": 0,
+     "type": "F"
+    },
+    "_BumpScale": {
+     "t": 0,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseRMOSMap": {
+     "t": 0,
+     "c": 2,
+     "type": "F"
+    },
+    "_BaseColor": {
+     "t": 1,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SurfaceType": {
+     "t": 0,
+     "c": 3,
+     "type": "F"
+    },
+    "_RoughnessIntensity": {
+     "t": 2,
+     "c": 0,
+     "type": "F"
+    },
+    "_MetallicIntensity": {
+     "t": 2,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecularIntensity": {
+     "t": 2,
+     "c": 2,
+     "type": "F"
+    },
+    "_BackFaceNormalFlip": {
+     "t": 2,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams12": {
+     "t": 3,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnvironmentGlobalParams0": {
+     "t": 4,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ExposureWithMiscParams": {
+     "t": 5,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseMetallicGlossMap": {
+     "t": 6,
+     "c": 0,
+     "type": "F"
+    },
+    "_Smoothness": {
+     "t": 6,
+     "c": 1,
+     "type": "F"
+    },
+    "_Metallic": {
+     "t": 6,
+     "c": 2,
+     "type": "F"
+    },
+    "_Specular": {
+     "t": 6,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams11": {
+     "t": 7,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams1": {
+     "t": 8,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriOutlineShellGate": {
+     "t": 9,
+     "c": 0,
+     "type": "F"
+    },
+    "_OutlineTintEnable": {
+     "t": 9,
+     "c": 1,
+     "type": "F"
+    },
+    "_OutlineTintColor": {
+     "t": 10,
+     "c": 0,
+     "type": "V4"
+    },
+    "_OutlineColorBrightness": {
+     "t": 9,
+     "c": 2,
+     "type": "F"
+    },
+    "_OutlineColorSaturation": {
+     "t": 9,
+     "c": 3,
+     "type": "F"
+    },
+    "_AlphaClip": {
+     "t": 11,
+     "c": 0,
+     "type": "F"
+    },
+    "_AlphaClipThreshold": {
+     "t": 11,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseShadowLutTex": {
+     "t": 11,
+     "c": 2,
+     "type": "F"
+    },
+    "_ShadowColorBrightness": {
+     "t": 11,
+     "c": 3,
+     "type": "F"
+    },
+    "_ShadowColorSaturation": {
+     "t": 12,
+     "c": 0,
+     "type": "F"
+    },
+    "_UseSpecBumpMap": {
+     "t": 12,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecBumpScale": {
+     "t": 12,
+     "c": 2,
+     "type": "F"
+    },
+    "_FBXRotationFix": {
+     "t": 12,
+     "c": 3,
+     "type": "F"
+    },
+    "_AnisotropyDirX": {
+     "t": 13,
+     "c": 0,
+     "type": "F"
+    },
+    "_AnisotropyEdgeFade": {
+     "t": 13,
+     "c": 1,
+     "type": "F"
+    },
+    "_CharacterParams5": {
+     "t": 14,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseDiffRampMap": {
+     "t": 13,
+     "c": 2,
+     "type": "F"
+    },
+    "_DirectionalShadowParams": {
+     "t": 15,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams0": {
+     "t": 16,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams2": {
+     "t": 17,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams6": {
+     "t": 18,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams7": {
+     "t": 19,
+     "c": 0,
+     "type": "V4"
+    },
+    "_StrokeOn": {
+     "t": 13,
+     "c": 3,
+     "type": "F"
+    },
+    "_StrokeMap_ST": {
+     "t": 20,
+     "c": 0,
+     "type": "V4"
+    },
+    "_StrokeScale": {
+     "t": 21,
+     "c": 0,
+     "type": "F"
+    },
+    "_AnisotropyValue": {
+     "t": 21,
+     "c": 1,
+     "type": "F"
+    },
+    "_AnisotropyValue2": {
+     "t": 21,
+     "c": 2,
+     "type": "F"
+    },
+    "_UseSpecRampMap": {
+     "t": 21,
+     "c": 3,
+     "type": "F"
+    },
+    "_AnisotropyRange2": {
+     "t": 22,
+     "c": 0,
+     "type": "F"
+    },
+    "_AnisotropyColor2": {
+     "t": 23,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SpecularLine": {
+     "t": 22,
+     "c": 1,
+     "type": "F"
+    },
+    "_LineMap_ST": {
+     "t": 24,
+     "c": 0,
+     "type": "V4"
+    },
+    "_LineValue": {
+     "t": 22,
+     "c": 2,
+     "type": "F"
+    },
+    "_LineAmount": {
+     "t": 22,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseLineMap": {
+     "t": 25,
+     "c": 0,
+     "type": "F"
+    },
+    "_LineIntensity": {
+     "t": 25,
+     "c": 1,
+     "type": "F"
+    },
+    "_LineRange": {
+     "t": 25,
+     "c": 2,
+     "type": "F"
+    },
+    "_LineSaturation": {
+     "t": 25,
+     "c": 3,
+     "type": "F"
+    },
+    "_AnisotropyIntensity": {
+     "t": 26,
+     "c": 0,
+     "type": "F"
+    },
+    "_CharacterParams13": {
+     "t": 27,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams9": {
+     "t": 28,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ScreenParams": {
+     "t": 29,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams8": {
+     "t": 30,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnableVFXColorAdjustment": {
+     "t": 26,
+     "c": 1,
+     "type": "F"
+    },
+    "_ColorAdjustmentContrast": {
+     "t": 26,
+     "c": 2,
+     "type": "F"
+    },
+    "_ColorAdjustmentSaturation": {
+     "t": 26,
+     "c": 3,
+     "type": "F"
+    },
+    "_ColorAdjustmentRimWidth": {
+     "t": 31,
+     "c": 0,
+     "type": "F"
+    },
+    "_ColorAdjustmentBrightness": {
+     "t": 31,
+     "c": 1,
+     "type": "F"
+    },
+    "_ColorAdjustmentColorBlend": {
+     "t": 32,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ColorAdjustmentRimColor": {
+     "t": 33,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ColorAdjustmentRimIntensity": {
+     "t": 31,
+     "c": 2,
+     "type": "F"
+    },
+    "__size_ShadowLutTex": {
+     "t": 34,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_DiffRampMap": {
+     "t": 35,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_SpecRampMap": {
+     "t": 36,
+     "c": 0,
+     "type": "V3"
+    }
+   }
+  },
+  "Fur": {
+   "params": [
+    {
+     "name": "_UseBumpMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BumpScale",
+     "type": "F",
+     "texel": 0,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseRMOSMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use RMOS Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseColor",
+     "type": "V4",
+     "texel": 1,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "底色 RGB / Alpha",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SurfaceType",
+     "type": "F",
+     "texel": 0,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Surface Type",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RoughnessIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Roughness Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MetallicIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Metallic Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecularIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BackFaceNormalFlip",
+     "type": "F",
+     "texel": 2,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Back Face Normal Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams12",
+     "type": "V4",
+     "texel": 3,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP12 (.x=灯光手动控制 .y=主光色覆写量 .z=shadowGate .w=exposureBlend)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnvironmentGlobalParams0",
+     "type": "V4",
+     "texel": 4,
+     "comp": 0,
+     "rgb": [
+      1.6699999570846558,
+      1.5,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "EnvGlobalParams0",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ExposureWithMiscParams",
+     "type": "V4",
+     "texel": 5,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Exposure (y = post exposure)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseMetallicGlossMap",
+     "type": "F",
+     "texel": 6,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Use MetallicGlossMap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Smoothness",
+     "type": "F",
+     "texel": 6,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Metallic",
+     "type": "F",
+     "texel": 6,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Specular",
+     "type": "F",
+     "texel": 6,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular (Default 0.5)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams11",
+     "type": "V4",
+     "texel": 7,
+     "comp": 0,
+     "rgb": [
+      -0.43299999833106995,
+      0.5,
+      0.75
+     ],
+     "a": -0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP11 (方向覆写 xyz + .w=明暗交界线偏移)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams1",
+     "type": "V4",
+     "texel": 8,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP1 (.x=brightMix .y=shadowStr .z=忽略主光阴影 .w=方向覆写量)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriOutlineShellGate",
+     "type": "F",
+     "texel": 9,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintEnable",
+     "type": "F",
+     "texel": 9,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Outline Tint Enable",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintColor",
+     "type": "V4",
+     "texel": 10,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Outline Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_OutlineColorBrightness",
+     "type": "F",
+     "texel": 9,
+     "comp": 2,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineColorSaturation",
+     "type": "F",
+     "texel": 9,
+     "comp": 3,
+     "rgb": [
+      1.5,
+      1.5,
+      1.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FurDyeEnable",
+     "type": "F",
+     "texel": 11,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "使用皮毛染色功能",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseMap_ST",
+     "type": "V4",
+     "texel": 12,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_FurDyeMap_ST",
+     "type": "V4",
+     "texel": 13,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_FurDyeIntensity",
+     "type": "F",
+     "texel": 11,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "染色强度",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseShadowLutTex",
+     "type": "F",
+     "texel": 11,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Use Shadow Color LUT Tex",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorBrightness",
+     "type": "F",
+     "texel": 11,
+     "comp": 3,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorSaturation",
+     "type": "F",
+     "texel": 14,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FurNoise",
+     "type": "F",
+     "texel": 14,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "皮毛叠加噪声",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FurDirMapEnable",
+     "type": "F",
+     "texel": 14,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "使用毛发方向贴图(RG)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FurMap_ST",
+     "type": "V4",
+     "texel": 15,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_FurCutoffEnd",
+     "type": "F",
+     "texel": 14,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "发尾CutOff",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FurCutoffStart",
+     "type": "F",
+     "texel": 16,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "发根CutOff",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FurSharpen",
+     "type": "F",
+     "texel": 16,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "皮毛尖锐",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FurEdgeFade",
+     "type": "F",
+     "texel": 16,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "边缘平滑过度",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FurAO",
+     "type": "F",
+     "texel": 16,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "发根AO",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EnableCharacterVFX",
+     "type": "F",
+     "texel": 17,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "角色 VFX",
+     "label": "Character VFX",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXSpecialParam",
+     "type": "V4",
+     "texel": 18,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "VFX Special Param(XY: MainTex, ZW: BlendTex)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_VFXSpecialBlendTex_ST",
+     "type": "V4",
+     "texel": 19,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_VFXSpecialBlendTexRForDisturb",
+     "type": "F",
+     "texel": 17,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Use Blend Tex R For Disturb",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXSpecialMainTex_ST",
+     "type": "V4",
+     "texel": 20,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseVFXMainTexAsAlpha",
+     "type": "F",
+     "texel": 17,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "UseMainTexAsAlpha",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXFresnelBias",
+     "type": "F",
+     "texel": 17,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Fresnel Bias(Default:0)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXFresnelPower",
+     "type": "F",
+     "texel": 21,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Fresnel Power(Default:1)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXFresnelFlip",
+     "type": "F",
+     "texel": 21,
+     "comp": 1,
+     "rgb": [
+      0.0010000000474974513,
+      0.0010000000474974513,
+      0.0010000000474974513
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Fresnel Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXColorAlpha",
+     "type": "F",
+     "texel": 21,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "VFX Color Alpha (Default 1)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXColor",
+     "type": "V4",
+     "texel": 22,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "VFX 合成",
+     "label": "VFX Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SpecialDissolveScheduleOffset",
+     "type": "F",
+     "texel": 21,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Dissolve Schedule Offset",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams2",
+     "type": "V4",
+     "texel": 23,
+     "comp": 0,
+     "rgb": [
+      0.7830188274383545,
+      0.8293082118034363,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP2 (阴影色倾向 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams5",
+     "type": "V4",
+     "texel": 24,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP5 (主光自定义颜色 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_FurTTIntensity",
+     "type": "F",
+     "texel": 25,
+     "comp": 0,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "皮毛",
+     "label": "直射光透光强度",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseDiffRampMap",
+     "type": "F",
+     "texel": 25,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Diffuse Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DirectionalShadowParams",
+     "type": "V4",
+     "texel": 26,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams0",
+     "type": "V4",
+     "texel": 27,
+     "comp": 0,
+     "rgb": [
+      0,
+      0.8999999761581421,
+      0.800000011920929
+     ],
+     "a": 0.800000011920929,
+     "group": "引擎全局 CP",
+     "label": "CP0 (.y=主光系数 .z=环境阴影系数 .w=环境光系数)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams6",
+     "type": "V4",
+     "texel": 28,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      4.371138828673793e-08
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP6 (环境光方向 = charGlobalAmbientParam0)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams7",
+     "type": "V4",
+     "texel": 29,
+     "comp": 0,
+     "rgb": [
+      0.15000000596046448,
+      1.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP7 (环境光系数 = charGlobalAmbientParam1)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseSpecRampMap",
+     "type": "F",
+     "texel": 25,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Specular Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecRampIridescentMode",
+     "type": "F",
+     "texel": 25,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "彩虹色模式(镭射塑料请勾选)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams13",
+     "type": "V4",
+     "texel": 30,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP13 (.w=GGX specular toggle)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams9",
+     "type": "V4",
+     "texel": 31,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      0
+     ],
+     "a": 0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP9 (skin spec .xy=dir .z=tint .w=width)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams8",
+     "type": "V4",
+     "texel": 32,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP8 (skin spec color rgb + .w=intensity)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_VFXBlendTint",
+     "type": "V4",
+     "texel": 33,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "VFX 合成",
+     "label": "BlendTint",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_VFXColorIntensity",
+     "type": "F",
+     "texel": 34,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "VFX Color Intensity (Default 1)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXFresnelColor",
+     "type": "V4",
+     "texel": 35,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "VFX 合成",
+     "label": "Fresnel Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_VFXFresnelAffectOpacity",
+     "type": "F",
+     "texel": 34,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Fresnel Affect Opacity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "__size_ShadowLutTex",
+     "type": "V3",
+     "texel": 36,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_DiffRampMap",
+     "type": "V3",
+     "texel": 37,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_SpecRampMap",
+     "type": "V3",
+     "texel": 38,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    }
+   ],
+   "param_index": {
+    "_UseBumpMap": {
+     "t": 0,
+     "c": 0,
+     "type": "F"
+    },
+    "_BumpScale": {
+     "t": 0,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseRMOSMap": {
+     "t": 0,
+     "c": 2,
+     "type": "F"
+    },
+    "_BaseColor": {
+     "t": 1,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SurfaceType": {
+     "t": 0,
+     "c": 3,
+     "type": "F"
+    },
+    "_RoughnessIntensity": {
+     "t": 2,
+     "c": 0,
+     "type": "F"
+    },
+    "_MetallicIntensity": {
+     "t": 2,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecularIntensity": {
+     "t": 2,
+     "c": 2,
+     "type": "F"
+    },
+    "_BackFaceNormalFlip": {
+     "t": 2,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams12": {
+     "t": 3,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnvironmentGlobalParams0": {
+     "t": 4,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ExposureWithMiscParams": {
+     "t": 5,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseMetallicGlossMap": {
+     "t": 6,
+     "c": 0,
+     "type": "F"
+    },
+    "_Smoothness": {
+     "t": 6,
+     "c": 1,
+     "type": "F"
+    },
+    "_Metallic": {
+     "t": 6,
+     "c": 2,
+     "type": "F"
+    },
+    "_Specular": {
+     "t": 6,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams11": {
+     "t": 7,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams1": {
+     "t": 8,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriOutlineShellGate": {
+     "t": 9,
+     "c": 0,
+     "type": "F"
+    },
+    "_OutlineTintEnable": {
+     "t": 9,
+     "c": 1,
+     "type": "F"
+    },
+    "_OutlineTintColor": {
+     "t": 10,
+     "c": 0,
+     "type": "V4"
+    },
+    "_OutlineColorBrightness": {
+     "t": 9,
+     "c": 2,
+     "type": "F"
+    },
+    "_OutlineColorSaturation": {
+     "t": 9,
+     "c": 3,
+     "type": "F"
+    },
+    "_FurDyeEnable": {
+     "t": 11,
+     "c": 0,
+     "type": "F"
+    },
+    "_BaseMap_ST": {
+     "t": 12,
+     "c": 0,
+     "type": "V4"
+    },
+    "_FurDyeMap_ST": {
+     "t": 13,
+     "c": 0,
+     "type": "V4"
+    },
+    "_FurDyeIntensity": {
+     "t": 11,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseShadowLutTex": {
+     "t": 11,
+     "c": 2,
+     "type": "F"
+    },
+    "_ShadowColorBrightness": {
+     "t": 11,
+     "c": 3,
+     "type": "F"
+    },
+    "_ShadowColorSaturation": {
+     "t": 14,
+     "c": 0,
+     "type": "F"
+    },
+    "_FurNoise": {
+     "t": 14,
+     "c": 1,
+     "type": "F"
+    },
+    "_FurDirMapEnable": {
+     "t": 14,
+     "c": 2,
+     "type": "F"
+    },
+    "_FurMap_ST": {
+     "t": 15,
+     "c": 0,
+     "type": "V4"
+    },
+    "_FurCutoffEnd": {
+     "t": 14,
+     "c": 3,
+     "type": "F"
+    },
+    "_FurCutoffStart": {
+     "t": 16,
+     "c": 0,
+     "type": "F"
+    },
+    "_FurSharpen": {
+     "t": 16,
+     "c": 1,
+     "type": "F"
+    },
+    "_FurEdgeFade": {
+     "t": 16,
+     "c": 2,
+     "type": "F"
+    },
+    "_FurAO": {
+     "t": 16,
+     "c": 3,
+     "type": "F"
+    },
+    "_EnableCharacterVFX": {
+     "t": 17,
+     "c": 0,
+     "type": "F"
+    },
+    "_VFXSpecialParam": {
+     "t": 18,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXSpecialBlendTex_ST": {
+     "t": 19,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXSpecialBlendTexRForDisturb": {
+     "t": 17,
+     "c": 1,
+     "type": "F"
+    },
+    "_VFXSpecialMainTex_ST": {
+     "t": 20,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseVFXMainTexAsAlpha": {
+     "t": 17,
+     "c": 2,
+     "type": "F"
+    },
+    "_VFXFresnelBias": {
+     "t": 17,
+     "c": 3,
+     "type": "F"
+    },
+    "_VFXFresnelPower": {
+     "t": 21,
+     "c": 0,
+     "type": "F"
+    },
+    "_VFXFresnelFlip": {
+     "t": 21,
+     "c": 1,
+     "type": "F"
+    },
+    "_VFXColorAlpha": {
+     "t": 21,
+     "c": 2,
+     "type": "F"
+    },
+    "_VFXColor": {
+     "t": 22,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SpecialDissolveScheduleOffset": {
+     "t": 21,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams2": {
+     "t": 23,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams5": {
+     "t": 24,
+     "c": 0,
+     "type": "V4"
+    },
+    "_FurTTIntensity": {
+     "t": 25,
+     "c": 0,
+     "type": "F"
+    },
+    "_UseDiffRampMap": {
+     "t": 25,
+     "c": 1,
+     "type": "F"
+    },
+    "_DirectionalShadowParams": {
+     "t": 26,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams0": {
+     "t": 27,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams6": {
+     "t": 28,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams7": {
+     "t": 29,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseSpecRampMap": {
+     "t": 25,
+     "c": 2,
+     "type": "F"
+    },
+    "_SpecRampIridescentMode": {
+     "t": 25,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams13": {
+     "t": 30,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams9": {
+     "t": 31,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams8": {
+     "t": 32,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXBlendTint": {
+     "t": 33,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXColorIntensity": {
+     "t": 34,
+     "c": 0,
+     "type": "F"
+    },
+    "_VFXFresnelColor": {
+     "t": 35,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXFresnelAffectOpacity": {
+     "t": 34,
+     "c": 1,
+     "type": "F"
+    },
+    "__size_ShadowLutTex": {
+     "t": 36,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_DiffRampMap": {
+     "t": 37,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_SpecRampMap": {
+     "t": 38,
+     "c": 0,
+     "type": "V3"
+    }
+   }
+  },
+  "Eyebrow": {
+   "params": [
+    {
+     "name": "_UseBumpMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BumpScale",
+     "type": "F",
+     "texel": 0,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseRMOSMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use RMOS Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseColor",
+     "type": "V4",
+     "texel": 1,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "底色 RGB / Alpha",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SurfaceType",
+     "type": "F",
+     "texel": 0,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Surface Type",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RoughnessIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Roughness Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MetallicIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Metallic Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecularIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BackFaceNormalFlip",
+     "type": "F",
+     "texel": 2,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Back Face Normal Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams12",
+     "type": "V4",
+     "texel": 3,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP12 (.x=灯光手动控制 .y=主光色覆写量 .z=shadowGate .w=exposureBlend)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnvironmentGlobalParams0",
+     "type": "V4",
+     "texel": 4,
+     "comp": 0,
+     "rgb": [
+      1.6699999570846558,
+      1.5,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "EnvGlobalParams0",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ExposureWithMiscParams",
+     "type": "V4",
+     "texel": 5,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Exposure (y = post exposure)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseMetallicGlossMap",
+     "type": "F",
+     "texel": 6,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Use MetallicGlossMap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Smoothness",
+     "type": "F",
+     "texel": 6,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Metallic",
+     "type": "F",
+     "texel": 6,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Specular",
+     "type": "F",
+     "texel": 6,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular (Default 0.5)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams11",
+     "type": "V4",
+     "texel": 7,
+     "comp": 0,
+     "rgb": [
+      -0.43299999833106995,
+      0.5,
+      0.75
+     ],
+     "a": -0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP11 (方向覆写 xyz + .w=明暗交界线偏移)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams1",
+     "type": "V4",
+     "texel": 8,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP1 (.x=brightMix .y=shadowStr .z=忽略主光阴影 .w=方向覆写量)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriOutlineShellGate",
+     "type": "F",
+     "texel": 9,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintEnable",
+     "type": "F",
+     "texel": 9,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Outline Tint Enable",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintColor",
+     "type": "V4",
+     "texel": 10,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Outline Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_OutlineColorBrightness",
+     "type": "F",
+     "texel": 9,
+     "comp": 2,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineColorSaturation",
+     "type": "F",
+     "texel": 9,
+     "comp": 3,
+     "rgb": [
+      1.5,
+      1.5,
+      1.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseMatcap",
+     "type": "F",
+     "texel": 11,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "眼睛 Matcap",
+     "label": "Use Matcap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ParallaxScale",
+     "type": "F",
+     "texel": 11,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "视差",
+     "label": "Parallax Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MatcapNormalScale",
+     "type": "F",
+     "texel": 11,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "眼睛 Matcap",
+     "label": "Matcap Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_AvatarCustomizeEnable",
+     "type": "F",
+     "texel": 11,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "捏人染色",
+     "label": "Avatar System Input",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EyeTintColor",
+     "type": "V4",
+     "texel": 12,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "眼睛 Matcap",
+     "label": "Eye Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_CharacterParams2",
+     "type": "V4",
+     "texel": 13,
+     "comp": 0,
+     "rgb": [
+      0.7830188274383545,
+      0.8293082118034363,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP2 (阴影色倾向 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams5",
+     "type": "V4",
+     "texel": 14,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP5 (主光自定义颜色 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseShadowLutTex",
+     "type": "F",
+     "texel": 15,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Use Shadow Color LUT Tex",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorBrightness",
+     "type": "F",
+     "texel": 15,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorSaturation",
+     "type": "F",
+     "texel": 15,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FBXRotationFix",
+     "type": "F",
+     "texel": 15,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "FBX -90 Z Rotation Fix (OTW col0/col1 swap)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EyeHighLight",
+     "type": "F",
+     "texel": 16,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "眼睛 Matcap",
+     "label": "Eye High Light",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EyeHighLightColor",
+     "type": "V4",
+     "texel": 17,
+     "comp": 0,
+     "rgb": [
+      2,
+      2,
+      2
+     ],
+     "a": 1,
+     "group": "眼睛 Matcap",
+     "label": "High Light Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_EyeScatteringColor",
+     "type": "V4",
+     "texel": 18,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "眼睛 Matcap",
+     "label": "Scattering Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_UseDiffRampMap",
+     "type": "F",
+     "texel": 16,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Diffuse Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DirectionalShadowParams",
+     "type": "V4",
+     "texel": 19,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams0",
+     "type": "V4",
+     "texel": 20,
+     "comp": 0,
+     "rgb": [
+      0,
+      0.8999999761581421,
+      0.800000011920929
+     ],
+     "a": 0.800000011920929,
+     "group": "引擎全局 CP",
+     "label": "CP0 (.y=主光系数 .z=环境阴影系数 .w=环境光系数)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams6",
+     "type": "V4",
+     "texel": 21,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      4.371138828673793e-08
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP6 (环境光方向 = charGlobalAmbientParam0)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams7",
+     "type": "V4",
+     "texel": 22,
+     "comp": 0,
+     "rgb": [
+      0.15000000596046448,
+      1.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP7 (环境光系数 = charGlobalAmbientParam1)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MatcapColor",
+     "type": "V4",
+     "texel": 23,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "眼睛 Matcap",
+     "label": "Matcap Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_UseEmission",
+     "type": "F",
+     "texel": 16,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Emission",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EmissionColor",
+     "type": "V4",
+     "texel": 24,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Emission Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_EmissionBrightness",
+     "type": "F",
+     "texel": 16,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "自发光",
+     "label": "Emission Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams13",
+     "type": "V4",
+     "texel": 25,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP13 (.w=GGX specular toggle)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_ShadowLutTex",
+     "type": "V3",
+     "texel": 26,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_DiffRampMap",
+     "type": "V3",
+     "texel": 27,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    }
+   ],
+   "param_index": {
+    "_UseBumpMap": {
+     "t": 0,
+     "c": 0,
+     "type": "F"
+    },
+    "_BumpScale": {
+     "t": 0,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseRMOSMap": {
+     "t": 0,
+     "c": 2,
+     "type": "F"
+    },
+    "_BaseColor": {
+     "t": 1,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SurfaceType": {
+     "t": 0,
+     "c": 3,
+     "type": "F"
+    },
+    "_RoughnessIntensity": {
+     "t": 2,
+     "c": 0,
+     "type": "F"
+    },
+    "_MetallicIntensity": {
+     "t": 2,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecularIntensity": {
+     "t": 2,
+     "c": 2,
+     "type": "F"
+    },
+    "_BackFaceNormalFlip": {
+     "t": 2,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams12": {
+     "t": 3,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnvironmentGlobalParams0": {
+     "t": 4,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ExposureWithMiscParams": {
+     "t": 5,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseMetallicGlossMap": {
+     "t": 6,
+     "c": 0,
+     "type": "F"
+    },
+    "_Smoothness": {
+     "t": 6,
+     "c": 1,
+     "type": "F"
+    },
+    "_Metallic": {
+     "t": 6,
+     "c": 2,
+     "type": "F"
+    },
+    "_Specular": {
+     "t": 6,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams11": {
+     "t": 7,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams1": {
+     "t": 8,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriOutlineShellGate": {
+     "t": 9,
+     "c": 0,
+     "type": "F"
+    },
+    "_OutlineTintEnable": {
+     "t": 9,
+     "c": 1,
+     "type": "F"
+    },
+    "_OutlineTintColor": {
+     "t": 10,
+     "c": 0,
+     "type": "V4"
+    },
+    "_OutlineColorBrightness": {
+     "t": 9,
+     "c": 2,
+     "type": "F"
+    },
+    "_OutlineColorSaturation": {
+     "t": 9,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseMatcap": {
+     "t": 11,
+     "c": 0,
+     "type": "F"
+    },
+    "_ParallaxScale": {
+     "t": 11,
+     "c": 1,
+     "type": "F"
+    },
+    "_MatcapNormalScale": {
+     "t": 11,
+     "c": 2,
+     "type": "F"
+    },
+    "_AvatarCustomizeEnable": {
+     "t": 11,
+     "c": 3,
+     "type": "F"
+    },
+    "_EyeTintColor": {
+     "t": 12,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams2": {
+     "t": 13,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams5": {
+     "t": 14,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseShadowLutTex": {
+     "t": 15,
+     "c": 0,
+     "type": "F"
+    },
+    "_ShadowColorBrightness": {
+     "t": 15,
+     "c": 1,
+     "type": "F"
+    },
+    "_ShadowColorSaturation": {
+     "t": 15,
+     "c": 2,
+     "type": "F"
+    },
+    "_FBXRotationFix": {
+     "t": 15,
+     "c": 3,
+     "type": "F"
+    },
+    "_EyeHighLight": {
+     "t": 16,
+     "c": 0,
+     "type": "F"
+    },
+    "_EyeHighLightColor": {
+     "t": 17,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EyeScatteringColor": {
+     "t": 18,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseDiffRampMap": {
+     "t": 16,
+     "c": 1,
+     "type": "F"
+    },
+    "_DirectionalShadowParams": {
+     "t": 19,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams0": {
+     "t": 20,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams6": {
+     "t": 21,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams7": {
+     "t": 22,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MatcapColor": {
+     "t": 23,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseEmission": {
+     "t": 16,
+     "c": 2,
+     "type": "F"
+    },
+    "_EmissionColor": {
+     "t": 24,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EmissionBrightness": {
+     "t": 16,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams13": {
+     "t": 25,
+     "c": 0,
+     "type": "V4"
+    },
+    "__size_ShadowLutTex": {
+     "t": 26,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_DiffRampMap": {
+     "t": 27,
+     "c": 0,
+     "type": "V3"
+    }
+   }
+  },
+  "VFX": {
+   "params": [
+    {
+     "name": "_UseBumpMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BumpScale",
+     "type": "F",
+     "texel": 0,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseRMOSMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use RMOS Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseColor",
+     "type": "V4",
+     "texel": 1,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "底色 RGB / Alpha",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SurfaceType",
+     "type": "F",
+     "texel": 0,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Surface Type",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RoughnessIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Roughness Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MetallicIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Metallic Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecularIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BackFaceNormalFlip",
+     "type": "F",
+     "texel": 2,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Back Face Normal Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams12",
+     "type": "V4",
+     "texel": 3,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP12 (.x=灯光手动控制 .y=主光色覆写量 .z=shadowGate .w=exposureBlend)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnvironmentGlobalParams0",
+     "type": "V4",
+     "texel": 4,
+     "comp": 0,
+     "rgb": [
+      1.6699999570846558,
+      1.5,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "EnvGlobalParams0",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ExposureWithMiscParams",
+     "type": "V4",
+     "texel": 5,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Exposure (y = post exposure)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseMetallicGlossMap",
+     "type": "F",
+     "texel": 6,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Use MetallicGlossMap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Smoothness",
+     "type": "F",
+     "texel": 6,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Metallic",
+     "type": "F",
+     "texel": 6,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Specular",
+     "type": "F",
+     "texel": 6,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular (Default 0.5)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams11",
+     "type": "V4",
+     "texel": 7,
+     "comp": 0,
+     "rgb": [
+      -0.43299999833106995,
+      0.5,
+      0.75
+     ],
+     "a": -0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP11 (方向覆写 xyz + .w=明暗交界线偏移)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams1",
+     "type": "V4",
+     "texel": 8,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP1 (.x=brightMix .y=shadowStr .z=忽略主光阴影 .w=方向覆写量)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriOutlineShellGate",
+     "type": "F",
+     "texel": 9,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintEnable",
+     "type": "F",
+     "texel": 9,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Outline Tint Enable",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintColor",
+     "type": "V4",
+     "texel": 10,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Outline Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_OutlineColorBrightness",
+     "type": "F",
+     "texel": 9,
+     "comp": 2,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineColorSaturation",
+     "type": "F",
+     "texel": 9,
+     "comp": 3,
+     "rgb": [
+      1.5,
+      1.5,
+      1.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_InParticle",
+     "type": "F",
+     "texel": 11,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Use In Particle",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseDisturb",
+     "type": "F",
+     "texel": 11,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Use Disturb",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DisturbUVWeights1",
+     "type": "V4",
+     "texel": 12,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "'_DisturbTexUVWeights'",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_DisturbUVSpeed1",
+     "type": "V4",
+     "texel": 13,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "DisturbUVSpeed(XY:By Time,ZW:By Custom1.Y)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_DisturbUVRotateMat1",
+     "type": "V4",
+     "texel": 14,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "特效贴图/流动",
+     "label": "DisturbUVRotateMat",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_DisturbTex1_ST",
+     "type": "V4",
+     "texel": 15,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_Bi_Disturb",
+     "type": "F",
+     "texel": 11,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Disturbe in 2 Direction",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DisturbTex1Normal",
+     "type": "F",
+     "texel": 11,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Disturb Tex1 is Normal",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DisturbUIntensity1",
+     "type": "F",
+     "texel": 16,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "UIntensity1",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DisturbVIntensity1",
+     "type": "F",
+     "texel": 16,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "VIntensity1(Unused In Normal)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MainTexUVWeights",
+     "type": "V4",
+     "texel": 17,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "'_MainTexUVWeights'",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MainTexUVSpeed",
+     "type": "V4",
+     "texel": 18,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "MainTexUVSpeed(XY:By Time,ZW:By Custom1.X)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MainTexUVRotateMat",
+     "type": "V4",
+     "texel": 19,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "特效贴图/流动",
+     "label": "MainTexUVRotateMat",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MainTex_ST",
+     "type": "V4",
+     "texel": 20,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MainTexUseDisturb",
+     "type": "F",
+     "texel": 16,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Main Tex Use Disturb",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseMainTexAsAlpha",
+     "type": "F",
+     "texel": 16,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "UseMainTexAsAlpha",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DisableVertColor",
+     "type": "F",
+     "texel": 21,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Disable VertColor",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_TintColor",
+     "type": "V4",
+     "texel": 22,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "特效贴图/流动",
+     "label": "TintColor",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_TintColorAlpha",
+     "type": "F",
+     "texel": 21,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Tint Color Alpha (Default 1)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseMask",
+     "type": "F",
+     "texel": 21,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Use Mask (只影响Alpha)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MaskTexUVWeights",
+     "type": "V4",
+     "texel": 23,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "'_MaskTexUVWeights'",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MaskTexUVSpeed",
+     "type": "V4",
+     "texel": 24,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "MaskTaexUVSpeed(XY:By Time,ZW:By Custom1.Y)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MaskTexUVRotateMat",
+     "type": "V4",
+     "texel": 25,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "特效贴图/流动",
+     "label": "MaskTexUVRotateMat",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MaskTex_ST",
+     "type": "V4",
+     "texel": 26,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_MaskTexUseDisturb",
+     "type": "F",
+     "texel": 21,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Mask Tex Use Disturb",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseMaskTexAsAlpha",
+     "type": "F",
+     "texel": 27,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "UseMaskTexAsAlpha",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_TintColorIntensity",
+     "type": "F",
+     "texel": 27,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Tint Color Intensity (Default 1)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseBlend",
+     "type": "F",
+     "texel": 27,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Use Blend",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BlendTexUVWeights",
+     "type": "V4",
+     "texel": 28,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "'_BlendTexUVWeights'",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_BlendTexUVSpeed",
+     "type": "V4",
+     "texel": 29,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "BlendTexUVSpeed(XY:By Time,ZW:By Custom1.Y)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_BlendTexUVRotateMat",
+     "type": "V4",
+     "texel": 30,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "特效贴图/流动",
+     "label": "BlendTexUVRotateMat",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_BlendTex_ST",
+     "type": "V4",
+     "texel": 31,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_BlendTexUseDisturb",
+     "type": "F",
+     "texel": 27,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Blend Tex Use Disturb",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BlendTint",
+     "type": "V4",
+     "texel": 32,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "特效贴图/流动",
+     "label": "BlendTint",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_EnableNormalMap",
+     "type": "F",
+     "texel": 33,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_NormalMapUVWeights",
+     "type": "V4",
+     "texel": 34,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "'_NormalMapUVWeights'",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_NormalMapUVSpeed",
+     "type": "V4",
+     "texel": 35,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "NormalMapUVSpeed(XY:By Time,ZW:By Custom1.Y)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_NormalMapUVRotateMat",
+     "type": "V4",
+     "texel": 36,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "特效贴图/流动",
+     "label": "NormalMapUVRotateMat",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_NormalMap_ST",
+     "type": "V4",
+     "texel": 37,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_NormalMapUseDisturb",
+     "type": "F",
+     "texel": 33,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_NormalScale",
+     "type": "F",
+     "texel": 33,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseFresnel",
+     "type": "F",
+     "texel": 33,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Fresnel",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FresnelBias",
+     "type": "F",
+     "texel": 38,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "菲涅尔偏移",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FresnelPower",
+     "type": "F",
+     "texel": 38,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Fresnel Power",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FresnelFlip",
+     "type": "F",
+     "texel": 38,
+     "comp": 2,
+     "rgb": [
+      0.0010000000474974513,
+      0.0010000000474974513,
+      0.0010000000474974513
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "翻转菲涅尔区域",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FresnelColor",
+     "type": "V4",
+     "texel": 39,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Fresnel Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_IgnorePostExposure",
+     "type": "F",
+     "texel": 38,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Ignore Post Exposure",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseNearCameraFade",
+     "type": "F",
+     "texel": 40,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效菲涅尔/近淡出",
+     "label": "Use Near Camera Fade",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_NearCameraFadeDistanceStart2",
+     "type": "F",
+     "texel": 40,
+     "comp": 1,
+     "rgb": [
+      120,
+      120,
+      120
+     ],
+     "a": 0,
+     "group": "特效菲涅尔/近淡出",
+     "label": "消失距离2",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_NearCameraFadeDistanceEnd2",
+     "type": "F",
+     "texel": 40,
+     "comp": 2,
+     "rgb": [
+      100,
+      100,
+      100
+     ],
+     "a": 0,
+     "group": "特效菲涅尔/近淡出",
+     "label": "出现距离2",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_NearCameraFadeDistanceStart",
+     "type": "F",
+     "texel": 40,
+     "comp": 3,
+     "rgb": [
+      0.0010000000474974513,
+      0.0010000000474974513,
+      0.0010000000474974513
+     ],
+     "a": 0,
+     "group": "特效菲涅尔/近淡出",
+     "label": "消失距离1",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_NearCameraFadeDistanceEnd",
+     "type": "F",
+     "texel": 41,
+     "comp": 0,
+     "rgb": [
+      10,
+      10,
+      10
+     ],
+     "a": 0,
+     "group": "特效菲涅尔/近淡出",
+     "label": "出现距离1",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_FresnelAffectOpacity",
+     "type": "F",
+     "texel": 41,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "菲涅尔影响透明度系数",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BlendMode",
+     "type": "F",
+     "texel": 41,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效贴图/流动",
+     "label": "Blend Type",
+     "ui_kind": "VALUE"
+    }
+   ],
+   "param_index": {
+    "_UseBumpMap": {
+     "t": 0,
+     "c": 0,
+     "type": "F"
+    },
+    "_BumpScale": {
+     "t": 0,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseRMOSMap": {
+     "t": 0,
+     "c": 2,
+     "type": "F"
+    },
+    "_BaseColor": {
+     "t": 1,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SurfaceType": {
+     "t": 0,
+     "c": 3,
+     "type": "F"
+    },
+    "_RoughnessIntensity": {
+     "t": 2,
+     "c": 0,
+     "type": "F"
+    },
+    "_MetallicIntensity": {
+     "t": 2,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecularIntensity": {
+     "t": 2,
+     "c": 2,
+     "type": "F"
+    },
+    "_BackFaceNormalFlip": {
+     "t": 2,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams12": {
+     "t": 3,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnvironmentGlobalParams0": {
+     "t": 4,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ExposureWithMiscParams": {
+     "t": 5,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseMetallicGlossMap": {
+     "t": 6,
+     "c": 0,
+     "type": "F"
+    },
+    "_Smoothness": {
+     "t": 6,
+     "c": 1,
+     "type": "F"
+    },
+    "_Metallic": {
+     "t": 6,
+     "c": 2,
+     "type": "F"
+    },
+    "_Specular": {
+     "t": 6,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams11": {
+     "t": 7,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams1": {
+     "t": 8,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriOutlineShellGate": {
+     "t": 9,
+     "c": 0,
+     "type": "F"
+    },
+    "_OutlineTintEnable": {
+     "t": 9,
+     "c": 1,
+     "type": "F"
+    },
+    "_OutlineTintColor": {
+     "t": 10,
+     "c": 0,
+     "type": "V4"
+    },
+    "_OutlineColorBrightness": {
+     "t": 9,
+     "c": 2,
+     "type": "F"
+    },
+    "_OutlineColorSaturation": {
+     "t": 9,
+     "c": 3,
+     "type": "F"
+    },
+    "_InParticle": {
+     "t": 11,
+     "c": 0,
+     "type": "F"
+    },
+    "_UseDisturb": {
+     "t": 11,
+     "c": 1,
+     "type": "F"
+    },
+    "_DisturbUVWeights1": {
+     "t": 12,
+     "c": 0,
+     "type": "V4"
+    },
+    "_DisturbUVSpeed1": {
+     "t": 13,
+     "c": 0,
+     "type": "V4"
+    },
+    "_DisturbUVRotateMat1": {
+     "t": 14,
+     "c": 0,
+     "type": "V4"
+    },
+    "_DisturbTex1_ST": {
+     "t": 15,
+     "c": 0,
+     "type": "V4"
+    },
+    "_Bi_Disturb": {
+     "t": 11,
+     "c": 2,
+     "type": "F"
+    },
+    "_DisturbTex1Normal": {
+     "t": 11,
+     "c": 3,
+     "type": "F"
+    },
+    "_DisturbUIntensity1": {
+     "t": 16,
+     "c": 0,
+     "type": "F"
+    },
+    "_DisturbVIntensity1": {
+     "t": 16,
+     "c": 1,
+     "type": "F"
+    },
+    "_MainTexUVWeights": {
+     "t": 17,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MainTexUVSpeed": {
+     "t": 18,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MainTexUVRotateMat": {
+     "t": 19,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MainTex_ST": {
+     "t": 20,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MainTexUseDisturb": {
+     "t": 16,
+     "c": 2,
+     "type": "F"
+    },
+    "_UseMainTexAsAlpha": {
+     "t": 16,
+     "c": 3,
+     "type": "F"
+    },
+    "_DisableVertColor": {
+     "t": 21,
+     "c": 0,
+     "type": "F"
+    },
+    "_TintColor": {
+     "t": 22,
+     "c": 0,
+     "type": "V4"
+    },
+    "_TintColorAlpha": {
+     "t": 21,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseMask": {
+     "t": 21,
+     "c": 2,
+     "type": "F"
+    },
+    "_MaskTexUVWeights": {
+     "t": 23,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MaskTexUVSpeed": {
+     "t": 24,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MaskTexUVRotateMat": {
+     "t": 25,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MaskTex_ST": {
+     "t": 26,
+     "c": 0,
+     "type": "V4"
+    },
+    "_MaskTexUseDisturb": {
+     "t": 21,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseMaskTexAsAlpha": {
+     "t": 27,
+     "c": 0,
+     "type": "F"
+    },
+    "_TintColorIntensity": {
+     "t": 27,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseBlend": {
+     "t": 27,
+     "c": 2,
+     "type": "F"
+    },
+    "_BlendTexUVWeights": {
+     "t": 28,
+     "c": 0,
+     "type": "V4"
+    },
+    "_BlendTexUVSpeed": {
+     "t": 29,
+     "c": 0,
+     "type": "V4"
+    },
+    "_BlendTexUVRotateMat": {
+     "t": 30,
+     "c": 0,
+     "type": "V4"
+    },
+    "_BlendTex_ST": {
+     "t": 31,
+     "c": 0,
+     "type": "V4"
+    },
+    "_BlendTexUseDisturb": {
+     "t": 27,
+     "c": 3,
+     "type": "F"
+    },
+    "_BlendTint": {
+     "t": 32,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnableNormalMap": {
+     "t": 33,
+     "c": 0,
+     "type": "F"
+    },
+    "_NormalMapUVWeights": {
+     "t": 34,
+     "c": 0,
+     "type": "V4"
+    },
+    "_NormalMapUVSpeed": {
+     "t": 35,
+     "c": 0,
+     "type": "V4"
+    },
+    "_NormalMapUVRotateMat": {
+     "t": 36,
+     "c": 0,
+     "type": "V4"
+    },
+    "_NormalMap_ST": {
+     "t": 37,
+     "c": 0,
+     "type": "V4"
+    },
+    "_NormalMapUseDisturb": {
+     "t": 33,
+     "c": 1,
+     "type": "F"
+    },
+    "_NormalScale": {
+     "t": 33,
+     "c": 2,
+     "type": "F"
+    },
+    "_UseFresnel": {
+     "t": 33,
+     "c": 3,
+     "type": "F"
+    },
+    "_FresnelBias": {
+     "t": 38,
+     "c": 0,
+     "type": "F"
+    },
+    "_FresnelPower": {
+     "t": 38,
+     "c": 1,
+     "type": "F"
+    },
+    "_FresnelFlip": {
+     "t": 38,
+     "c": 2,
+     "type": "F"
+    },
+    "_FresnelColor": {
+     "t": 39,
+     "c": 0,
+     "type": "V4"
+    },
+    "_IgnorePostExposure": {
+     "t": 38,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseNearCameraFade": {
+     "t": 40,
+     "c": 0,
+     "type": "F"
+    },
+    "_NearCameraFadeDistanceStart2": {
+     "t": 40,
+     "c": 1,
+     "type": "F"
+    },
+    "_NearCameraFadeDistanceEnd2": {
+     "t": 40,
+     "c": 2,
+     "type": "F"
+    },
+    "_NearCameraFadeDistanceStart": {
+     "t": 40,
+     "c": 3,
+     "type": "F"
+    },
+    "_NearCameraFadeDistanceEnd": {
+     "t": 41,
+     "c": 0,
+     "type": "F"
+    },
+    "_FresnelAffectOpacity": {
+     "t": 41,
+     "c": 1,
+     "type": "F"
+    },
+    "_BlendMode": {
+     "t": 41,
+     "c": 2,
+     "type": "F"
+    }
+   }
+  },
+  "OverlayShadow": {
+   "params": [
+    {
+     "name": "_UseBumpMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BumpScale",
+     "type": "F",
+     "texel": 0,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseRMOSMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use RMOS Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseColor",
+     "type": "V4",
+     "texel": 1,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "底色 RGB / Alpha",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SurfaceType",
+     "type": "F",
+     "texel": 0,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Surface Type",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RoughnessIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Roughness Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MetallicIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Metallic Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecularIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BackFaceNormalFlip",
+     "type": "F",
+     "texel": 2,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Back Face Normal Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams12",
+     "type": "V4",
+     "texel": 3,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP12 (.x=灯光手动控制 .y=主光色覆写量 .z=shadowGate .w=exposureBlend)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnvironmentGlobalParams0",
+     "type": "V4",
+     "texel": 4,
+     "comp": 0,
+     "rgb": [
+      1.6699999570846558,
+      1.5,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "EnvGlobalParams0",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ExposureWithMiscParams",
+     "type": "V4",
+     "texel": 5,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Exposure (y = post exposure)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseMetallicGlossMap",
+     "type": "F",
+     "texel": 6,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Use MetallicGlossMap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Smoothness",
+     "type": "F",
+     "texel": 6,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Metallic",
+     "type": "F",
+     "texel": 6,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Specular",
+     "type": "F",
+     "texel": 6,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular (Default 0.5)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams11",
+     "type": "V4",
+     "texel": 7,
+     "comp": 0,
+     "rgb": [
+      -0.43299999833106995,
+      0.5,
+      0.75
+     ],
+     "a": -0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP11 (方向覆写 xyz + .w=明暗交界线偏移)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams1",
+     "type": "V4",
+     "texel": 8,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP1 (.x=brightMix .y=shadowStr .z=忽略主光阴影 .w=方向覆写量)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriOutlineShellGate",
+     "type": "F",
+     "texel": 9,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintEnable",
+     "type": "F",
+     "texel": 9,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Outline Tint Enable",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintColor",
+     "type": "V4",
+     "texel": 10,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Outline Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_OutlineColorBrightness",
+     "type": "F",
+     "texel": 9,
+     "comp": 2,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineColorSaturation",
+     "type": "F",
+     "texel": 9,
+     "comp": 3,
+     "rgb": [
+      1.5,
+      1.5,
+      1.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseGrayAsAlpha",
+     "type": "F",
+     "texel": 11,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效杂项",
+     "label": "Use Gray As Alpha",
+     "ui_kind": "VALUE"
+    }
+   ],
+   "param_index": {
+    "_UseBumpMap": {
+     "t": 0,
+     "c": 0,
+     "type": "F"
+    },
+    "_BumpScale": {
+     "t": 0,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseRMOSMap": {
+     "t": 0,
+     "c": 2,
+     "type": "F"
+    },
+    "_BaseColor": {
+     "t": 1,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SurfaceType": {
+     "t": 0,
+     "c": 3,
+     "type": "F"
+    },
+    "_RoughnessIntensity": {
+     "t": 2,
+     "c": 0,
+     "type": "F"
+    },
+    "_MetallicIntensity": {
+     "t": 2,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecularIntensity": {
+     "t": 2,
+     "c": 2,
+     "type": "F"
+    },
+    "_BackFaceNormalFlip": {
+     "t": 2,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams12": {
+     "t": 3,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnvironmentGlobalParams0": {
+     "t": 4,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ExposureWithMiscParams": {
+     "t": 5,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseMetallicGlossMap": {
+     "t": 6,
+     "c": 0,
+     "type": "F"
+    },
+    "_Smoothness": {
+     "t": 6,
+     "c": 1,
+     "type": "F"
+    },
+    "_Metallic": {
+     "t": 6,
+     "c": 2,
+     "type": "F"
+    },
+    "_Specular": {
+     "t": 6,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams11": {
+     "t": 7,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams1": {
+     "t": 8,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriOutlineShellGate": {
+     "t": 9,
+     "c": 0,
+     "type": "F"
+    },
+    "_OutlineTintEnable": {
+     "t": 9,
+     "c": 1,
+     "type": "F"
+    },
+    "_OutlineTintColor": {
+     "t": 10,
+     "c": 0,
+     "type": "V4"
+    },
+    "_OutlineColorBrightness": {
+     "t": 9,
+     "c": 2,
+     "type": "F"
+    },
+    "_OutlineColorSaturation": {
+     "t": 9,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseGrayAsAlpha": {
+     "t": 11,
+     "c": 0,
+     "type": "F"
+    }
+   }
+  },
+  "LiquidAg": {
+   "params": [
+    {
+     "name": "_UseBumpMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Normal Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BumpScale",
+     "type": "F",
+     "texel": 0,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Normal Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseRMOSMap",
+     "type": "F",
+     "texel": 0,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use RMOS Map",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BaseColor",
+     "type": "V4",
+     "texel": 1,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "底色 RGB / Alpha",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SurfaceType",
+     "type": "F",
+     "texel": 0,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Surface Type",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RoughnessIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Roughness Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_MetallicIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Metallic Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecularIntensity",
+     "type": "F",
+     "texel": 2,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_BackFaceNormalFlip",
+     "type": "F",
+     "texel": 2,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Back Face Normal Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams12",
+     "type": "V4",
+     "texel": 3,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP12 (.x=灯光手动控制 .y=主光色覆写量 .z=shadowGate .w=exposureBlend)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EnvironmentGlobalParams0",
+     "type": "V4",
+     "texel": 4,
+     "comp": 0,
+     "rgb": [
+      1.6699999570846558,
+      1.5,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "EnvGlobalParams0",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ExposureWithMiscParams",
+     "type": "V4",
+     "texel": 5,
+     "comp": 0,
+     "rgb": [
+      1,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Exposure (y = post exposure)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseMetallicGlossMap",
+     "type": "F",
+     "texel": 6,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Use MetallicGlossMap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Smoothness",
+     "type": "F",
+     "texel": 6,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Metallic",
+     "type": "F",
+     "texel": 6,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "PBR 基础",
+     "label": "Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_Specular",
+     "type": "F",
+     "texel": 6,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Specular (Default 0.5)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams11",
+     "type": "V4",
+     "texel": 7,
+     "comp": 0,
+     "rgb": [
+      -0.43299999833106995,
+      0.5,
+      0.75
+     ],
+     "a": -0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP11 (方向覆写 xyz + .w=明暗交界线偏移)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams1",
+     "type": "V4",
+     "texel": 8,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP1 (.x=brightMix .y=shadowStr .z=忽略主光阴影 .w=方向覆写量)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriOutlineShellGate",
+     "type": "F",
+     "texel": 9,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintEnable",
+     "type": "F",
+     "texel": 9,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Outline Tint Enable",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineTintColor",
+     "type": "V4",
+     "texel": 10,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Outline Tint Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_OutlineColorBrightness",
+     "type": "F",
+     "texel": 9,
+     "comp": 2,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_OutlineColorSaturation",
+     "type": "F",
+     "texel": 9,
+     "comp": 3,
+     "rgb": [
+      1.5,
+      1.5,
+      1.5
+     ],
+     "a": 0,
+     "group": "描边",
+     "label": "Outline Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseShadowLutTex",
+     "type": "F",
+     "texel": 11,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Use Shadow Color LUT Tex",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorBrightness",
+     "type": "F",
+     "texel": 11,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ShadowColorSaturation",
+     "type": "F",
+     "texel": 11,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "阴影色",
+     "label": "Shadow Color Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoat",
+     "type": "F",
+     "texel": 11,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "清漆",
+     "label": "ClearCoat Effect",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoatNormalMode",
+     "type": "F",
+     "texel": 12,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "清漆",
+     "label": "ClearCoat Normal",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoatSmoothness",
+     "type": "F",
+     "texel": 12,
+     "comp": 1,
+     "rgb": [
+      0.949999988079071,
+      0.949999988079071,
+      0.949999988079071
+     ],
+     "a": 0,
+     "group": "清漆",
+     "label": "ClearCoat Smoothness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoatMetallic",
+     "type": "F",
+     "texel": 12,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "清漆",
+     "label": "ClearCoat Metallic",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ClearCoatColor",
+     "type": "V4",
+     "texel": 13,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "清漆",
+     "label": "ClearCoat Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SilkStockings",
+     "type": "F",
+     "texel": 12,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "Silk Stockings",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_RuriCharacterEnvironmentEffect",
+     "type": "V4",
+     "texel": 14,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "环境效果量 (.x=雨 .y=水位量 .z=浸润 .w=雪)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_RuriCharacterEnvironmentWater",
+     "type": "V4",
+     "texel": 15,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "环境效果水面 (.x=世界高度)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams10",
+     "type": "V4",
+     "texel": 16,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP10 (height darken control)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_SilkStockingsSpecularInt",
+     "type": "F",
+     "texel": 17,
+     "comp": 0,
+     "rgb": [
+      5,
+      5,
+      5
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高光强度Remap",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsSpecularMinAtMinWetness",
+     "type": "F",
+     "texel": 17,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高光干燥态最小值",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsAdvance",
+     "type": "F",
+     "texel": 17,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高级模式(使用贴图)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsColor",
+     "type": "V4",
+     "texel": 18,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "丝袜",
+     "label": "丝袜边缘颜色",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SilkStockingsAnisoDirection",
+     "type": "F",
+     "texel": 17,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜锐利度G",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsDryColor",
+     "type": "V4",
+     "texel": 19,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "丝袜",
+     "label": "丝袜常态偏色",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SilkStockingsWetColor",
+     "type": "V4",
+     "texel": 20,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "丝袜",
+     "label": "丝袜湿润偏色",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SilkStockingsMinAffect",
+     "type": "F",
+     "texel": 21,
+     "comp": 0,
+     "rgb": [
+      0.05000000074505806,
+      0.05000000074505806,
+      0.05000000074505806
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜最浅覆盖",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsMaxAffect",
+     "type": "F",
+     "texel": 21,
+     "comp": 1,
+     "rgb": [
+      0.8999999761581421,
+      0.8999999761581421,
+      0.8999999761581421
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜最深覆盖",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseEmission",
+     "type": "F",
+     "texel": 21,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "基础",
+     "label": "Use Emission",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseParallax",
+     "type": "F",
+     "texel": 21,
+     "comp": 3,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "视差",
+     "label": "Use Parallax",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ParallaxTex_ST",
+     "type": "V4",
+     "texel": 22,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_ParallaxMarchNum",
+     "type": "F",
+     "texel": 23,
+     "comp": 0,
+     "rgb": [
+      3,
+      3,
+      3
+     ],
+     "a": 0,
+     "group": "视差",
+     "label": "Parallax March Num",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ParallaxScale",
+     "type": "F",
+     "texel": 23,
+     "comp": 1,
+     "rgb": [
+      0.5,
+      0.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "视差",
+     "label": "Parallax Scale",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EnableCharacterVFX",
+     "type": "F",
+     "texel": 23,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "角色 VFX",
+     "label": "Character VFX",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXSpecialParam",
+     "type": "V4",
+     "texel": 24,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "VFX Special Param(XY: MainTex, ZW: BlendTex)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_VFXSpecialBlendTex_ST",
+     "type": "V4",
+     "texel": 25,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_VFXSpecialBlendTexRForDisturb",
+     "type": "F",
+     "texel": 23,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Use Blend Tex R For Disturb",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXSpecialMainTex_ST",
+     "type": "V4",
+     "texel": 26,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseVFXMainTexAsAlpha",
+     "type": "F",
+     "texel": 27,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "UseMainTexAsAlpha",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXFresnelBias",
+     "type": "F",
+     "texel": 27,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Fresnel Bias(Default:0)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXFresnelPower",
+     "type": "F",
+     "texel": 27,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Fresnel Power(Default:1)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXFresnelFlip",
+     "type": "F",
+     "texel": 27,
+     "comp": 3,
+     "rgb": [
+      0.0010000000474974513,
+      0.0010000000474974513,
+      0.0010000000474974513
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Fresnel Flip",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXColorAlpha",
+     "type": "F",
+     "texel": 28,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "VFX Color Alpha (Default 1)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXColor",
+     "type": "V4",
+     "texel": 29,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "VFX 合成",
+     "label": "VFX Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_SpecialDissolveScheduleOffset",
+     "type": "F",
+     "texel": 28,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Dissolve Schedule Offset",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams2",
+     "type": "V4",
+     "texel": 30,
+     "comp": 0,
+     "rgb": [
+      0.7830188274383545,
+      0.8293082118034363,
+      1
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP2 (阴影色倾向 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams5",
+     "type": "V4",
+     "texel": 31,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP5 (主光自定义颜色 rgb，皮肤以外)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_UseDiffRampMap",
+     "type": "F",
+     "texel": 28,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Diffuse Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_DirectionalShadowParams",
+     "type": "V4",
+     "texel": 32,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams0",
+     "type": "V4",
+     "texel": 33,
+     "comp": 0,
+     "rgb": [
+      0,
+      0.8999999761581421,
+      0.800000011920929
+     ],
+     "a": 0.800000011920929,
+     "group": "引擎全局 CP",
+     "label": "CP0 (.y=主光系数 .z=环境阴影系数 .w=环境光系数)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams6",
+     "type": "V4",
+     "texel": 34,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      4.371138828673793e-08
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP6 (环境光方向 = charGlobalAmbientParam0)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams7",
+     "type": "V4",
+     "texel": 35,
+     "comp": 0,
+     "rgb": [
+      0.15000000596046448,
+      1.5,
+      0.5
+     ],
+     "a": 0,
+     "group": "引擎全局 CP",
+     "label": "CP7 (环境光系数 = charGlobalAmbientParam1)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_SilkStockingsSpecularFalloff",
+     "type": "F",
+     "texel": 28,
+     "comp": 3,
+     "rgb": [
+      0.800000011920929,
+      0.800000011920929,
+      0.800000011920929
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高光透肉衰减值",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SilkStockingsSpecularValue",
+     "type": "F",
+     "texel": 36,
+     "comp": 0,
+     "rgb": [
+      2,
+      2,
+      2
+     ],
+     "a": 0,
+     "group": "丝袜",
+     "label": "丝袜高光位置偏移",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_UseSpecRampMap",
+     "type": "F",
+     "texel": 36,
+     "comp": 1,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "Specular Ramp",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_SpecRampIridescentMode",
+     "type": "F",
+     "texel": 36,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "Ramp",
+     "label": "彩虹色模式(镭射塑料请勾选)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_CharacterParams13",
+     "type": "V4",
+     "texel": 37,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP13 (.w=GGX specular toggle)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams9",
+     "type": "V4",
+     "texel": 38,
+     "comp": 0,
+     "rgb": [
+      0,
+      1,
+      0
+     ],
+     "a": 0.4000000059604645,
+     "group": "引擎全局 CP",
+     "label": "CP9 (skin spec .xy=dir .z=tint .w=width)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_CharacterParams8",
+     "type": "V4",
+     "texel": 39,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "引擎全局 CP",
+     "label": "CP8 (skin spec color rgb + .w=intensity)",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "_EmissionColor",
+     "type": "V4",
+     "texel": 40,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "基础",
+     "label": "Emission Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_EmissionBrightness",
+     "type": "F",
+     "texel": 36,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "自发光",
+     "label": "Emission Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ParallaxColor",
+     "type": "V4",
+     "texel": 41,
+     "comp": 0,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 1,
+     "group": "视差",
+     "label": "Parallax Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_VFXBlendTint",
+     "type": "V4",
+     "texel": 42,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "VFX 合成",
+     "label": "BlendTint",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_VFXColorIntensity",
+     "type": "F",
+     "texel": 43,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "VFX Color Intensity (Default 1)",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_VFXFresnelColor",
+     "type": "V4",
+     "texel": 44,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "VFX 合成",
+     "label": "Fresnel Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_VFXFresnelAffectOpacity",
+     "type": "F",
+     "texel": 43,
+     "comp": 1,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "VFX 合成",
+     "label": "Fresnel Affect Opacity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_EnableVFXColorAdjustment",
+     "type": "F",
+     "texel": 43,
+     "comp": 2,
+     "rgb": [
+      0,
+      0,
+      0
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "VFX Color Adjustment",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentContrast",
+     "type": "F",
+     "texel": 43,
+     "comp": 3,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Contrast",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentSaturation",
+     "type": "F",
+     "texel": 45,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Saturation",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentRimWidth",
+     "type": "F",
+     "texel": 45,
+     "comp": 1,
+     "rgb": [
+      0.3499999940395355,
+      0.3499999940395355,
+      0.3499999940395355
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Width",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentBrightness",
+     "type": "F",
+     "texel": 45,
+     "comp": 2,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Brightness",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "_ColorAdjustmentColorBlend",
+     "type": "V4",
+     "texel": 46,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Color Blend",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_ColorAdjustmentRimColor",
+     "type": "V4",
+     "texel": 47,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 1,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Color",
+     "ui_kind": "COLOR"
+    },
+    {
+     "name": "_ColorAdjustmentRimIntensity",
+     "type": "F",
+     "texel": 45,
+     "comp": 3,
+     "rgb": [
+      4,
+      4,
+      4
+     ],
+     "a": 0,
+     "group": "特效调色",
+     "label": "Color Adjustment Rim Intensity",
+     "ui_kind": "VALUE"
+    },
+    {
+     "name": "__size_ShadowLutTex",
+     "type": "V3",
+     "texel": 48,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_DiffRampMap",
+     "type": "V3",
+     "texel": 49,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    },
+    {
+     "name": "__size_SpecRampMap",
+     "type": "V3",
+     "texel": 50,
+     "comp": 0,
+     "rgb": [
+      1,
+      1,
+      1
+     ],
+     "a": 0,
+     "group": "",
+     "label": "",
+     "ui_kind": "VECTOR"
+    }
+   ],
+   "param_index": {
+    "_UseBumpMap": {
+     "t": 0,
+     "c": 0,
+     "type": "F"
+    },
+    "_BumpScale": {
+     "t": 0,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseRMOSMap": {
+     "t": 0,
+     "c": 2,
+     "type": "F"
+    },
+    "_BaseColor": {
+     "t": 1,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SurfaceType": {
+     "t": 0,
+     "c": 3,
+     "type": "F"
+    },
+    "_RoughnessIntensity": {
+     "t": 2,
+     "c": 0,
+     "type": "F"
+    },
+    "_MetallicIntensity": {
+     "t": 2,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecularIntensity": {
+     "t": 2,
+     "c": 2,
+     "type": "F"
+    },
+    "_BackFaceNormalFlip": {
+     "t": 2,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams12": {
+     "t": 3,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EnvironmentGlobalParams0": {
+     "t": 4,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ExposureWithMiscParams": {
+     "t": 5,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseMetallicGlossMap": {
+     "t": 6,
+     "c": 0,
+     "type": "F"
+    },
+    "_Smoothness": {
+     "t": 6,
+     "c": 1,
+     "type": "F"
+    },
+    "_Metallic": {
+     "t": 6,
+     "c": 2,
+     "type": "F"
+    },
+    "_Specular": {
+     "t": 6,
+     "c": 3,
+     "type": "F"
+    },
+    "_CharacterParams11": {
+     "t": 7,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams1": {
+     "t": 8,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriOutlineShellGate": {
+     "t": 9,
+     "c": 0,
+     "type": "F"
+    },
+    "_OutlineTintEnable": {
+     "t": 9,
+     "c": 1,
+     "type": "F"
+    },
+    "_OutlineTintColor": {
+     "t": 10,
+     "c": 0,
+     "type": "V4"
+    },
+    "_OutlineColorBrightness": {
+     "t": 9,
+     "c": 2,
+     "type": "F"
+    },
+    "_OutlineColorSaturation": {
+     "t": 9,
+     "c": 3,
+     "type": "F"
+    },
+    "_UseShadowLutTex": {
+     "t": 11,
+     "c": 0,
+     "type": "F"
+    },
+    "_ShadowColorBrightness": {
+     "t": 11,
+     "c": 1,
+     "type": "F"
+    },
+    "_ShadowColorSaturation": {
+     "t": 11,
+     "c": 2,
+     "type": "F"
+    },
+    "_ClearCoat": {
+     "t": 11,
+     "c": 3,
+     "type": "F"
+    },
+    "_ClearCoatNormalMode": {
+     "t": 12,
+     "c": 0,
+     "type": "F"
+    },
+    "_ClearCoatSmoothness": {
+     "t": 12,
+     "c": 1,
+     "type": "F"
+    },
+    "_ClearCoatMetallic": {
+     "t": 12,
+     "c": 2,
+     "type": "F"
+    },
+    "_ClearCoatColor": {
+     "t": 13,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockings": {
+     "t": 12,
+     "c": 3,
+     "type": "F"
+    },
+    "_RuriCharacterEnvironmentEffect": {
+     "t": 14,
+     "c": 0,
+     "type": "V4"
+    },
+    "_RuriCharacterEnvironmentWater": {
+     "t": 15,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams10": {
+     "t": 16,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsSpecularInt": {
+     "t": 17,
+     "c": 0,
+     "type": "F"
+    },
+    "_SilkStockingsSpecularMinAtMinWetness": {
+     "t": 17,
+     "c": 1,
+     "type": "F"
+    },
+    "_SilkStockingsAdvance": {
+     "t": 17,
+     "c": 2,
+     "type": "F"
+    },
+    "_SilkStockingsColor": {
+     "t": 18,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsAnisoDirection": {
+     "t": 17,
+     "c": 3,
+     "type": "F"
+    },
+    "_SilkStockingsDryColor": {
+     "t": 19,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsWetColor": {
+     "t": 20,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsMinAffect": {
+     "t": 21,
+     "c": 0,
+     "type": "F"
+    },
+    "_SilkStockingsMaxAffect": {
+     "t": 21,
+     "c": 1,
+     "type": "F"
+    },
+    "_UseEmission": {
+     "t": 21,
+     "c": 2,
+     "type": "F"
+    },
+    "_UseParallax": {
+     "t": 21,
+     "c": 3,
+     "type": "F"
+    },
+    "_ParallaxTex_ST": {
+     "t": 22,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ParallaxMarchNum": {
+     "t": 23,
+     "c": 0,
+     "type": "F"
+    },
+    "_ParallaxScale": {
+     "t": 23,
+     "c": 1,
+     "type": "F"
+    },
+    "_EnableCharacterVFX": {
+     "t": 23,
+     "c": 2,
+     "type": "F"
+    },
+    "_VFXSpecialParam": {
+     "t": 24,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXSpecialBlendTex_ST": {
+     "t": 25,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXSpecialBlendTexRForDisturb": {
+     "t": 23,
+     "c": 3,
+     "type": "F"
+    },
+    "_VFXSpecialMainTex_ST": {
+     "t": 26,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseVFXMainTexAsAlpha": {
+     "t": 27,
+     "c": 0,
+     "type": "F"
+    },
+    "_VFXFresnelBias": {
+     "t": 27,
+     "c": 1,
+     "type": "F"
+    },
+    "_VFXFresnelPower": {
+     "t": 27,
+     "c": 2,
+     "type": "F"
+    },
+    "_VFXFresnelFlip": {
+     "t": 27,
+     "c": 3,
+     "type": "F"
+    },
+    "_VFXColorAlpha": {
+     "t": 28,
+     "c": 0,
+     "type": "F"
+    },
+    "_VFXColor": {
+     "t": 29,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SpecialDissolveScheduleOffset": {
+     "t": 28,
+     "c": 1,
+     "type": "F"
+    },
+    "_CharacterParams2": {
+     "t": 30,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams5": {
+     "t": 31,
+     "c": 0,
+     "type": "V4"
+    },
+    "_UseDiffRampMap": {
+     "t": 28,
+     "c": 2,
+     "type": "F"
+    },
+    "_DirectionalShadowParams": {
+     "t": 32,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams0": {
+     "t": 33,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams6": {
+     "t": 34,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams7": {
+     "t": 35,
+     "c": 0,
+     "type": "V4"
+    },
+    "_SilkStockingsSpecularFalloff": {
+     "t": 28,
+     "c": 3,
+     "type": "F"
+    },
+    "_SilkStockingsSpecularValue": {
+     "t": 36,
+     "c": 0,
+     "type": "F"
+    },
+    "_UseSpecRampMap": {
+     "t": 36,
+     "c": 1,
+     "type": "F"
+    },
+    "_SpecRampIridescentMode": {
+     "t": 36,
+     "c": 2,
+     "type": "F"
+    },
+    "_CharacterParams13": {
+     "t": 37,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams9": {
+     "t": 38,
+     "c": 0,
+     "type": "V4"
+    },
+    "_CharacterParams8": {
+     "t": 39,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EmissionColor": {
+     "t": 40,
+     "c": 0,
+     "type": "V4"
+    },
+    "_EmissionBrightness": {
+     "t": 36,
+     "c": 3,
+     "type": "F"
+    },
+    "_ParallaxColor": {
+     "t": 41,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXBlendTint": {
+     "t": 42,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXColorIntensity": {
+     "t": 43,
+     "c": 0,
+     "type": "F"
+    },
+    "_VFXFresnelColor": {
+     "t": 44,
+     "c": 0,
+     "type": "V4"
+    },
+    "_VFXFresnelAffectOpacity": {
+     "t": 43,
+     "c": 1,
+     "type": "F"
+    },
+    "_EnableVFXColorAdjustment": {
+     "t": 43,
+     "c": 2,
+     "type": "F"
+    },
+    "_ColorAdjustmentContrast": {
+     "t": 43,
+     "c": 3,
+     "type": "F"
+    },
+    "_ColorAdjustmentSaturation": {
+     "t": 45,
+     "c": 0,
+     "type": "F"
+    },
+    "_ColorAdjustmentRimWidth": {
+     "t": 45,
+     "c": 1,
+     "type": "F"
+    },
+    "_ColorAdjustmentBrightness": {
+     "t": 45,
+     "c": 2,
+     "type": "F"
+    },
+    "_ColorAdjustmentColorBlend": {
+     "t": 46,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ColorAdjustmentRimColor": {
+     "t": 47,
+     "c": 0,
+     "type": "V4"
+    },
+    "_ColorAdjustmentRimIntensity": {
+     "t": 45,
+     "c": 3,
+     "type": "F"
+    },
+    "__size_ShadowLutTex": {
+     "t": 48,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_DiffRampMap": {
+     "t": 49,
+     "c": 0,
+     "type": "V3"
+    },
+    "__size_SpecRampMap": {
+     "t": 50,
+     "c": 0,
+     "type": "V3"
+    }
+   }
+  }
+ }
+}

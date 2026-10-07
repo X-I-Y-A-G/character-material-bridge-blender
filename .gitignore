@@ -1,0 +1,15 @@
+__pycache__/
+*.py[cod]
+test_output/
+/packages/
+dist/
+.local_dev_records/
+/开发记录.md
+/dev/*
+!/dev/build_release.py
+!/dev/user_transform.py
+!/dev/README_user.md
+!/dev/test_user_transform.py
+!/dev/test_match_v2.py
+!/dev/test_dev_zip_parity.py
+!/dev/test_plugin_only_build.py

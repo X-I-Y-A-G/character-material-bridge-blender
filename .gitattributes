@@ -1,0 +1,6 @@
+# Preserve release inputs exactly across Windows/Linux clones. -text keeps
+# authored bytes without disabling normal Python/Markdown text diffs.
+character_material_bridge/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+dev/README_user.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+*.blend binary
+*.zip binary
