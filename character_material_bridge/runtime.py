@@ -14,7 +14,7 @@ from array import array
 import bpy
 from mathutils import Vector
 
-API_REVISION = 600
+API_REVISION = 601
 INTERVAL = 1.0 / 30.0
 ALL = frozenset({'PARAMETERS', 'RIG', 'CAMERA', 'LIGHTS', 'ENVIRONMENT'})
 AUTO = frozenset({'VIEWPORT', 'FRAME'})
@@ -430,6 +430,14 @@ def settings_changed(settings, context):
     request(settings.id_data, {'LIGHTS'})
 
 
+def environment_changed(settings, context):
+    """An explicit environment edit also works with automatic preview paused."""
+    if (not _registered or _busy or _coordinating or not _main_thread() or _rendering()
+            or getattr(settings.id_data, 'is_evaluated', False)):
+        return
+    _safe_sync(settings.id_data, reason='ENVIRONMENT_EDIT', categories={'ENVIRONMENT'})
+
+
 def _safe_sync(scene, depsgraph=None, for_render=False, force=False, **kwargs):
     global LAST_WARNING, _last_error
     try:
@@ -486,7 +494,7 @@ def synchronize(scene, depsgraph=None, for_render=False, force=False,
             state['channel_count'] = count
         # An edit uses the exact RNA value entered by the user, independent of
         # the other channels' evaluated (possibly paused) animation values.
-        if reason not in {'EDIT', 'HISTORY'}:
+        if reason not in {'EDIT', 'HISTORY', 'ENVIRONMENT_EDIT'}:
             depsgraph = scene_depsgraph(scene, depsgraph)
         else:
             depsgraph = None
@@ -522,7 +530,8 @@ def synchronize(scene, depsgraph=None, for_render=False, force=False,
             state['view_layer'] = depsgraph.view_layer.name
             state['warnings']['LIGHTS'] = lights['warnings']
         if 'ENVIRONMENT' in categories:
-            STATS['environment_rebinds'] += environment53.synchronize(scene, state['environment_materials'], depsgraph=depsgraph)
+            STATS['environment_rebinds'] += environment53.synchronize(
+                scene, state['environment_materials'], depsgraph=depsgraph)
             state['warnings']['ENVIRONMENT'] = [environment53.LAST_WARNING] if environment53.LAST_WARNING else []
         result['warnings'] = list(dict.fromkeys(w for ws in state['warnings'].values() for w in ws))
         LAST_WARNING = '；'.join(result['warnings'])
@@ -643,9 +652,9 @@ def _on_depsgraph(scene, depsgraph):
         if isinstance(original, bpy.types.Collection):
             state['structure'] = True
         if isinstance(original, bpy.types.Action):
-            categories.add('PARAMETERS')
+            categories.update({'PARAMETERS', 'ENVIRONMENT'})
         if original == scene and scene.animation_data is not None:
-            categories.add('PARAMETERS')
+            categories.update({'PARAMETERS', 'ENVIRONMENT'})
     if state['structure']:
         categories.update(ALL)
         state['param_full'] = True
@@ -761,8 +770,11 @@ def _on_history(_unused):
     _on_load(_unused)
     if _registered:
         for scene in bpy.data.scenes:
-            if not preview_enabled(scene) and len(getattr(scene, 'cmb_anim_channels', ())):
-                _safe_sync(scene, reason='HISTORY')
+            if not preview_enabled(scene):
+                if len(getattr(scene, 'cmb_anim_channels', ())):
+                    _safe_sync(scene, reason='HISTORY')
+                if scene.get('cmb_runtime_ready'):
+                    _safe_sync(scene, reason='ENVIRONMENT_EDIT', categories={'ENVIRONMENT'})
 
 
 @bpy.app.handlers.persistent

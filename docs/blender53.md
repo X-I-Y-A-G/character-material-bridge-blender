@@ -1,14 +1,6 @@
 # Blender 5.3 适配与验证
 
-本分支版本：0.6.0。验证日期：2026-10-11。运行环境：Windows，Blender 5.3.0 Beta `3e084785de9a`，Python 3.13.13。
-
-## 上游依据
-
-核对的 Importer 提交为 [`fb77f982`](https://github.com/ShiyumeMeguri/RuriRipperImporter/commit/fb77f982c97c6e3d72a998782c76c18cae39fabf)，版本号仍是 3.0.0。本次新增提交修复替身材质的来源记录及保存／载入恢复。
-
-其 README 仍写 Blender 5.1+，但[终末地生成着色栈](https://github.com/ShiyumeMeguri/RuriRipperImporter/blob/fb77f982c97c6e3d72a998782c76c18cae39fabf/Game/Endfield/shader/Blender/__init__.py) 已明确要求 5.3。主要实现是数值组输入的批量 RNA 写入、常量折叠、原生逐灯图，以及对象属性传递骨骼基座。Shader stamp 为 `c36a9b36cda22a91`。
-
-[Blender 5.3 官方说明](https://developer.blender.org/docs/release_notes/5.3/eevee/)列出 Light Info、Light Evaluation、Shadow Raycast、Light Accumulation 和 Attribute 的 Light 模式。这些能力已在上述本机二进制中实际创建并渲染验证。Hook 上游仍为 `ed62f85a`，没有新的提交。
+本分支版本：0.6.1。验证日期：2026-10-11。运行环境：Windows，Blender 5.3.0 Beta `3e084785de9a`，Python 3.13.13。
 
 ## 本分支实现
 
@@ -18,7 +10,9 @@
 
 原生灯光图保持原有着色算法和连接，纯原生场景无需脚本灯表上传。仍引用旧灯表的材质保留原路径；混合场景继续更新所需的旧表。原生逐灯图处理场景灯光，旧路径的主日光选择不会被错误地当作原生图的过滤器。
 
-`environment53.py` 只绑定来源可确认的 World 采样器和明确的环境查询口。环境值按场景共用，通过原生属性读取；颜色、强度、Mapping 数值变化不重建每张材质。拓扑／图像变化才重新绑定。支持 Background、Environment Texture、Mapping；复杂 World 图保留上次有效值并提示，不猜测程序化节点的含义。
+「独立运行同步」面板提供「启用世界环境控制」，默认开启以保持已有工程的行为。开启时，已接入的角色环境光跟随 World；关闭后显示独立 RGB 与强度，强度 0 可关闭该环境光。独立模式不依赖 World 节点，也不修改场景背景；RGB、强度支持关键帧，暂停自动预览时手动修改仍生效。切回 World 不清除独立设置，模式与数值随工程保存。
+
+环境通道只绑定来源可确认的 World 采样器和明确的环境查询口。环境值按场景共用，通过原生属性读取；颜色、强度、Mapping 数值变化不重建每张材质，模式／拓扑／图像变化才重新绑定。World 模式支持 Background、Environment Texture、Mapping；复杂 World 图保留上次有效值并提示。切换不会重写未识别的历史环境着色图，环境设置属于当前场景，不随角色材质包传递。
 
 相机投影和方向每轮计算一次，再变换到各目标空间；数值型接收节点一次提交多个输入。新版骨骼基座使用世界空间，同一骨骼的结果复用；旧材质继续使用对象空间，两种属性名独立。原始对象和本帧求值对象保持一致。
 
@@ -26,7 +20,7 @@
 
 ## CPU 性能对比
 
-在同一 Blender 二进制中，以原 `main` 的 0.5.26 源码与本分支分别运行。预热 5 次后测量 50 次，取中位数。
+以下为 0.6.0 的基准记录。在同一 Blender 二进制中，以原 `main` 的 0.5.26 源码与 5.3 分支分别运行。预热 5 次后测量 50 次，取中位数。
 
 | 测试 | 0.5.26 | 0.6.0 | 说明 |
 | --- | ---: | ---: | --- |
@@ -43,8 +37,8 @@
 
 - 原生路径：受限上下文注册、批量写入、RGBA/W、无关输入保护、非有限值拒绝、连线保护、参数面板、动画插值、暂停／手动编辑、预设、克隆、停用后持久数据及保存重载。
 - 骨骼基座：旋转目标网格不改变原生世界空间基座；旧对象空间路径作为对照，数值区分明确。
-- EEVEE 图像：World 颜色／强度、World 节点改名、HDRI 旋转／强度、日光能量／旋转。HDRI 接入前后图像一致，纯原生日光没有脚本灯表上传。
-- 真实上游着色栈：Standard、Face、Eyes、Hair、Fur、Eyebrow、VFX、OverlayShadow、LiquidAg 九个部位，共识别 405 个当前有效参数。复制后的数值相等，依赖闭包已本地化；Standard 另完成编辑、停用 Importer 及保存重载验证。
+- EEVEE 图像：World 颜色／强度、World 节点改名、HDRI 旋转／强度、日光能量／旋转。0.6.1 新增独立 RGB／强度、忽略 World 修改、无 World／复杂 World、零强度、暂停后的手动编辑、关键帧、保存重载及撤销／重做检查；反复切换 HDRI 不累加节点，颜色／强度编辑不逐材质重新绑定。35 项检查通过。
+- 材质兼容性：Standard、Face、Eyes、Hair、Fur、Eyebrow、VFX、OverlayShadow、LiquidAg 九个部位，共识别 405 个当前有效参数。复制后的数值相等，依赖闭包已本地化；Standard 另完成编辑、停用 Importer 及保存重载验证。
 - 旧流程：参数引擎、参数动画渲染、相机变换／镜头设置、暂停／恢复、NLA／驱动、约束、骨骼改名、源包→最终包→接收端→恢复的应用链。
 - 构建：User 裁剪、保守匹配、两版 ZIP 一致性、缺少角色包的独立构建，以及两版 ZIP 的真实安装／启停。
 
@@ -53,10 +47,10 @@
 ## 复现
 
 ```shell
-python dev/build_release.py --plugin-only --out dist/blender53-0.6.0
+python dev/build_release.py --plugin-only --out dist/blender53-0.6.1
 python dev/run_blender53_tests.py --blender "<Blender 5.3 路径>/blender.exe" --script dev/test_blender53.py --out test_output/blender53/native
 python dev/run_blender53_tests.py --blender "<Blender 5.3 路径>/blender.exe" --script dev/test_blender53_render.py --out test_output/blender53/render
-python dev/run_blender53_tests.py --blender "<Blender 5.3 路径>/blender.exe" --script dev/test_blender53_install.py --out test_output/blender53/user dist/blender53-0.6.0/character_material_bridge_user-0.6.0.zip
+python dev/run_blender53_tests.py --blender "<Blender 5.3 路径>/blender.exe" --script dev/test_blender53_install.py --out test_output/blender53/user dist/blender53-0.6.1/character_material_bridge_user-0.6.1.zip
 ```
 
 普通使用者安装 User ZIP；材质包作者安装开发版。此分支没有修改 `main`、旧 Release 或旧仓库，没有添加许可证、LFS 或自动发布流程。

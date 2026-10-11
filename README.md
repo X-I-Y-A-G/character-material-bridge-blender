@@ -1,4 +1,4 @@
-# Character Material Bridge 0.6.0 · Blender 5.3 适配分支
+# Character Material Bridge 0.6.1 · Blender 5.3 适配分支
 
 角色材质桥，维护者：**新杨XIYAG**。把 Ruri 风格角色的材质、节点和外观修改器移植到同角色模型，支持参数编辑、动画、独立同步与材质包分发。
 
@@ -6,7 +6,7 @@
 
 ## 普通用户安装 User 版
 
-普通使用者选择 **`character_material_bridge_user-0.6.0.zip`**。它包含材质移植、参数编辑、动画与实时同步。只有需要制作／导出材质包的作者，才选择开发版 `character_material_bridge-0.6.0.zip`。两版只能启用其中一版。
+普通使用者选择 **`character_material_bridge_user-0.6.1.zip`**。它包含材质移植、参数编辑、动画与实时同步。只有需要制作／导出材质包的作者，才选择开发版 `character_material_bridge-0.6.1.zip`。两版只能启用其中一版。
 
 本分支尚未创建新的 GitHub Release；源码可按下面的命令生成两版 ZIP。仓库 [Releases](https://github.com/X-I-Y-A-G/character-material-bridge-blender/releases) 中的 v0.5.26 是原稳定版，不包含本分支改动。GitHub 的 Source code ZIP 是源码，不能当作插件安装包。
 
@@ -16,11 +16,11 @@
 
 - **原生参数**：识别新 Ruri 材质的数值组输入，按节点批量写入 `foreach_set`；只更新发生变化的组，保护已有连线和驱动。参数编辑、默认值、预设、关键帧、驱动与 NLA 使用同一条传递路径。
 - **原生灯光**：复制并保留 5.3 Light Info / Light Evaluation / Shadow Raycast / Light Accumulation 图。只有旧图仍需要脚本灯表；纯原生图的灯光变化由 EEVEE 处理。原生路径跟随场景中的灯光，旧路径保留主日光选择规则。
-- **环境同步**：对识别出的环境查询和来源明确的 World 采样器，共用场景参数记录；颜色、强度和 Mapping 变化无需逐材质重建。支持 Background、Environment Texture、Mapping；复杂 World 图保留上次有效值并提示。
+- **环境控制**：「独立运行同步」面板新增「启用世界环境控制」，默认开启，角色环境光跟随 World；关闭后用独立 RGB 与强度控制，可插入关键帧，不修改场景背景。两种模式共用场景参数，数值变化无需逐材质重建。World 模式支持 Background、Environment Texture、Mapping；复杂 World 图保留上次有效值并提示。
 - **相机与动画**：同一轮同步只计算一次相机投影，批量更新数值输入；动画求值按实际涉及的通道索引读取。
 - **旧包兼容**：旧参数图和灯表仍按原着色方式运行，参数写入只保存被修改的分量用于回滚，减少整图复制。不会把旧着色算法强行替换成新的逐灯算法。
 
-原生快速路径需要材质本身使用新式节点输入／灯光图。安装插件不会自动把所有历史材质包改写为新版着色栈。详细证据、测试边界和性能测量见 [Blender 5.3 适配说明](docs/blender53.md)。
+原生快速路径需要材质本身使用新式节点输入／灯光图。安装插件不会自动把所有历史材质包改写为新版着色栈。功能说明、测试边界和性能测量见 [Blender 5.3 适配说明](docs/blender53.md)。
 
 ## 材质包
 
@@ -33,7 +33,7 @@
 ## 构建与验证
 
 ```shell
-python dev/build_release.py --plugin-only --out dist/blender53-0.6.0
+python dev/build_release.py --plugin-only --out dist/blender53-0.6.1
 python dev/test_user_transform.py
 python dev/test_match_v2.py
 python dev/test_dev_zip_parity.py

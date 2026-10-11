@@ -1,7 +1,7 @@
 bl_info = {
     'name': 'Character Material Bridge / 角色材质桥',
     'author': '新杨XIYAG',
-    'version': (0, 6, 0),
+    'version': (0, 6, 1),
     'blender': (5, 3, 0),
     'location': 'View3D > Sidebar > 材质移植',
     'description': '请注意阅读RM,插件可快捷导入终末地角色材质。',
@@ -30,7 +30,7 @@ from . import animation
 from . import defaults, postprocess
 from . import lighting, rig_runtime, mesh_state, face_outline, hair_outline
 from . import fur, fur_layers, uv_transfer
-from . import color_management, native53
+from . import color_management, native53, environment53
 
 
 def _reload_changed(module):
@@ -54,7 +54,8 @@ if getattr(fur, 'API_REVISION', 0) < 524:fur = _reload_changed(fur)
 if getattr(fur_layers, 'API_REVISION', 0) < 524:fur_layers = _reload_changed(fur_layers)
 if getattr(uv_transfer, 'API_REVISION', 0) < 524:uv_transfer = _reload_changed(uv_transfer)
 
-if getattr(runtime, 'API_REVISION', 0) < 600:runtime = _reload_changed(runtime)
+if getattr(runtime, 'API_REVISION', 0) < 601:runtime = _reload_changed(runtime)
+if getattr(environment53, 'API_REVISION', 0) < 601:environment53 = _reload_changed(environment53)
 if getattr(animation, 'API_REVISION', 0) < 600:animation = _reload_changed(animation)
 if getattr(lighting, 'API_REVISION', 0) < 600:lighting = _reload_changed(lighting)
 if getattr(defaults, 'API_REVISION', 0) < 600:defaults = _reload_changed(defaults)
@@ -78,7 +79,7 @@ if not (hasattr(core, 'PRESET_SUFFIX') and hasattr(core, 'fix_face_mainlight')
         and hasattr(core, 'load_layout') and hasattr(core, 'export_final_package')
         and hasattr(core, 'material_uber_part_inferred')
         and hasattr(core, 'repair_result_tangents')
-        and getattr(core, 'API_REVISION', 0) >= 600
+        and getattr(core, 'API_REVISION', 0) >= 601
         and getattr(core, 'VERSION', 0) >= 2):
     core = _reload_changed(core)
 
@@ -1268,6 +1269,16 @@ class CMB_RuntimeSettings(bpy.types.PropertyGroup):
     main_sun: PointerProperty(name='主日光', type=bpy.types.Object, poll=_sun_poll,
                               update=runtime.settings_changed,
                               description='留空时按名称排序自动选择可见 Sun')
+    use_world_environment: BoolProperty(name='启用世界环境控制', default=True, options=set(),
+        description='开启时角色环境光跟随 World 背景；关闭时使用下方独立 RGB 和强度，不修改场景背景',
+        update=runtime.environment_changed)
+    environment_color: FloatVectorProperty(name='环境颜色', subtype='COLOR', size=3,
+        min=0.0, max=1.0, default=(0.5, 0.5, 0.5),
+        description='独立环境光 RGB，可插入关键帧；仅作用于已接入的角色环境查询',
+        update=runtime.environment_changed)
+    environment_strength: FloatProperty(name='环境强度', min=0.0, soft_max=5.0, default=1.0,
+        description='独立环境光强度，0 为关闭环境光；可插入关键帧',
+        update=runtime.environment_changed)
 
 
 class CMB_RigBinding(bpy.types.PropertyGroup):
@@ -1339,6 +1350,14 @@ class CMB_PT_runtime(bpy.types.Panel):
         else:
             layout.prop(scene.cmb_runtime_settings,'main_sun')
             layout.label(text='主日光留空：按名称排序自动选择')
+        environment=layout.box()
+        environment.prop(scene.cmb_runtime_settings,'use_world_environment')
+        if not scene.cmb_runtime_settings.use_world_environment:
+            controls=environment.column()
+            controls.use_property_split=True
+            controls.prop(scene.cmb_runtime_settings,'environment_color')
+            controls.prop(scene.cmb_runtime_settings,'environment_strength')
+        environment.label(text='作用于角色环境光，保留场景背景')
         obj=context.object
         if obj and lighting.owned(obj) and rig_runtime.object_needs_basis(obj):
             settings=obj.cmb_rig_binding

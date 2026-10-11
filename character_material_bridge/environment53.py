@@ -7,7 +7,7 @@ from collections import defaultdict
 import json
 import bpy
 
-API_REVISION = 600
+API_REVISION = 601
 KEY = 'cmb_environment53'
 PREFIX = 'CMB53 World '
 COLOR = 'cmb53_environment_color'
@@ -23,7 +23,7 @@ def clear():
     LAST_WARNING = ''
 
 
-def describe(scene, depsgraph=None):
+def describe_world(scene, depsgraph=None):
     original = scene.world
     world = original.evaluated_get(depsgraph) if original and depsgraph is not None else original
     if world is None:return None
@@ -55,13 +55,26 @@ def describe(scene, depsgraph=None):
                           mapping.name if mapping else '', mapping.vector_type if mapping else '')}
 
 
+def describe(scene, depsgraph=None):
+    """Select the shared environment without changing the scene's World."""
+    owner = scene.evaluated_get(depsgraph) if depsgraph is not None else scene
+    settings = getattr(owner, 'cmb_runtime_settings', None)
+    if settings is not None and not settings.use_world_environment:
+        return {'color': COLOR, 'strength': STRENGTH, 'image': None, 'mapping': None,
+                'values': {COLOR: (*settings.environment_color, 1.0),
+                           STRENGTH: float(settings.environment_strength)},
+                'signature': ('MANUAL',)}
+    return describe_world(scene, depsgraph)
+
+
 def capture(source, destination, scene):
     """Record proven World samplers before source ownership metadata is stripped."""
     stored = source.get(KEY)
     if stored:
         destination[KEY] = stored
         return
-    descriptor = describe(scene)
+    # Provenance describes the source World even when the receiver uses RGB.
+    descriptor = describe_world(scene)
     if descriptor is None or descriptor['image'] is None:return
     records = []
     for node in source.node_tree.nodes:
@@ -119,8 +132,8 @@ def eligible(material):
         for node in material.node_tree.nodes))
 
 
-def bind(material, scene):
-    descriptor = describe(scene)
+def bind(material, scene, *, descriptor=None):
+    if descriptor is None:descriptor = describe(scene)
     if descriptor is None:return False
     tree = material.node_tree
     if tree is None:return False
@@ -204,6 +217,6 @@ def synchronize(scene, materials, force=False, depsgraph=None):
     key = scene.session_uid
     signature = (signature, tuple(m.session_uid for m in materials))
     if not force and _states.get(key) == signature:return 0
-    count = sum(bool(bind(material,scene)) for material in materials)
+    count = sum(bool(bind(material,scene,descriptor=descriptor)) for material in materials) if descriptor else 0
     _states[key] = signature
     return count

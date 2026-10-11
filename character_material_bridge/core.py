@@ -15,9 +15,9 @@ import bpy
 FORMAT = 'character-material-bridge'
 LEGACY_FORMAT = 'jue-material-bridge'  # 0.3.0 改名前（v0.1~v0.4 包）的格式标识；读取端继续接受
 VERSION = 2  # v2 导出载体上全部材质槽并附 slot_used；读取端兼容 v1/v2。
-API_REVISION = 600  # Blender 5.3 native uniform transport plus packed-table compatibility.
+API_REVISION = 601  # Blender 5.3 native uniforms and independent environment control.
 RUNTIME_BINDING_VERSION = 1
-ADDON_VERSION = (0, 6, 0)
+ADDON_VERSION = (0, 6, 1)
 MANIFEST = 'CMB_MANIFEST.json'
 LEGACY_MANIFEST = 'JMB_MANIFEST.json'  # 0.3.0 改名前的清单 Text 名；旧包（v0.1~v0.4）内仍是旧名
 REPORT = 'CMB_Report.json'

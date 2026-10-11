@@ -1,8 +1,8 @@
-# Character Material Bridge 0.6.0 / 角色材质桥 — User 用户版
+# Character Material Bridge 0.6.1 / 角色材质桥 — User 用户版
 
-**普通使用者请选择 `character_material_bridge_user-0.6.0.zip`。** 用户版用于接收、应用别人提供的材质包，支持调参、参数动画和独立运行同步。需要制作、导出源材质包或最终材质包的作者，使用开发版。
+**普通使用者请选择 `character_material_bridge_user-0.6.1.zip`。** 用户版用于接收、应用别人提供的材质包，支持调参、参数动画和独立运行同步。需要制作、导出源材质包或最终材质包的作者，使用开发版。
 
-本分支尚未发布 GitHub Release；安装构建产物 `character_material_bridge_user-0.6.0.zip`。
+本分支尚未发布 GitHub Release；安装构建产物 `character_material_bridge_user-0.6.1.zip`。
 
 ## 安装与版本要求
 
@@ -54,6 +54,6 @@
 0.6.0 的主要修复为 GUI 动画／视频渲染逐帧同步。已清理渲染工作线程中的界面上下文覆盖、递归依赖图更新和 GPU 释放路径；用户反馈的 5.3 Alpha 原始崩溃尚未复现，不承诺所有 Alpha 构建及插件组合都已验证。
 ## Blender 5.3 实时同步
 
-新式 Ruri 材质使用数值组输入批量传递参数，原生灯光图跟随 EEVEE 场景灯光；旧参数图材质继续使用兼容路径。相机投影在同一轮同步中共用计算。已识别环境查询可同步 Background / HDRI / Mapping，复杂 World 图会提示并保留上次有效值。性能与适配边界见仓库 `docs/blender53.md`。
+新式 Ruri 材质使用数值组输入批量传递参数，原生灯光图跟随 EEVEE 场景灯光；旧参数图材质继续使用兼容路径。相机投影在同一轮同步中共用计算。在「独立运行同步」中，「启用世界环境控制」默认开启，已接入的角色环境光跟随 World 的 Background / HDRI / Mapping；复杂 World 图会提示并保留上次有效值。关闭开关后显示「环境颜色」（RGB）和「环境强度」，独立控制角色环境光，保留场景背景。两项支持关键帧；强度为 0 时关闭该环境光。切回 World 后仍保留独立设置，开关及设置随当前工程保存。性能与适配边界见仓库 `docs/blender53.md`。
 
 普通用户选择 User 版；安装后保存工程并完整重启 Blender。参数动画仍需保持插件启用，历史材质包不会自动重写成新着色算法。

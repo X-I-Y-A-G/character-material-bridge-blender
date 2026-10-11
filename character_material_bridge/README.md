@@ -1,12 +1,12 @@
-# Character Material Bridge 0.6.0 / 角色材质桥 — 开发版
+# Character Material Bridge 0.6.1 / 角色材质桥 — 开发版
 
-**普通使用者请选择 `character_material_bridge_user-0.6.0.zip`。本分支尚未发布 GitHub Release，可从源码独立构建。** 本开发版供需要制作、导出源材质包或最终材质包的作者使用。
+**普通使用者请选择 `character_material_bridge_user-0.6.1.zip`。本分支尚未发布 GitHub Release，可从源码独立构建。** 本开发版供需要制作、导出源材质包或最终材质包的作者使用。
 
 ## 安装与版本要求
 
 必须在 **Blender 5.3 及以上版本（5.3+）** 安装、使用和验证。本分支实测环境为 Windows / Blender 5.3.0 Beta（3e084785de9a）；其他版本需在实际环境验证。
 
-从 Blender 偏好设置安装 `character_material_bridge-0.6.0.zip`，启用 **Character Material Bridge / 角色材质桥**。开发版与用户版只能启用其中一版；升级后建议重启 Blender。入口为 3D 视图 → N 侧栏 →「材质移植」。
+从 Blender 偏好设置安装 `character_material_bridge-0.6.1.zip`，启用 **Character Material Bridge / 角色材质桥**。开发版与用户版只能启用其中一版；升级后建议重启 Blender。入口为 3D 视图 → N 侧栏 →「材质移植」。
 
 ## 从源工程制作材质包
 
@@ -48,6 +48,6 @@
 [项目首页与下载](https://github.com/X-I-Y-A-G/character-material-bridge-blender)提供最新安装包、构建命令和基础验证说明。源码仓库只保存插件运行文件、必需资源、构建链、基础验证及用户说明；角色材质包、内部记录和测试模型不作为公开源码发布内容。
 ## Blender 5.3 实时同步
 
-新式 Ruri 材质使用数值组输入批量传递参数，原生灯光图跟随 EEVEE 场景灯光；旧参数图材质继续使用兼容路径。相机投影在同一轮同步中共用计算。已识别环境查询可同步 Background / HDRI / Mapping，复杂 World 图会提示并保留上次有效值。性能与适配边界见仓库 `docs/blender53.md`。
+新式 Ruri 材质使用数值组输入批量传递参数，原生灯光图跟随 EEVEE 场景灯光；旧参数图材质继续使用兼容路径。相机投影在同一轮同步中共用计算。在「独立运行同步」中，「启用世界环境控制」默认开启，已接入的角色环境光跟随 World 的 Background / HDRI / Mapping；复杂 World 图会提示并保留上次有效值。关闭开关后显示「环境颜色」（RGB）和「环境强度」，独立控制角色环境光，保留场景背景。两项支持关键帧；强度为 0 时关闭该环境光。切回 World 后仍保留独立设置，开关及设置随当前工程保存。性能与适配边界见仓库 `docs/blender53.md`。
 
 普通用户选择 User 版；安装后保存工程并完整重启 Blender。参数动画仍需保持插件启用，历史材质包不会自动重写成新着色算法。
