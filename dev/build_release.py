@@ -32,8 +32,8 @@ USER_NAMES = {f'{USER_DIR_IN_ZIP}/__init__.py', f'{USER_DIR_IN_ZIP}/core.py',
               f'{USER_DIR_IN_ZIP}/outline.py', f'{USER_DIR_IN_ZIP}/runtime.py', f'{USER_DIR_IN_ZIP}/mesh_state.py', f'{USER_DIR_IN_ZIP}/animation.py',
               f'{USER_DIR_IN_ZIP}/ruri_params_layout.json', f'{USER_DIR_IN_ZIP}/README.md'}
 ZIP_DATE = (1980, 1, 1, 0, 0, 0)  # 固定时间戳：同一源码树产出可复现的 zip/sha256
-MIN_BLENDER_VERSION = (5, 2, 0)
-EXTRA_FILES = ('defaults.py', 'postprocess.py', 'lighting.py', 'rig_runtime.py', 'face_outline.py', 'hair_outline.py', 'fur.py', 'fur_layers.py', 'uv_transfer.py', 'color_management.py', 'assets/endfield_post.blend')
+MIN_BLENDER_VERSION = (5, 3, 0)
+EXTRA_FILES = ('defaults.py', 'postprocess.py', 'lighting.py', 'rig_runtime.py', 'face_outline.py', 'hair_outline.py', 'fur.py', 'fur_layers.py', 'uv_transfer.py', 'color_management.py', 'native53.py', 'environment53.py', 'assets/endfield_post.blend')
 DEV_NAMES.update(f'{DEV_DIR_IN_ZIP}/{name}' for name in EXTRA_FILES)
 USER_NAMES.update(f'{USER_DIR_IN_ZIP}/{name}' for name in EXTRA_FILES)
 
@@ -223,7 +223,7 @@ def build(out_dir, *, plugin_only=False):
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     py_sources = sorted(PLUGIN.glob('*.py'), key=lambda p: p.name)
-    if {p.name for p in py_sources} != {'__init__.py', 'core.py', 'outline.py', 'runtime.py', 'mesh_state.py', 'animation.py', 'defaults.py', 'postprocess.py', 'lighting.py', 'rig_runtime.py', 'face_outline.py', 'hair_outline.py', 'fur.py', 'fur_layers.py', 'uv_transfer.py', 'color_management.py'}:
+    if {p.name for p in py_sources} != {'__init__.py', 'core.py', 'outline.py', 'runtime.py', 'mesh_state.py', 'animation.py', 'defaults.py', 'postprocess.py', 'lighting.py', 'rig_runtime.py', 'face_outline.py', 'hair_outline.py', 'fur.py', 'fur_layers.py', 'uv_transfer.py', 'color_management.py', 'native53.py', 'environment53.py'}:
         raise BuildCheckError(f'unexpected top-level *.py set in plugin dir: '
                               f'{sorted(p.name for p in py_sources)}')
     src_init_bytes = (PLUGIN / '__init__.py').read_bytes()

@@ -4,7 +4,7 @@ from collections import defaultdict
 from array import array
 import bpy
 
-API_REVISION = 513
+API_REVISION = 600
 ROLE_KEY = 'cmb_default_profile'
 ROLES = {'CLOTHING', 'BODY', 'FACE', 'OTHER', 'UNKNOWN'}
 FACE_RGB = (1.0736485719680786, 1.0311452150344849, 1.07626211643219)
@@ -78,7 +78,9 @@ def values(role, current):
 
 
 def current_values(material):
-    from . import core
+    from . import core, native53
+    if native53.is_native(material):
+        return core.material_uber_part(material), 0, native53.values(material)
     snap = core.read_material_column(material)
     if snap is None:
         return None
@@ -88,16 +90,17 @@ def current_values(material):
 
 
 def default_value(material, part, name, current=None):
-    from . import core
+    from . import core, native53
+    fallback = native53.default_value(material, name) if native53.is_native(material) else core.default_value(part, name)
     if name not in {'_CharacterParams11', '_CharacterParams9', '_CharacterParams8', '_BaseColor'}:
-        return core.default_value(part, name)
+        return fallback
     role = resolve(material)
     if role == 'UNKNOWN':
         return None
     if current is None:
         snap = current_values(material)
-        current = snap[2].get(name) if snap else core.default_value(part, name)
-    return values(role, {name: current}).get(name, core.default_value(part, name))
+        current = snap[2].get(name) if snap else fallback
+    return values(role, {name: current}).get(name, fallback)
 
 
 def differs(material, part, name, value, epsilon=1e-4):
@@ -110,12 +113,22 @@ def differs(material, part, name, value, epsilon=1e-4):
 
 
 def apply(objects, scene=None, undo_checkpoint=False):
-    from . import core, animation
+    from . import core, animation, native53
     scene = scene or bpy.context.scene
     materials = {slot.material for obj in objects if obj.type == 'MESH'
                  for slot in obj.material_slots if slot.material}
     bindings = defaultdict(list)
     report = {'materials': 0, 'columns': 0, 'warnings': [], 'skipped': []}
+    native_plans = []
+    for material in tuple(materials):
+        if not native53.is_native(material):continue
+        part = core.material_uber_part(material)
+        current = native53.values(material)
+        updates = [(part, name, value) for name, value in values(resolve(material), current).items()]
+        native53.prepare(material, updates)
+        before = [(part, name, current[name]) for _, name, _ in updates]
+        native_plans.append((material, updates, before))
+        materials.remove(material)
     for mat in materials:
         snap = current_values(mat)
         if snap is None or not core.stamp_matches(mat):
@@ -149,6 +162,11 @@ def apply(objects, scene=None, undo_checkpoint=False):
     # Transfer calls do not push an undo step; their transaction owns that history.
     initialized = False
     if hasattr(scene, 'cmb_anim_channels'):
+        for material, updates, before in native_plans:
+            for part, name, value in before:
+                if animation.find(scene, None, 0, part, name, material=material) is None:
+                    animation.ensure(scene, None, 0, part, name, value, material=material)
+                    initialized = True
         for image, col, updates, rows in planned:
             for part, name, _ in updates:
                 if animation.find(scene, image, col, part, name) is None:
@@ -158,6 +176,7 @@ def apply(objects, scene=None, undo_checkpoint=False):
         bpy.ops.ed.undo_push(message='应用部位默认值前')
     snapshots = {}
     try:
+        for material, updates, _ in native_plans:native53.write(material, updates)
         for image, columns in uploads.items():
             pixels = array('f', [0.0]) * len(image.pixels)
             image.pixels.foreach_get(pixels)
@@ -166,10 +185,17 @@ def apply(objects, scene=None, undo_checkpoint=False):
             if result['unknown']:
                 raise RuntimeError('默认参数布局不匹配: ' + str(result['unknown']))
     except Exception:
+        for material, _, before in native_plans:native53.write(material, before)
         for image, (pixels, alpha) in snapshots.items():
             image.pixels.foreach_set(pixels); image.alpha_mode = alpha
             image.update(); image.pack()
         raise
+    for material, updates, _ in native_plans:
+        for other in bpy.data.scenes:
+            animation.adopt_updates(other, None, 0, updates, material=material)
+        material['cmb_default_revision'] = API_REVISION
+        report['materials'] += 1
+        report['columns'] += 1
     for image, col, updates, rows in planned:
         for other in bpy.data.scenes:
             animation.adopt_updates(other, image, col, updates)
@@ -182,7 +208,8 @@ def apply(objects, scene=None, undo_checkpoint=False):
 
 
 def binding_conflict(material):
-    from . import core
+    from . import core, native53
+    if native53.is_native(material):return False
     image, col = core.mat_param_image(material), core.material_param_col(material)
     kinds = {(resolve(m), core.material_uber_part(m)) for m in bpy.data.materials
              if core.material_param_col(m) == col and core.mat_param_image(m) == image}

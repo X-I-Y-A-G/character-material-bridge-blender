@@ -9,13 +9,14 @@ import traceback
 import time
 import threading
 from collections import defaultdict
+from array import array
 
 import bpy
 from mathutils import Vector
 
-API_REVISION = 527
+API_REVISION = 600
 INTERVAL = 1.0 / 30.0
-ALL = frozenset({'PARAMETERS', 'RIG', 'CAMERA', 'LIGHTS'})
+ALL = frozenset({'PARAMETERS', 'RIG', 'CAMERA', 'LIGHTS', 'ENVIRONMENT'})
 AUTO = frozenset({'VIEWPORT', 'FRAME'})
 _states = {}
 _pending = {}
@@ -132,29 +133,36 @@ def receivers(obj):
     return found
 
 
-def camera_values(scene, camera, obj, depsgraph):
+def camera_frame(scene, camera, depsgraph):
+    """Projection/orientation is scene-wide; calculate it once for all characters."""
+    cam = camera.evaluated_get(depsgraph) if depsgraph else camera
+    cam3 = cam.matrix_world.normalized().to_3x3()
+    if any(axis.length < 1e-12 for axis in cam3.col):
+        raise ValueError('相机方向轴退化，请避免零缩放')
+    render = scene.render
+    proj = cam.calc_matrix_camera(depsgraph, x=render.resolution_x, y=render.resolution_y,
+                                 scale_x=render.pixel_aspect_x, scale_y=render.pixel_aspect_y)
+    STATS['camera_projection_queries'] += 1
+    scale = render.resolution_percentage / 100.0
+    return dict(right=cam3.col[0].copy(), up=cam3.col[1].copy(), look=cam3 @ Vector((0, 0, -1)),
+                position=cam.matrix_world.translation.copy(), half_fov=math.atan(1.0 / abs(proj[1][1])),
+                screen_x=float(render.resolution_x)*scale, screen_y=float(render.resolution_y)*scale)
+
+
+def camera_values(scene, camera, obj, depsgraph, shared=None):
     """Evaluated camera frame, excluding display scale as Blender projection does.
 
     Normalize the camera in WORLD space before converting to object space.
     Normalizing afterwards would discard the target mesh's required inverse
     scale. Camera position and target-object transform retain their full scale.
     """
-    cam = camera.evaluated_get(depsgraph) if depsgraph else camera
     target = obj.evaluated_get(depsgraph) if depsgraph else obj
     inv = target.matrix_world.inverted()  # singular transforms must not silently pass
-    inv3, cam3 = inv.to_3x3(), cam.matrix_world.normalized().to_3x3()
-    if any(axis.length < 1e-12 for axis in cam3.col):
-        raise ValueError('相机方向轴退化，请避免零缩放')
-    render = scene.render
-    proj = cam.calc_matrix_camera(depsgraph, x=render.resolution_x, y=render.resolution_y,
-                                 scale_x=render.pixel_aspect_x, scale_y=render.pixel_aspect_y)
-    scale = render.resolution_percentage / 100.0
-    return {'cam_right': inv3 @ cam3.col[0], 'cam_up': inv3 @ cam3.col[1],
-            'cam_look': inv3 @ (cam3 @ Vector((0, 0, -1))),
-            'cam_pos': inv @ cam.matrix_world.translation,
-            'half_fov': math.atan(1.0 / abs(proj[1][1])),
-            'screen_x': float(render.resolution_x) * scale,
-            'screen_y': float(render.resolution_y) * scale}
+    inv3 = inv.to_3x3()
+    shared = camera_frame(scene, camera, depsgraph) if shared is None else shared
+    return {'cam_right': inv3 @ shared['right'], 'cam_up': inv3 @ shared['up'],
+            'cam_look': inv3 @ shared['look'], 'cam_pos': inv @ shared['position'],
+            'half_fov': shared['half_fov'], 'screen_x': shared['screen_x'], 'screen_y': shared['screen_y']}
 
 
 def _set(socket, value):
@@ -170,6 +178,33 @@ def _set(socket, value):
         return False
     socket.default_value = value
     return True
+
+
+def _set_inputs(node, values):
+    """Blender 5.3 commits all changed numeric inputs in one RNA notification."""
+    from . import native53
+    if not all(socket.type in native53.BULK_TYPES for socket in node.inputs):
+        return sum(_set(node.inputs.get(key), value) for key, value in values.items())
+    size = sum(native53.WIDTHS[s.type] for s in node.inputs)
+    flat = array('f', [0.0]) * size
+    node.inputs.foreach_get('default_value', flat)
+    data = node.id_data.animation_data
+    drivers = {fc.data_path for fc in data.drivers} if data else set()
+    changed, offset = 0, 0
+    for socket in node.inputs:
+        width = native53.WIDTHS[socket.type]
+        value = values.get(socket.name)
+        if value is not None and not socket.is_linked and socket.path_from_id('default_value') not in drivers:
+            new = tuple(value) if hasattr(value, '__len__') else (value,)
+            if len(new) == width and any(abs(old-current) > 1e-6*max(1.0,abs(current))
+                    for old, current in zip(flat[offset:offset+width],new)):
+                flat[offset:offset+width] = array('f',new)
+                changed += 1
+        offset += width
+    if changed:
+        node.inputs.foreach_set('default_value',flat)
+        STATS['camera_node_batches'] += 1
+    return changed
 
 
 def sync_scene(scene, depsgraph=None, objects=None, receiver_map=None):
@@ -194,17 +229,22 @@ def sync_scene(scene, depsgraph=None, objects=None, receiver_map=None):
         depsgraph = scene_depsgraph(scene, depsgraph)
         if camera.data.type != 'PERSP':
             report['warnings'].append('当前描边沿用 Importer 的透视公式，正交/全景相机不保证正确')
+        try:
+            shared_camera = camera_frame(scene, camera, depsgraph)
+        except (ValueError, ZeroDivisionError) as exc:
+            report['warnings'].append('相机同步失败：' + str(exc))
+            LAST_WARNING = report['warnings'][0]
+            return report
         for obj, nodes in targets:
             try:
-                values = camera_values(scene, camera, obj, depsgraph)
+                values = camera_values(scene, camera, obj, depsgraph, shared_camera)
             except (ValueError, ZeroDivisionError) as exc:
                 report['warnings'].append(obj.name + '：相机/对象变换不可逆，未同步 ' + str(exc))
                 continue
             count = 0
+            values['input_camPos'] = values['cam_pos']
             for node in nodes:
-                for key, value in values.items():
-                    count += _set(node.inputs.get(key), value)
-                count += _set(node.inputs.get('input_camPos'), values['cam_pos'])
+                count += _set_inputs(node, values)
             if count:
                 obj.update_tag(refresh={'DATA'})
                 report['objects'] += 1
@@ -269,8 +309,9 @@ def _state(scene):
 
 
 def _build(scene, state):
-    from . import core, lighting, rig_runtime
+    from . import core, lighting, rig_runtime, native53, environment53
     STATS['binding_builds'] += 1
+    native53.invalidate()
     _prune_scenes()
     objects = lighting.targets(scene)
     state['scope_error'] = ''
@@ -286,8 +327,18 @@ def _build(scene, state):
         state['rigs'] = rig_runtime.bindings_for(objects) if scene.get('cmb_runtime_ready') else ()
         state['trees'] = {t.as_pointer(): (t, _tree_binding(t))
                           for t in core.walk_trees_for_objects(objects)}
+    else:
+        state['receivers'], state['rigs'], state['trees'] = {}, (), {}
     state['object_bindings'] = {o.as_pointer(): _object_binding(o) for o in objects}
     state['lights'] = tuple(o for o in scene.objects if o.type == 'LIGHT')
+    materials = {slot.material for obj in objects for slot in obj.material_slots if slot.material}
+    state['environment_materials'] = tuple(mat for mat in materials if native53.is_native(mat) and environment53.eligible(mat))
+    state['native_lighting_only'] = bool(materials and all(
+        not native53.requires_light_table(mat) for mat in materials) and not any(
+        lighting.is_light_table(image) for tree, _ in state['trees'].values()
+        for node in tree.nodes for _, _, image in lighting.image_refs(node)))
+    if not state['scope_error'] and scene.get('cmb_runtime_ready') and scene.get('cmb_native_lighting_only') != state['native_lighting_only']:
+        scene['cmb_native_lighting_only'] = state['native_lighting_only']
     state['light_ids'] = {i.as_pointer() for o in state['lights'] for i in (o, o.data)}
     state['rig_ids'] = {i.as_pointer() for _, arm, _ in state['rigs'] if arm for i in (arm, arm.data)}
     state['materials'] = {s.material.as_pointer() for o in objects for s in o.material_slots if s.material}
@@ -326,6 +377,10 @@ def _prune_scenes():
 def invalidate(scene=None, parameters=False):
     """Mark bindings stale; rebuilding is deferred and never runs in register()."""
     from . import animation
+    if not parameters:
+        from . import native53, environment53
+        native53.invalidate()
+        environment53.clear()
     _prune_scenes()
     states = [_state(scene)] if scene is not None else list(_states.values())
     for state in states:
@@ -392,7 +447,7 @@ def _safe_sync(scene, depsgraph=None, for_render=False, force=False, **kwargs):
 def synchronize(scene, depsgraph=None, for_render=False, force=False,
                 reason='MANUAL', categories=None, channels=None):
     """One coordinator with explicit automatic, edit, frame and IO semantics."""
-    from . import animation, lighting, rig_runtime
+    from . import animation, lighting, rig_runtime, environment53
     global _coordinating, LAST_WARNING
     if _coordinating or (reason in AUTO and not for_render and not preview_enabled(scene)):
         return _empty()
@@ -459,13 +514,16 @@ def synchronize(scene, depsgraph=None, for_render=False, force=False,
             result.update(objects=camera['objects'], sockets=camera['sockets'])
             state['warnings']['CAMERA'] = camera['warnings']
             state['camera_settings'] = _camera_settings(scene)
-        if 'LIGHTS' in categories:
+        if 'LIGHTS' in categories and not state['native_lighting_only']:
             STATS['light_syncs'] += 1
             lights = lighting.sync_scene(scene, depsgraph, for_render=for_render,
                                          force=force, candidates=state['lights'])
             result['light_uploads'] = lights['uploads']
             state['view_layer'] = depsgraph.view_layer.name
             state['warnings']['LIGHTS'] = lights['warnings']
+        if 'ENVIRONMENT' in categories:
+            STATS['environment_rebinds'] += environment53.synchronize(scene, state['environment_materials'], depsgraph=depsgraph)
+            state['warnings']['ENVIRONMENT'] = [environment53.LAST_WARNING] if environment53.LAST_WARNING else []
         result['warnings'] = list(dict.fromkeys(w for ws in state['warnings'].values() for w in ws))
         LAST_WARNING = '；'.join(result['warnings'])
         for key in ('parameters', 'rig_objects', 'evaluated_writes', 'sockets', 'light_uploads'):
@@ -550,6 +608,9 @@ def _on_depsgraph(scene, depsgraph):
     for update in depsgraph.updates:
         original = update.id.original
         pointer = original.as_pointer()
+        world = scene.world
+        if world is not None and (original == world or original == world.node_tree):
+            categories.add('ENVIRONMENT')
         if isinstance(original, bpy.types.Object) and original.type == 'MESH':
             if _owned(original) and pointer not in state['object_bindings']:
                 state['structure'] = True
@@ -559,7 +620,7 @@ def _on_depsgraph(scene, depsgraph):
                     if materials.intersection(other.get('materials', ())):
                         other['structure'] = True
                         request(other['scene'])
-        if pointer in state['light_ids']:
+        if pointer in state['light_ids'] and not state['native_lighting_only']:
             categories.add('LIGHTS')
         if pointer in camera_ids:
             categories.add('CAMERA')
@@ -661,7 +722,8 @@ def _rna_notice(category):
 
 def _subscribe():
     bpy.msgbus.clear_by_owner(_msg_owner)
-    specs = [(bpy.types.Scene, 'camera', 'CAMERA'), (bpy.types.Window, 'view_layer', 'LIGHTS')]
+    specs = [(bpy.types.Scene, 'camera', 'CAMERA'), (bpy.types.Window, 'view_layer', 'LIGHTS'),
+             (bpy.types.Scene, 'world', 'ENVIRONMENT')]
     specs += [(bpy.types.RenderSettings, p, 'CAMERA') for p in
               ('resolution_x', 'resolution_y', 'resolution_percentage', 'pixel_aspect_x', 'pixel_aspect_y')]
     specs += [(bpy.types.Object, p, 'LIGHTS') for p in ('hide_render', 'hide_viewport', 'name')]
@@ -674,10 +736,12 @@ def _subscribe():
 
 @bpy.app.handlers.persistent
 def _on_load(_unused):
-    from . import animation, lighting
+    from . import animation, lighting, native53, environment53
     global _bootstrap_pending, _resume_pending
     _resume_pending = False
     animation.invalidate()
+    native53.invalidate()
+    environment53.clear()
     lighting.clear()
     _states.clear()
     _pending.clear()
@@ -745,6 +809,9 @@ def register():
 
 
 def unregister():
+    from . import native53, environment53
+    native53.invalidate()
+    environment53.clear()
     global _registered, LAST_WARNING, _bootstrap_pending, _resume_pending
     _resume_pending = False
     _registered = False

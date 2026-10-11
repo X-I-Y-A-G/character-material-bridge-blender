@@ -90,7 +90,7 @@ class PluginOnlyBuildTests(unittest.TestCase):
             self.assertIn('v0.5 package missing', rejected.stdout + rejected.stderr)
             init = checkout / 'character_material_bridge' / '__init__.py'
             original = init.read_bytes()
-            outdated = original.replace(b"'blender': (5, 2, 0)", b"'blender': (4, 2, 0)", 1)
+            outdated = original.replace(b"'blender': (5, 3, 0)", b"'blender': (5, 2, 0)", 1)
             self.assertNotEqual(outdated, original)
             init.write_bytes(outdated)
             rejected_version = subprocess.run(command + ['--plugin-only'], cwd=checkout, env=env,

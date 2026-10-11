@@ -13,3 +13,8 @@ dist/
 !/dev/test_match_v2.py
 !/dev/test_dev_zip_parity.py
 !/dev/test_plugin_only_build.py
+!/dev/run_blender53_tests.py
+!/dev/test_blender53.py
+!/dev/test_blender53_render.py
+!/dev/test_blender53_install.py
+!/dev/benchmark_blender53.py

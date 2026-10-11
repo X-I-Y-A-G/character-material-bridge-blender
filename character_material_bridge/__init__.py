@@ -1,8 +1,8 @@
 bl_info = {
     'name': 'Character Material Bridge / 角色材质桥',
     'author': '新杨XIYAG',
-    'version': (0, 5, 26),
-    'blender': (5, 2, 0),
+    'version': (0, 6, 0),
+    'blender': (5, 3, 0),
     'location': 'View3D > Sidebar > 材质移植',
     'description': '请注意阅读RM,插件可快捷导入终末地角色材质。',
     'category': 'Material',
@@ -30,7 +30,7 @@ from . import animation
 from . import defaults, postprocess
 from . import lighting, rig_runtime, mesh_state, face_outline, hair_outline
 from . import fur, fur_layers, uv_transfer
-from . import color_management
+from . import color_management, native53
 
 
 def _reload_changed(module):
@@ -54,13 +54,14 @@ if getattr(fur, 'API_REVISION', 0) < 524:fur = _reload_changed(fur)
 if getattr(fur_layers, 'API_REVISION', 0) < 524:fur_layers = _reload_changed(fur_layers)
 if getattr(uv_transfer, 'API_REVISION', 0) < 524:uv_transfer = _reload_changed(uv_transfer)
 
-if getattr(runtime, 'API_REVISION', 0) < 527:runtime = _reload_changed(runtime)
-if getattr(animation, 'API_REVISION', 0) < 527:animation = _reload_changed(animation)
-if getattr(lighting, 'API_REVISION', 0) < 527:lighting = _reload_changed(lighting)
+if getattr(runtime, 'API_REVISION', 0) < 600:runtime = _reload_changed(runtime)
+if getattr(animation, 'API_REVISION', 0) < 600:animation = _reload_changed(animation)
+if getattr(lighting, 'API_REVISION', 0) < 600:lighting = _reload_changed(lighting)
+if getattr(defaults, 'API_REVISION', 0) < 600:defaults = _reload_changed(defaults)
 if getattr(color_management, 'API_REVISION', 0) < 526:color_management = _reload_changed(color_management)
 if getattr(face_outline, 'API_REVISION', 0) < 517:face_outline = _reload_changed(face_outline)
 if getattr(hair_outline, 'API_REVISION', 0) < 522:hair_outline = _reload_changed(hair_outline)
-if getattr(rig_runtime, 'API_REVISION', 0) < 527:rig_runtime = _reload_changed(rig_runtime)
+if getattr(rig_runtime, 'API_REVISION', 0) < 600:rig_runtime = _reload_changed(rig_runtime)
 if getattr(mesh_state, 'API_REVISION', 0) < 524:mesh_state = _reload_changed(mesh_state)
 
 if getattr(postprocess, 'IMPLEMENTATION_REVISION', 0) < 526:
@@ -77,7 +78,7 @@ if not (hasattr(core, 'PRESET_SUFFIX') and hasattr(core, 'fix_face_mainlight')
         and hasattr(core, 'load_layout') and hasattr(core, 'export_final_package')
         and hasattr(core, 'material_uber_part_inferred')
         and hasattr(core, 'repair_result_tangents')
-        and getattr(core, 'API_REVISION', 0) >= 527
+        and getattr(core, 'API_REVISION', 0) >= 600
         and getattr(core, 'VERSION', 0) >= 2):
     core = _reload_changed(core)
 
@@ -525,7 +526,7 @@ def _param_updated(row, context):
     material = _panel_material(context)
     value = _row_value(row)
     try:
-        core.write_params(core.mat_param_image(material), state.col, [(state.part, row.pname, value)])
+        core.write_material_params(material, [(state.part, row.pname, value)])
     except RuntimeError as exc:
         state.note = str(exc)
         return
@@ -590,6 +591,11 @@ def rebuild_param_rows(state, context):
         part = core.material_uber_part(material)
         col = core.material_param_col(material)
         image = core.mat_param_image(material)
+        native = native53.is_native(material)
+        if native:native53.invalidate()
+        if native and material.get('ruri_uber_stack'):
+            state.note = '源材质由 RuriRipper 管理，请先移植，或在 Ruri 面板调参'
+            return
         state.bound_material = material
         state.bound_image = image
         state.part = part or ''
@@ -600,9 +606,9 @@ def rebuild_param_rows(state, context):
         notes = []
         if not part:
             notes.append('非 Ruri Uber 材质（无部位记录）')
-        if not col:
+        if not col and not native:
             notes.append('未找到参数列号（属性与树内 RuriMatCol 均无）')
-        elif not image:
+        elif not image and not native:
             notes.append('材质树未引用 Uber 参数图')
         if part and not core.stamp_matches(material):
             notes.append('布局表 stamp 与材质记录不一致，参数槽位可能已变化')
@@ -615,22 +621,24 @@ def rebuild_param_rows(state, context):
         if image and width and height:
             pixels = array('f', [0.0]) * (width * height * 4)
             image.pixels.foreach_get(pixels)
-        pool = core.param_names(part)
+        pool = native53.names(material) if native else core.param_names(part)
         if pixels is not None and (not 0 < state.col < width
                 or any((core.param_slot(part, name)[0] + 1) * width * 4 > len(pixels) for name in pool)):
             state.note = '参数图尺寸或列号与布局不匹配，已禁止编辑'
             return
         if state.filter == 'PBR':
-            pool = core.curated_names(part, 'PBR')
+            pool = [name for name in core.curated_names(part, 'PBR') if name in pool]
         infos = []
         for name in pool:
-            current = core.read_param(pixels, width, state.col, part, name) if pixels and state.col else None
+            current = (native53.read(material, name) if native else
+                       core.read_param(pixels, width, state.col, part, name) if pixels and state.col else None)
             if current is not None and core.stamp_matches(material):
-                channel = animation.ensure(context.scene, image, state.col, part, name, current)
+                channel = animation.ensure(context.scene, image, state.col, part, name, current,
+                                           material=material if native else None)
                 current = animation.value(channel)
             group, label = core.param_group_label(part, name)
             infos.append({'name': name,
-                          'type': (core.param_slot(part, name) or (0, 0, 'F'))[2],
+                          'type': native53.kind(material, name) if native else (core.param_slot(part, name) or (0, 0, 'F'))[2],
                           'current': current,
                           'group': group,
                           'label': label,
@@ -662,6 +670,9 @@ def rebuild_param_rows(state, context):
 def parameter_target_is_current(state, context):
     """A row is a snapshot of one material/image/column/part, never a global edit target."""
     material = _panel_material(context)
+    if native53.is_native(material):
+        return bool(material == state.bound_material and state.bound_image is None
+                    and core.material_uber_part(material) == state.part)
     return bool(material is not None and material == state.bound_material
                 and core.mat_param_image(material) == state.bound_image
                 and state.bound_image is not None
@@ -725,6 +736,7 @@ class CMB_AnimChannel(bpy.types.PropertyGroup):
     # paths, so this collection is append-only: NEVER remove/reorder its entries.
     name: StringProperty(options={'HIDDEN'}, update=animation.binding_updated)
     image: PointerProperty(type=bpy.types.Image, update=animation.binding_updated)
+    material: PointerProperty(type=bpy.types.Material, update=animation.binding_updated)
     col: IntProperty(options=set(), update=animation.binding_updated)
     part: StringProperty(options=set(), update=animation.binding_updated)
     pname: StringProperty(options=set(), update=animation.binding_updated)
@@ -765,7 +777,8 @@ class CMB_ParamState(bpy.types.PropertyGroup):
 class CMB_UL_params(bpy.types.UIList):
     def draw_item(self, context, layout, data, item, icon, active_data, active_propname, index):
         row = layout.row(align=True)
-        channel = animation.find(context.scene, data.bound_image, data.col, data.part, item.pname)
+        channel = animation.find(context.scene, data.bound_image, data.col, data.part, item.pname,
+                                 material=data.bound_material if native53.is_native(data.bound_material) else None)
         current = animation.value(channel) if channel is not None else _row_value(item)
         changed = defaults.differs(data.bound_material, data.part, item.pname, current)
         row.label(text=item.pname, icon='DOT' if changed else 'CHECKMARK')
@@ -812,8 +825,7 @@ class CMB_OT_param_default(bpy.types.Operator):
             self.report({'ERROR'}, '默认部位未确定或布局无此参数，请先选择默认参数部位')
             return {'CANCELLED'}
         try:
-            core.write_params(core.mat_param_image(material), state.col,
-                              [(state.part, item.pname, default)])
+            core.write_material_params(material, [(state.part, item.pname, default)])
         except RuntimeError as exc:
             self.report({'ERROR'}, str(exc))
             return {'CANCELLED'}
@@ -1014,7 +1026,8 @@ class CMB_PT_params(bpy.types.Panel):
                 and core.role_of(obj) == 'result' and not face_outline.installed(material)):
             layout.operator('cmb.runtime_initialize', text='修复脸部/身体描边亮度', icon='FILE_REFRESH')
         if state.part:
-            layout.label(text='部位 ' + state.part + ' · 列 ' + (str(state.col) if state.col else '未知')
+            layout.label(text='部位 ' + state.part + (' · 5.3 原生参数' if native53.is_native(material)
+                         else ' · 列 ' + (str(state.col) if state.col else '未知'))
                          + ('（推断）' if state.inferred else ''))
         if state.note:
             layout.label(text=state.note, icon='ERROR')
@@ -1042,10 +1055,11 @@ class CMB_PT_params(bpy.types.Panel):
         box.label(text='默认 ' + _format_value(defaults.default_value(_panel_material(context), state.part, item.pname)))
         if item.pname == '_OutlineColorBrightness' and face_outline.installed(material):
             box.label(text='0.5 = 原始描边；0 = 黑色；1 = 两倍线性颜色')
-        if not state.col or not core.mat_param_image(_panel_material(context)):
+        if not native53.is_native(material) and (not state.col or not core.mat_param_image(material)):
             box.label(text='无参数图列，不可编辑', icon='ERROR')
             return
-        channel = animation.find(context.scene, state.bound_image, state.col, state.part, item.pname)
+        channel = animation.find(context.scene, state.bound_image, state.col, state.part, item.pname,
+                                 material=material if native53.is_native(material) else None)
         if channel is None:
             box.label(text='请刷新参数列表以初始化动画通道', icon='INFO')
             return
@@ -1320,8 +1334,11 @@ class CMB_PT_runtime(bpy.types.Panel):
         if scene.get('cmb_runtime_ready'):
             layout.label(text='渲染时锁定界面，保护逐帧同步',icon='LOCKED')
         layout.label(text='已启用独立同步' if scene.get('cmb_runtime_ready') else '已有工程需先初始化独立同步')
-        layout.prop(scene.cmb_runtime_settings,'main_sun')
-        layout.label(text='主日光留空：按名称排序自动选择')
+        if scene.get('cmb_native_lighting_only'):
+            layout.label(text='5.3 原生灯光：跟随场景灯光', icon='LIGHT_SUN')
+        else:
+            layout.prop(scene.cmb_runtime_settings,'main_sun')
+            layout.label(text='主日光留空：按名称排序自动选择')
         obj=context.object
         if obj and lighting.owned(obj) and rig_runtime.object_needs_basis(obj):
             settings=obj.cmb_rig_binding
@@ -1371,6 +1388,8 @@ def _cleanup_failed_registration():
 
 
 def register():
+    if bpy.app.version < (5, 3, 0):
+        raise RuntimeError('此开发分支要求 Blender 5.3 及以上版本')
     # 0.5.0 双开守卫（A06）：两版共用全部 bl_idname 与 Scene 键，先后启用会半注册互删、
     # 除重启外不可恢复。对方模块已加载且其面板已在 bpy.types 时拒绝启用（单版安装/
     # 正常使用不触发、零行为差；对方模块名在运行时按本模块名判定，两版源码同源）。

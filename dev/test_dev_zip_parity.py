@@ -42,7 +42,7 @@ def check_artifacts(out, summary, *, plugin_only):
                    'character_material_bridge_user/outline.py', 'character_material_bridge_user/runtime.py', 'character_material_bridge_user/mesh_state.py', 'character_material_bridge_user/animation.py',
                    'character_material_bridge_user/ruri_params_layout.json',
                    'character_material_bridge_user/README.md'}
-    for name in ('defaults.py', 'postprocess.py', 'lighting.py', 'rig_runtime.py', 'face_outline.py', 'hair_outline.py', 'fur.py', 'fur_layers.py', 'uv_transfer.py', 'color_management.py', 'assets/endfield_post.blend'):
+    for name in ('defaults.py', 'postprocess.py', 'lighting.py', 'rig_runtime.py', 'face_outline.py', 'hair_outline.py', 'fur.py', 'fur_layers.py', 'uv_transfer.py', 'color_management.py', 'native53.py', 'environment53.py', 'assets/endfield_post.blend'):
         dev_expect.add('character_material_bridge/' + name)
         user_expect.add('character_material_bridge_user/' + name)
 

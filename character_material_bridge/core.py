@@ -15,9 +15,9 @@ import bpy
 FORMAT = 'character-material-bridge'
 LEGACY_FORMAT = 'jue-material-bridge'  # 0.3.0 改名前（v0.1~v0.4 包）的格式标识；读取端继续接受
 VERSION = 2  # v2 导出载体上全部材质槽并附 slot_used；读取端兼容 v1/v2。
-API_REVISION = 527  # Render uploads use Blender image invalidation, not GPU free.
+API_REVISION = 600  # Blender 5.3 native uniform transport plus packed-table compatibility.
 RUNTIME_BINDING_VERSION = 1
-ADDON_VERSION = (0, 5, 26)
+ADDON_VERSION = (0, 6, 0)
 MANIFEST = 'CMB_MANIFEST.json'
 LEGACY_MANIFEST = 'JMB_MANIFEST.json'  # 0.3.0 改名前的清单 Text 名；旧包（v0.1~v0.4）内仍是旧名
 REPORT = 'CMB_Report.json'
@@ -640,6 +640,9 @@ class LibraryBuilder:
             dest.filepath_raw = '//textures/' + Path(source.filepath.replace('\\', '/')).name if source.filepath else '//textures/' + source.name + '.png'
         else:
             remap_rna(dest, self.clone)
+        if isinstance(dest, bpy.types.Material):
+            from . import native53
+            native53.capture(source, dest)
         return dest
 
 
@@ -2111,14 +2114,8 @@ def read_param(pixels_flat, width, col, part, name):
     return values
 
 
-def params_write_pixels(pixels, width, col, updates):
-    """Pure: apply [(part, name, value)] onto a flat RGBA pixel buffer for one
-    material column. F writes its single channel; V4 rgb+alpha; V3 rgb only.
-
-    Returns {'written': n, 'unknown': [part/name...]} for names absent from the
-    part table (caller decides whether that is fatal). Column 0 is the shared
-    defaults column of the uber template and is never a material's column, so
-    writes must target 1..width-1."""
+def _param_edits(pixel_count, width, col, updates):
+    """Validate a sparse edit plan before reading or changing a pixel buffer."""
     width = int(width)
     if not (0 < int(col) < width):
         raise RuntimeError(f'参数列号越界: {col}（有效范围 1..{width - 1}，0 列为模板默认列）')
@@ -2130,7 +2127,7 @@ def params_write_pixels(pixels, width, col, updates):
             continue
         texel, comp, kind = slot
         base = (texel * width + int(col)) * 4
-        if base + 4 > len(pixels):
+        if base + 4 > pixel_count:
             raise RuntimeError('参数图高度/像素缓冲不足: ' + str(part) + '/' + str(name))
         try:
             if kind == 'F':
@@ -2148,9 +2145,14 @@ def params_write_pixels(pixels, width, col, updates):
             raise RuntimeError('参数值无效 ' + str(part) + '/' + str(name) + ': ' + str(exc)) from exc
         edits.extend(changes)
         written += 1
-    for index, value in edits:
-        pixels[index] = value
-    return {'written': written, 'unknown': unknown}
+    return {'written': written, 'unknown': unknown}, edits
+
+
+def params_write_pixels(pixels, width, col, updates):
+    """Apply a validated material-column edit; column zero remains read-only."""
+    result, edits = _param_edits(len(pixels), width, col, updates)
+    for index, value in edits:pixels[index] = value
+    return result
 
 
 def write_params_batch(image, columns, pack=False):
@@ -2160,17 +2162,27 @@ def write_params_batch(image, columns, pack=False):
     width, height = int(image.size[0]), int(image.size[1])
     if not width or not height:
         raise RuntimeError('参数图尺寸异常: ' + image.name)
-    buffer = array('f', [0.0]) * (width * height * 4)
-    image.pixels.foreach_get(buffer)
-    previous = array('f', buffer)
     previous_alpha = image.alpha_mode
     result = {'written': 0, 'unknown': [], 'changed': False}
+    edits = {}
     for col, updates in columns:
-        report = params_write_pixels(buffer, width, col, updates)
+        report, changes = _param_edits(width * height * 4, width, col, updates)
         result['written'] += report['written']
         result['unknown'].extend(report['unknown'])
-    result['changed'] = buffer != previous or (result['written'] > 0 and image.alpha_mode != 'CHANNEL_PACKED')
-    if result['changed'] or (pack and (image.is_dirty or not image.packed_file)):
+        edits.update(changes)
+    if not edits:
+        if pack and (image.is_dirty or not image.packed_file):image.pack()
+        return result
+    buffer = array('f', [0.0]) * (width * height * 4)
+    image.pixels.foreach_get(buffer)
+    # Keep only touched components for rollback; copying/comparing the entire
+    # multi-megabyte image a second time made small slider edits unnecessarily costly.
+    before = {index: buffer[index] for index in edits}
+    rounded = array('f', edits.values())
+    changed = any(before[index] != value for index, value in zip(edits, rounded))
+    result['changed'] = changed or image.alpha_mode != 'CHANNEL_PACKED'
+    if result['changed']:
+        for index, value in zip(edits, rounded):buffer[index] = value
         image.pixels.foreach_set(buffer)
         # 参数图是原始浮点通道存储（真机数据块 alpha_mode 即 CHANNEL_PACKED）。STRAIGHT/
         # PREMUL 图在 pack→保存→重载时会被 Blender 按 alpha 预乘/还原（rgb×a），静默改写
@@ -2181,14 +2193,14 @@ def write_params_batch(image, columns, pack=False):
         image.update_tag()
         # update() marks the full texture dirty. Do not free graphics resources
         # from frame handlers on a render worker while the UI may use them.
-        try:
-            if pack:
-                image.pack()
-        except Exception as exc:
-            image.pixels.foreach_set(previous)
-            image.alpha_mode = previous_alpha
-            image.update()
-            raise RuntimeError('参数图打包失败，数值已撤回: ' + image.name) from exc
+    try:
+        if pack and (result['changed'] or image.is_dirty or not image.packed_file):image.pack()
+    except Exception as exc:
+        for index, value in before.items():buffer[index] = value
+        image.pixels.foreach_set(buffer)
+        image.alpha_mode = previous_alpha
+        image.update()
+        raise RuntimeError('参数图打包失败，数值已撤回: ' + image.name) from exc
     return result
 
 
@@ -2201,6 +2213,19 @@ def write_params(image, col, updates):
     if scene is not None:
         animation.adopt_updates(scene, image, col, updates)
     return result
+
+
+def write_material_params(material, updates):
+    """Common editor entry: numeric node uniforms on 5.3, packed data for old packages."""
+    from . import native53, animation
+    updates = list(updates)
+    if native53.is_native(material):
+        result = native53.write(material, updates)
+        scene = getattr(bpy.context, 'scene', None)
+        if scene is not None:
+            animation.adopt_updates(scene, None, 0, updates, material=material)
+        return result
+    return write_params(mat_param_image(material), material_param_col(material), updates)
 
 
 def param_col_from_nodes(nodes):
@@ -2320,6 +2345,8 @@ def stamp_matches(material):
     """Whether the material's recorded uber stamp agrees with the layout table.
 
     Materials without a recorded stamp (non-uber or stripped) pass vacuously."""
+    from . import native53
+    if native53.is_native(material):return True
     stamp = material.get('ruri_uber_stamp') if material else None
     if not stamp:
         return True
@@ -2389,6 +2416,10 @@ def read_material_column(material):
 def param_deviations(material):
     """{param_name: current_value} of the material's params that deviate from the
     layout defaults (value_differs); {} when there is no readable params column."""
+    from . import native53, defaults
+    if native53.is_native(material):
+        return {name: value for name, value in native53.values(material).items()
+                if defaults.differs(material, material_uber_part(material), name, value)}
     snapshot = read_material_column(material)
     if snapshot is None:
         return {}
@@ -2409,7 +2440,7 @@ def build_params_preset(objects, package_id='', plugin_version=''):
 
     Returns {'package_id', 'plugin_version', 'created', 'kind', 'mats'} with
     mats keyed '<对象名>::<材质名>' -> {'part', 'col', 'params': {名: 值}}."""
-    from . import animation
+    from . import animation, native53
     animation.flush(bpy.context.scene)
     mats, seen = {}, set()
     for obj in objects:
@@ -2420,6 +2451,13 @@ def build_params_preset(objects, package_id='', plugin_version=''):
             if not material or material.name in seen:
                 continue
             seen.add(material.name)
+            if native53.is_native(material):
+                current = native53.values(material)
+                if current:
+                    mats[obj.name + '::' + material.name] = {
+                        'object': obj.name, 'material': material.name, 'part': material_uber_part(material),
+                        'col': 0, 'transport': 'native53', 'params': current}
+                continue
             snapshot = read_material_column(material)
             if snapshot is None:
                 continue
@@ -2446,6 +2484,8 @@ def apply_params_preset(preset):
         raise RuntimeError('参数预设需要 mats 对象')
     written = 0
     skipped = []
+    from . import native53
+    native_planned = {}
     planned, physical_values, by_image = [], {}, {}
     for key, record in (preset.get('mats') or {}).items():
         if not isinstance(key, str) or not isinstance(record, dict) or not isinstance(record.get('params', {}), dict):
@@ -2460,6 +2500,18 @@ def apply_params_preset(preset):
         part = material_uber_part(material)
         col = material_param_col(material)
         image = mat_param_image(material)
+        if native53.is_native(material):
+            if record.get('part') and record['part'] != part:
+                skipped.append(key + '（原生材质部位不符）')
+                continue
+            updates = [(part, name, value) for name, value in record.get('params', {}).items()]
+            native53.prepare(material, updates)
+            existing = native_planned.setdefault(material, {})
+            for update_part, name, value in updates:
+                if name in existing and existing[name][2] != value:
+                    raise RuntimeError('原生参数预设数值冲突，未写入任何参数: ' + name)
+                existing[name] = (update_part, name, value)
+            continue
         if not part or not col or image is None:
             skipped.append(key + '（材质无参数列/部位/参数图）')
             continue
@@ -2497,6 +2549,9 @@ def apply_params_preset(preset):
         for update_part, name, value in updates:
             merged[(update_part, name)] = value
         planned.append((image, col, updates))
+    native_snapshots = {mat: [(material_uber_part(mat), name, native53.read(mat, name))
+                              for name in updates if name in native53.names(mat)]
+                        for mat, updates in native_planned.items()}
     snapshots = {}
     for image, _, _ in planned:
         if image not in snapshots:
@@ -2504,6 +2559,10 @@ def apply_params_preset(preset):
             image.pixels.foreach_get(buffer)
             snapshots[image] = (buffer, image.alpha_mode)
     try:
+        for material, updates in native_planned.items():
+            result = native53.write(material, updates.values())
+            written += result['written']
+            if result['unknown']:skipped.append(material.name + '（未知参数 ' + ', '.join(result['unknown']) + '）')
         for image, columns in by_image.items():
             batch = [(col, [(part, name, value) for (part, name), value in updates.items()])
                      for col, updates in columns.items()]
@@ -2512,6 +2571,7 @@ def apply_params_preset(preset):
             if result['unknown']:
                 skipped.append(image.name + '（未知参数 ' + ', '.join(result['unknown']) + '）')
     except Exception:
+        for material, updates in native_snapshots.items():native53.write(material, updates)
         for image, (buffer, alpha_mode) in snapshots.items():
             image.pixels.foreach_set(buffer)
             image.alpha_mode = alpha_mode
@@ -2520,7 +2580,10 @@ def apply_params_preset(preset):
         raise
     # Publish channel edits only after the entire preset transaction succeeds.
     from . import animation
+    for material, updates in native_planned.items():
+        for scene in bpy.data.scenes:
+            animation.adopt_updates(scene, None, 0, updates.values(), material=material)
     for image, col, updates in planned:
         for scene in bpy.data.scenes:
             animation.adopt_updates(scene, image, col, updates)
-    return {'applied': len(planned), 'params': written, 'skipped': skipped}
+    return {'applied': len(planned) + len(native_planned), 'params': written, 'skipped': skipped}

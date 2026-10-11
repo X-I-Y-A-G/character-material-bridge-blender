@@ -4,7 +4,7 @@ import uuid
 from array import array
 import bpy
 
-API_REVISION = 527
+API_REVISION = 600
 ROWS, COLS = 4, 64
 _cache = {}
 
@@ -92,7 +92,7 @@ def validate_scope(scene, objects):
 
 def initialize(scene, objects=None, transaction=None):
     """Explicit migration / transfer transaction. Never invoked by register/load."""
-    from . import core, animation, rig_runtime
+    from . import core, animation, rig_runtime, native53
     objects = list(targets(scene) if objects is None else objects)
     if not objects:return {'objects':0, 'images':0, 'warnings':['场景没有材质桥移植结果']}
     validate_scope(scene, objects)
@@ -102,6 +102,9 @@ def initialize(scene, objects=None, transaction=None):
     # A single old physical animation binding cannot be split between source and
     # result without deciding which material those existing curves belong to.
     foreign = _materials([o for o in scene.objects if o.type == 'MESH' and not owned(o)])
+    if any(channel.material in materials & foreign for channel in getattr(scene,'cmb_anim_channels',())
+           if channel.material):
+        raise RuntimeError('原生参数动画同时绑定源材质和移植结果，请先独立化材质')
     for m in foreign:
         image, col = core.mat_param_image(m), core.material_param_col(m)
         if image in params and any(c.image == image and c.col == col for c in getattr(scene,'cmb_anim_channels', ())):
@@ -118,7 +121,7 @@ def initialize(scene, objects=None, transaction=None):
                     for arm in binding_arms if isinstance(arm,bpy.types.Object) and arm.type=='ARMATURE'
                     for bone in arm.data.bones]
     lock_before = scene.render.use_lock_interface
-    scene_before = {k:scene.get(k) for k in ('cmb_runtime_id','cmb_runtime_ready','cmb_light_table')}
+    scene_before = {k:scene.get(k) for k in ('cmb_runtime_id','cmb_runtime_ready','cmb_light_table','cmb_native_lighting_only')}
     def rollback():
         scene.render.use_lock_interface = lock_before
         # The transfer's outer transaction may fail after this function has
@@ -177,42 +180,46 @@ def initialize(scene, objects=None, transaction=None):
             pixels = array('f',[0.0]) * len(image.pixels);image.pixels.foreach_get(pixels)
             mapping[image] = _new_image('CMB Uber Params ' + uuid.uuid4().hex, *image.size, 'PARAMS', owner, pixels)
         table = scene.get('cmb_light_table')
-        if not isinstance(table,bpy.types.Image) or not is_light_table(table) or table.get('cmb_runtime_owner') != owner:
-            table = _new_image('CMB Light Table ' + owner, COLS, ROWS, 'LIGHTS', owner)
         trees = list(core.walk_trees_for_objects(objects))
+        native_only = (all(not native53.requires_light_table(mat) for mat in materials) and
+                       not any(is_light_table(image) for tree in trees for node in tree.nodes
+                               for _, _, image in image_refs(node)))
+        if not native_only and (not isinstance(table,bpy.types.Image) or not is_light_table(table) or table.get('cmb_runtime_owner') != owner):
+            table = _new_image('CMB Light Table ' + owner, COLS, ROWS, 'LIGHTS', owner)
         for tree in trees:
             for node in tree.nodes:
                 for _, _, image in image_refs(node):
                     if is_light_table(image) and image != table:mapping[image] = table
         has_cache, copies = {}, {}
-        def mutable(tree, seen=None):
-            if tree in has_cache:return has_cache[tree]
+        def mutable(tree, seen=None, world_space=False):
+            cache_key=(tree,world_space)
+            if cache_key in has_cache:return has_cache[cache_key]
             seen = set() if seen is None else seen
             if tree in seen:return False
             seen = seen | {tree}
-            answer = any(image in mapping for n in tree.nodes for _,_,image in image_refs(n)) or rig_runtime.needs_wiring(tree)
-            answer = answer or any(n.type == 'GROUP' and n.node_tree and mutable(n.node_tree, seen) for n in tree.nodes)
-            has_cache[tree] = answer;return answer
-        def rewrite(tree):
+            answer = any(image in mapping for n in tree.nodes for _,_,image in image_refs(n)) or rig_runtime.needs_wiring(tree,world_space)
+            answer = answer or any(n.type == 'GROUP' and n.node_tree and mutable(n.node_tree, seen, world_space) for n in tree.nodes)
+            has_cache[cache_key] = answer;return answer
+        def rewrite(tree, world_space=False):
             for node in tree.nodes:
                 for attr, holder, image in list(image_refs(node)):
                     if image in mapping:
                         changes.append((holder,attr,image));setattr(holder,attr,mapping[image])
-                if node.type == 'GROUP' and node.node_tree and mutable(node.node_tree):
+                if node.type == 'GROUP' and node.node_tree and mutable(node.node_tree,world_space=world_space):
                     original = node.node_tree
-                    copy = copies.get(original)
+                    copy = copies.get((original,world_space))
                     if copy is None:
                         copy = original.copy();copy.use_fake_user=False;copy.name='CMB RT '+original.name
-                        copies[original] = copy;rewrite(copy)
+                        copies[(original,world_space)] = copy;rewrite(copy,world_space)
                     changes.append((node,'node_tree',original));node.node_tree = copy
-            if rig_runtime.needs_wiring(tree):
+            if rig_runtime.needs_wiring(tree,world_space):
                 nodes=set(tree.nodes)
                 attributes=[(n,n.attribute_type,n.attribute_name,n.label) for n in nodes if n.type=='ATTRIBUTE']
                 links=[(l.from_node.name,list(l.from_node.outputs).index(l.from_socket),l.to_node.name,list(l.to_node.inputs).index(l.to_socket)) for l in tree.links]
                 wire_backups.append((tree,nodes,attributes,links))
-                rig_runtime.wire_basis(tree)
+                rig_runtime.wire_basis(tree,world_space)
         for mat in materials:
-            if mat.node_tree:rewrite(mat.node_tree)
+            if mat.node_tree:rewrite(mat.node_tree,native53.is_native(mat))
             if 'ruri_uber_stack' in mat:
                 prop_changes.append((mat,'ruri_uber_stack',mat.get('ruri_uber_stack')))
                 del mat['ruri_uber_stack']
@@ -222,10 +229,10 @@ def initialize(scene, objects=None, transaction=None):
             for mod in obj.modifiers:
                 if mod.type == 'NODES' and mod.node_group and mutable(mod.node_group):
                     original = mod.node_group
-                    copy = copies.get(original)
+                    copy = copies.get((original,False))
                     if copy is None:
                         copy = original.copy();copy.use_fake_user=False;copy.name='CMB RT '+original.name
-                        copies[original] = copy;rewrite(copy)
+                        copies[(original,False)] = copy;rewrite(copy)
                     changes.append((mod,'node_group',original));mod.node_group=copy
                 try:keys=list(mod.keys())
                 except TypeError:keys=[]
@@ -245,10 +252,12 @@ def initialize(scene, objects=None, transaction=None):
             if obj['cmb_basis_enabled']:
                 settings=getattr(obj,'cmb_rig_binding',None)
                 if settings:binding_backups.append((settings,settings.armature,settings.bone))
-                for key in ('cmb_rig_armature','cmb_rig_bone_name','cmb_rig_bone_id'):
+                for key in ('cmb_rig_armature','cmb_rig_bone_name','cmb_rig_bone_id','cmb_basis_modes'):
                     prop_changes.append((obj,key,obj.get(key)))
                 warnings.extend(rig_runtime.initialize(obj))
-        scene['cmb_runtime_id']=owner;scene['cmb_light_table']=table;scene['cmb_runtime_ready']=True
+        scene['cmb_runtime_id']=owner;scene['cmb_runtime_ready']=True
+        scene['cmb_native_lighting_only']=native_only
+        if table is not None:scene['cmb_light_table']=table
         from . import face_outline, hair_outline
         face_report = face_outline.apply(objects, transaction=face_rollbacks)
         warnings.extend(face_report['warnings'])
@@ -301,6 +310,7 @@ def pack_light(obj, depsgraph=None):
 def sync_scene(scene, depsgraph=None, for_render=False, force=False, candidates=None):
     report={'uploads':0,'warnings':[]}
     if not scene.get('cmb_runtime_ready'):return report
+    if scene.get('cmb_native_lighting_only'):return report
     table=scene.get('cmb_light_table');owner=scene.get('cmb_runtime_id')
     if not isinstance(table,bpy.types.Image) or table.get('cmb_runtime_owner')!=owner:
         report['warnings'].append('独立灯表缺失，请初始化／修复独立同步');return report

@@ -6,13 +6,18 @@ from collections import defaultdict
 import bpy
 from . import core
 
-API_REVISION = 527
+API_REVISION = 600
 _busy = False
 _registered = False
 _cache = {}
 _indices = {}
 STATS = defaultdict(int)
 LAST_WARNING = ''
+
+
+def _binding_id(image, material=None):
+    # ID.session_uid cannot be reused after a material is deleted in this session.
+    return ('MATERIAL', material.session_uid) if material else image.as_pointer() if image else 0
 
 
 def invalidate(scene=None):
@@ -40,8 +45,7 @@ def index(scene):
         # grows. Cache append-only integer indices, never long-lived RNA rows.
         for position, channel in enumerate(channels):
             by_name[channel.name] = position
-            image = channel.image
-            by_binding[(image.as_pointer() if image else 0, channel.col,
+            by_binding[(_binding_id(channel.image, channel.material), channel.col,
                         channel.part, channel.pname)] = position
         cached = dict(length=len(channels), names=by_name, bindings=by_binding, rows=None)
         _indices[key] = cached
@@ -127,12 +131,23 @@ def remember(channel, val):
 def restore_committed(scene):
     global LAST_WARNING
     groups = defaultdict(lambda: defaultdict(list))
+    native = defaultdict(list)
     for channel in getattr(scene, 'cmb_anim_channels', ()):
         saved = channel.get('cmb_committed')
-        if saved is None or channel.image is None:continue
+        if saved is None:continue
         val = list(saved) if channel.ptype in {'V3', 'V4'} else saved[0]
+        if channel.material:
+            native[channel.material].append((channel.part, channel.pname, val))
+            continue
+        if channel.image is None:continue
         groups[channel.image][channel.col].append((channel.part, channel.pname, val))
     uploads, warnings = 0, []
+    from . import native53
+    for material, updates in native.items():
+        try:
+            uploads += bool(native53.write(material, updates)['changed'])
+        except RuntimeError as exc:
+            warnings.append('撤销原生参数恢复失败：' + material.name + '：' + str(exc))
     for image, columns in groups.items():
         try:
             uploads += bool(core.write_params_batch(image, columns.items(), pack=False)['changed'])
@@ -143,17 +158,17 @@ def restore_committed(scene):
     return uploads
 
 
-def find(scene, image, col, part, pname):
+def find(scene, image, col, part, pname, material=None):
     cached = index(scene)
-    position = cached['bindings'].get((image.as_pointer() if image else 0, col, part, pname))
+    position = cached['bindings'].get((_binding_id(image, material), col, part, pname))
     if position is None:return None
     return indexed_rows(scene)[position]
 
 
-def ensure(scene, image, col, part, pname, initial):
+def ensure(scene, image, col, part, pname, initial, material=None):
     """Only initialize once. Refresh/filter operations must never reset animation."""
     global _busy
-    channel = find(scene, image, col, part, pname)
+    channel = find(scene, image, col, part, pname, material=material)
     if channel is not None:
         return channel
     previous = _busy
@@ -162,9 +177,11 @@ def ensure(scene, image, col, part, pname, initial):
         channel = scene.cmb_anim_channels.add()
         channel.name = uuid.uuid4().hex
         channel.image, channel.col = image, col
+        channel.material = material
         channel.part, channel.pname = part, pname
-        channel.ptype = core.param_slot(part, pname)[2]
-        channel.stamp = str(core.load_layout()['_meta']['stamp'])
+        from . import native53
+        channel.ptype = native53.kind(material, pname) if material else core.param_slot(part, pname)[2]
+        channel.stamp = 'native53' if material else str(core.load_layout()['_meta']['stamp'])
         assign(channel, initial)
         remember(channel, value(channel))
         # Append to the existing index in O(1), preserving every native path.
@@ -172,7 +189,7 @@ def ensure(scene, image, col, part, pname, initial):
         cached['length'] += 1
         cached['rows'] = None
         cached['names'][channel.name] = cached['length'] - 1
-        cached['bindings'][(image.as_pointer(), col, part, pname)] = cached['length'] - 1
+        cached['bindings'][(_binding_id(image, material), col, part, pname)] = cached['length'] - 1
         from . import runtime
         runtime.invalidate(scene, parameters=True)
         return channel
@@ -180,7 +197,7 @@ def ensure(scene, image, col, part, pname, initial):
         _busy = previous
 
 
-def adopt_updates(scene, image, col, updates):
+def adopt_updates(scene, image, col, updates, material=None):
     """Manual writes/presets are authoritative; keep existing channels in step."""
     global _busy
     if not hasattr(scene, 'cmb_anim_channels'):
@@ -189,11 +206,11 @@ def adopt_updates(scene, image, col, updates):
     _busy = True
     try:
         for part, pname, new_value in updates:
-            channel = find(scene, image, col, part, pname)
+            channel = find(scene, image, col, part, pname, material=material)
             if channel is not None:
                 assign(channel, new_value)
                 remember(channel, value(channel))
-        _cache.pop(image.as_pointer(), None)
+        if image is not None:_cache.pop(image.as_pointer(), None)
     finally:
         _busy = previous
 
@@ -230,16 +247,35 @@ def sync_scene(scene, depsgraph=None, force=False, channels=None,
             LAST_WARNING = ''
             return 0
         evaluated = scene.evaluated_get(depsgraph) if depsgraph is not None else scene
-        current_channels = ({c.name: c for c in evaluated.cmb_anim_channels}
+        # Scene channel indices are append-only; avoid scanning thousands of
+        # static channels when only a handful have evaluated animation.
+        current_channels = ({c.name: evaluated.cmb_anim_channels[originals[c.name]] for c in channels
+                             if c.name in originals and originals[c.name] < len(evaluated.cmb_anim_channels)}
                             if evaluated != scene else {c.name: c for c in channels})
         STATS['evaluated_index_builds'] += evaluated != scene
         groups = defaultdict(list)
+        native_groups = defaultdict(list)
+        native_snapshots = defaultdict(list)
+        native_schemas = {}
         snapshots = defaultdict(list)
         stamp = str(core.load_layout()['_meta']['stamp'])
         warnings = []
         for channel in channels:
             STATS['channel_reads'] += 1
             image = channel.image
+            if channel.material:
+                from . import native53
+                material = channel.material
+                current = current_channels.get(channel.name)
+                if current is None:continue
+                if material not in native_schemas:native_schemas[material] = native53.schema(material)
+                if native_schemas[material].get(channel.pname) != channel.ptype:
+                    warnings.append('原生参数绑定已改变，请重新绑定：' + channel.pname)
+                    continue
+                val = value(current)
+                native_groups[material].append((channel.part, channel.pname, val))
+                native_snapshots[material].append((channel, val))
+                continue
             if image is None:
                 continue
             if channel.stamp != stamp or core.param_slot(channel.part, channel.pname) is None:
@@ -253,6 +289,14 @@ def sync_scene(scene, depsgraph=None, force=False, channels=None,
             groups[image].append((channel.col, channel.part, channel.pname,
                                   tuple(val) if isinstance(val, list) else val))
         uploads = 0
+        from . import native53
+        for material, updates in native_groups.items():
+            try:
+                changed = native53.write(material, updates)['changed']
+                STATS['native_material_updates'] += bool(changed)
+                for channel, val in native_snapshots[material]:remember(channel, val)
+            except RuntimeError as exc:
+                warnings.append('原生参数未更新：' + material.name + '：' + str(exc))
         for image, rows in groups.items():
             key = image.as_pointer()
             previous = _cache.get(key)

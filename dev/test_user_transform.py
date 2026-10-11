@@ -57,7 +57,7 @@ def main():
 
     # 2) AST 判别（build_release 检查②，独立复跑）。
     br.check_ast(user_init)
-    old_minimum = user_init.replace("'blender': (5, 2, 0)", "'blender': (4, 2, 0)", 1)
+    old_minimum = user_init.replace("'blender': (5, 3, 0)", "'blender': (5, 2, 0)", 1)
     assert old_minimum != user_init
     try:
         br.check_ast(old_minimum)

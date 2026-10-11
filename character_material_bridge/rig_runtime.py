@@ -3,8 +3,9 @@ import uuid
 import bpy
 from mathutils import Matrix, Vector
 
-API_REVISION=527
+API_REVISION=600
 BASIS=('cmb_face_basis0','cmb_face_basis1','cmb_face_basis2')
+WORLD_BASIS=('cmb_face_world_basis0','cmb_face_world_basis1','cmb_face_world_basis2')
 SOCKETS=('_RuriRigBasis0','_RuriRigBasis1','_RuriRigBasis2')
 BONE_ID='cmb_basis_bone_id'
 SWAP=Matrix(((1,0,0),(0,0,1),(0,1,0)))
@@ -12,22 +13,25 @@ SWAP=Matrix(((1,0,0),(0,0,1),(0,1,0)))
 
 def needs_basis(tree):
     if tree is None:return False
-    return any((n.type=='GROUP' and all(n.inputs.get(k) is not None for k in SOCKETS))
+    return (any((n.type=='GROUP' and all(n.inputs.get(k) is not None for k in SOCKETS))
                or (n.type=='ATTRIBUTE' and 'ruri_face_basis' in n.attribute_name)
                or (n.type=='ATTRIBUTE' and 'cmb_face_basis' in n.attribute_name) for n in tree.nodes)
+        or any(n.type=='ATTRIBUTE' and 'cmb_face_world_basis' in n.attribute_name for n in tree.nodes))
 
 
-def needs_wiring(tree):
+def needs_wiring(tree, world_space=False):
     """Reading a basis does not mean an already-correct tree needs copying."""
     if tree.bl_idname != 'ShaderNodeTree':return False
     for node in tree.nodes:
         if node.type == 'ATTRIBUTE' and 'ruri_face_basis' in node.attribute_name:
             return True
-        if node.type == 'ATTRIBUTE' and 'cmb_face_basis' in node.attribute_name and node.attribute_type != 'OBJECT':
-            return True
+        if node.type == 'ATTRIBUTE':
+            for index, key in enumerate(WORLD_BASIS if world_space else BASIS):
+                if any(old[index] in node.attribute_name for old in (BASIS, WORLD_BASIS)):
+                    if node.attribute_type != 'OBJECT' or node.attribute_name != '["'+key+'"]':return True
         if node.type != 'GROUP' or not all(node.inputs.get(k) is not None for k in SOCKETS):
             continue
-        for key, name in zip(BASIS, SOCKETS):
+        for key, name in zip(WORLD_BASIS if world_space else BASIS, SOCKETS):
             links = node.inputs[name].links
             if len(links) != 1:return True
             link = links[0]
@@ -38,15 +42,15 @@ def needs_wiring(tree):
     return False
 
 
-def wire_basis(tree):
+def wire_basis(tree, world_space=False):
     if tree.bl_idname!='ShaderNodeTree' or not needs_basis(tree):return
     for n in tree.nodes:
         if n.type=='ATTRIBUTE':
-            for i,key in enumerate(BASIS):
-                if 'ruri_face_basis'+str(i) in n.attribute_name or 'cmb_face_basis'+str(i) in n.attribute_name:
+            for i,key in enumerate(WORLD_BASIS if world_space else BASIS):
+                if any(prefix+str(i) in n.attribute_name for prefix in ('ruri_face_basis','cmb_face_basis','cmb_face_world_basis')):
                     n.attribute_type='OBJECT';n.attribute_name='["'+key+'"]';n.label='CMB Rig Basis '+str(i)
     groups=[n for n in tree.nodes if n.type=='GROUP' and all(n.inputs.get(k) is not None for k in SOCKETS)]
-    for i,key in enumerate(BASIS):
+    for i,key in enumerate(WORLD_BASIS if world_space else BASIS):
         if not groups:break
         node=next((n for n in tree.nodes if n.type=='ATTRIBUTE' and n.attribute_name=='["'+key+'"]'),None)
         if node is None:node=tree.nodes.new('ShaderNodeAttribute')
@@ -93,6 +97,16 @@ def binding_updated(settings, context):
 
 
 def initialize(obj):
+    from . import core
+    modes = 0
+    for material in obj.data.materials:
+        if not material:continue
+        for tree in core.walk_trees(material.node_tree):
+            for node in tree.nodes:
+                if node.type != 'ATTRIBUTE':continue
+                if 'cmb_face_world_basis' in node.attribute_name:modes |= 2
+                elif 'cmb_face_basis' in node.attribute_name:modes |= 1
+    obj['cmb_basis_modes'] = modes or 1
     arm=obj.get('cmb_rig_armature') or armature_of(obj)
     if not isinstance(arm,bpy.types.Object) or arm.type!='ARMATURE':arm=None
     if arm and (arm.library or arm.data.library):
@@ -112,11 +126,11 @@ def initialize(obj):
     return []
 
 
-def basis_values(obj, arm, pose, depsgraph, delta=None):
-    target=obj.evaluated_get(depsgraph)
+def basis_values(obj, arm, pose, depsgraph, delta=None, world_space=False):
     evaluated=arm.evaluated_get(depsgraph)
     if delta is None:delta=pose.matrix.to_3x3() @ pose.bone.matrix_local.to_3x3().inverted()
-    relative=(target.matrix_world.inverted() @ evaluated.matrix_world).to_3x3()
+    relative=(evaluated.matrix_world.to_3x3() if world_space else
+              (obj.evaluated_get(depsgraph).matrix_world.inverted() @ evaluated.matrix_world).to_3x3())
     delta=relative @ delta @ relative.inverted()
     unity=SWAP @ delta @ SWAP
     return [tuple(unity.col[i].normalized()) for i in range(3)]
@@ -145,10 +159,12 @@ def sync_scene(scene,depsgraph=None,objects=None,bindings=None):
     from . import runtime
     depsgraph = runtime.scene_depsgraph(scene, depsgraph)
     if bindings is None:bindings=bindings_for(objects if objects is not None else lighting.targets(scene))
-    deltas={}
+    deltas={};world_values={}
     for obj,arm,bone in bindings:
         if obj.get('cmb_runtime_owner')!=scene.get('cmb_runtime_id'):continue
         values=[(1.,0.,0.),(0.,1.,0.),(0.,0.,1.)]
+        global_values=values
+        modes=obj.get('cmb_basis_modes',1)
         if bone:
             pose=arm.evaluated_get(depsgraph).pose.bones.get(bone.name)
             if pose is None:
@@ -156,7 +172,11 @@ def sync_scene(scene,depsgraph=None,objects=None,bindings=None):
             try:
                 key=(arm.as_pointer(),bone.as_pointer())
                 if key not in deltas:deltas[key]=pose.matrix.to_3x3() @ pose.bone.matrix_local.to_3x3().inverted()
-                values=basis_values(obj,arm,pose,depsgraph,deltas[key])
+                if modes & 1:values=basis_values(obj,arm,pose,depsgraph,deltas[key])
+                if modes & 2:
+                    if key not in world_values:
+                        world_values[key]=basis_values(obj,arm,pose,depsgraph,deltas[key],world_space=True)
+                    global_values=world_values[key]
             except (ValueError,ZeroDivisionError):
                 report['warnings'].append(obj.name+'：基座矩阵不可逆，保留上次有效值');continue
             if obj.get('cmb_rig_bone_name')!=bone.name:obj['cmb_rig_bone_name']=bone.name
@@ -165,7 +185,9 @@ def sync_scene(scene,depsgraph=None,objects=None,bindings=None):
         else:report['warnings'].append(obj.name+'：头骨绑定缺失，使用单位基座')
         changed=False
         evaluated=obj.evaluated_get(depsgraph)
-        for key,value in zip(BASIS,values):
+        pairs=list(zip(BASIS,values)) if modes & 1 else []
+        if modes & 2:pairs.extend(zip(WORLD_BASIS,global_values))
+        for key,value in pairs:
             old=obj.get(key)
             if old is None or len(old)!=len(value) or max(abs(a-b) for a,b in zip(old,value))>1e-6:
                 obj[key]=value;changed=True

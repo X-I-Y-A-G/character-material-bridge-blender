@@ -1,13 +1,13 @@
-# Character Material Bridge 0.5.26 / 角色材质桥 — User 用户版
+# Character Material Bridge 0.6.0 / 角色材质桥 — User 用户版
 
-**普通使用者请选择 `character_material_bridge_user-0.5.26.zip`。** 用户版用于接收、应用别人提供的材质包，支持调参、参数动画和独立运行同步。需要制作、导出源材质包或最终材质包的作者，使用开发版。
+**普通使用者请选择 `character_material_bridge_user-0.6.0.zip`。** 用户版用于接收、应用别人提供的材质包，支持调参、参数动画和独立运行同步。需要制作、导出源材质包或最终材质包的作者，使用开发版。
 
-[下载 User 用户版](https://github.com/X-I-Y-A-G/character-material-bridge-blender/releases/download/v0.5.26/character_material_bridge_user-0.5.26.zip)
+本分支尚未发布 GitHub Release；安装构建产物 `character_material_bridge_user-0.6.0.zip`。
 
 ## 安装与版本要求
 
-- 必须在 **Blender 5.2 及以上版本（5.2+）** 安装、使用和验证。
-- 已有完整运行验收环境为 Windows / Blender 5.2.2 LTS。其他版本需在实际环境验证；不把此要求视为所有后续版本都已经实测。
+- 必须在 **Blender 5.3 及以上版本（5.3+）** 安装、使用和验证。
+- 本分支实测环境为 Windows / Blender 5.3.0 Beta（3e084785de9a）。其他版本需在实际环境验证；不把此要求视为所有后续版本都已经实测。
 - 从 Blender 偏好设置中选择“从磁盘安装”，安装上述 User ZIP，启用用户版条目。入口为 3D 视图 → N 侧栏 →「材质移植」。
 - 开发版与用户版只能启用其中一版。升级后建议重启 Blender，释放旧模块和回调。
 - GitHub 自动提供的 Source code 压缩包是源码仓库；安装时请选择 User 安装包。
@@ -51,4 +51,9 @@
 
 反馈问题时提供 Blender 版本、插件版本、材质包来源、异常部位和 `CMB_Report.json` 相关信息。MMD 材质 morph、外部物理引用和复杂动画组合尚需按工程验证；结构检查不等于最终视觉一致。
 
-0.5.26 的主要修复为 GUI 动画／视频渲染逐帧同步。已清理渲染工作线程中的界面上下文覆盖、递归依赖图更新和 GPU 释放路径；用户反馈的 5.3 Alpha 原始崩溃尚未复现，不承诺所有 Alpha 构建及插件组合都已验证。
+0.6.0 的主要修复为 GUI 动画／视频渲染逐帧同步。已清理渲染工作线程中的界面上下文覆盖、递归依赖图更新和 GPU 释放路径；用户反馈的 5.3 Alpha 原始崩溃尚未复现，不承诺所有 Alpha 构建及插件组合都已验证。
+## Blender 5.3 实时同步
+
+新式 Ruri 材质使用数值组输入批量传递参数，原生灯光图跟随 EEVEE 场景灯光；旧参数图材质继续使用兼容路径。相机投影在同一轮同步中共用计算。已识别环境查询可同步 Background / HDRI / Mapping，复杂 World 图会提示并保留上次有效值。性能与适配边界见仓库 `docs/blender53.md`。
+
+普通用户选择 User 版；安装后保存工程并完整重启 Blender。参数动画仍需保持插件启用，历史材质包不会自动重写成新着色算法。
